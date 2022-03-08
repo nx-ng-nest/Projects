@@ -73,6 +73,10 @@
           "browserTarget": "client-inventory:build:development"
         }
       },
+      "options": {
+        "browserTarget": "reporting:build",
+        "proxyConfig": "apps/client-inventory/proxy.conf.json"
+      },
       "defaultConfiguration": "development"
     },
     "extract-i18n": {
