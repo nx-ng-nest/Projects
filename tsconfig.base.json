@@ -15,7 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@projects/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@projects/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@projects/orm": ["libs/orm/src/index.ts"],
+      "@projects/utils": ["libs/utils/src/index.ts"],
+      "@projects/validation": ["libs/validation/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -3,7 +3,13 @@
   "projects": {
     "api": "apps/api",
     "api-interfaces": "libs/api-interfaces",
+    "api-inventory": "apps/api-inventory",
+    "client-inventory": "apps/client-inventory",
+    "client-inventory-e2e": "apps/client-inventory-e2e",
     "hello": "apps/hello",
-    "hello-e2e": "apps/hello-e2e"
+    "hello-e2e": "apps/hello-e2e",
+    "orm": "libs/orm",
+    "utils": "libs/utils",
+    "validation": "libs/validation"
   }
 }
