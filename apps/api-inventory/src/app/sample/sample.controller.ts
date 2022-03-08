@@ -19,6 +19,12 @@ import {
 } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  DeletePermission,
+  GetPermission,
+  PatchPermission,
+  PostPermission,
+} from '@projects/auth';
+import {
   ValidateCreate,
   ValidateUpdate,
 } from '@projects/validation';
@@ -33,31 +39,43 @@ export class SampleController {
     @InjectRepository(Sample) private sampleRepo: Repository<Sample>
   ) {}
 
-  @ApiOkResponse()
-  @ApiInternalServerErrorResponse()
+  @ApiOkResponse({ description: 'Entities found and returned.' })
+  @ApiInternalServerErrorResponse({
+    description: 'There is an internal error!',
+  })
+  @GetPermission('sample')
   @Get('samples')
   findAll() {
     return this.sampleRepo.find();
   }
 
-  @ApiOkResponse()
-  @ApiNotFoundResponse()
-  @ApiInternalServerErrorResponse()
+  @GetPermission('sample')
+  @ApiOkResponse({ description: 'Entity is found and returned.' })
+  @ApiNotFoundResponse({ description: 'Entity with the id is not found!' })
+  @ApiInternalServerErrorResponse({
+    description: 'There is an internal error!',
+  })
   @Get('sample/:id')
   findOneById(@Param('id', ParseIntPipe) id: number) {
     return this.sampleRepo.findOne(id);
   }
 
-  @ApiCreatedResponse()
-  @ApiInternalServerErrorResponse()
+  @PostPermission('sample')
+  @ApiCreatedResponse({ description: 'Entity is created.' })
+  @ApiInternalServerErrorResponse({
+    description: 'There is an internal error!',
+  })
   @Post('sample')
   save(@Body(ValidateCreate) body: SampleDTO) {
     return this.sampleRepo.save(body);
   }
 
-  @ApiOkResponse()
-  @ApiNotFoundResponse()
-  @ApiInternalServerErrorResponse()
+  @PatchPermission('sample')
+  @ApiOkResponse({ description: 'Entity with the id is updated.' })
+  @ApiNotFoundResponse({ description: 'Entity with id is not found!' })
+  @ApiInternalServerErrorResponse({
+    description: 'There is an internal error!',
+  })
   @Patch('sample/:id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -66,9 +84,12 @@ export class SampleController {
     return this.sampleRepo.update(id, body);
   }
 
-  @ApiOkResponse()
-  @ApiNotFoundResponse()
-  @ApiInternalServerErrorResponse()
+  @DeletePermission('sample')
+  @ApiOkResponse({ description: 'Entity with id is deleted.' })
+  @ApiNotFoundResponse({ description: 'Entity with id is not found!' })
+  @ApiInternalServerErrorResponse({
+    description: 'There is an internal error!',
+  })
   @Delete('sample/:id')
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.sampleRepo.delete(id);

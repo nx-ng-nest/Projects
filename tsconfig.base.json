@@ -16,7 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@projects/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@projects/auth": ["libs/auth/src/index.ts"],
       "@projects/orm": ["libs/orm/src/index.ts"],
+      "@projects/transformer": ["libs/transformer/src/index.ts"],
       "@projects/utils": ["libs/utils/src/index.ts"],
       "@projects/validation": ["libs/validation/src/index.ts"]
     }
