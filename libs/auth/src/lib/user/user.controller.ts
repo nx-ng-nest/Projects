@@ -13,59 +13,59 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Permission } from '@projects/auth';
 import { FindManyOptions } from '@projects/utils';
 import {
   ValidateCreate,
   ValidateUpdate,
 } from '@projects/validation';
 
-import { SampleDTO } from './sample.dto';
-import { Sample } from './sample.entity';
+import { Permission } from '../decorator';
+import { UserDTO } from './user.dto';
+import { User } from './user.entity';
 
-@ApiTags('sample')
+@ApiTags('user')
 @Controller()
-export class SampleController {
+export class UserController {
   constructor(
-    @InjectRepository(Sample)
-    private readonly sampleRepo: Repository<Sample>
+    @InjectRepository(User)
+    private readonly sampleRepo: Repository<User>
   ) {}
 
-  @Get('samples')
-  @Permission({ method: 'GET', resource: 'sample' })
+  @Get('users')
+  @Permission({ method: 'GET', resource: 'user' })
   getAll(@Query() query: Record<string, any>) {
     return this.sampleRepo.find(query);
   }
 
-  @Post('samples')
-  @Permission({ method: 'GET', resource: 'sample' })
+  @Post('users')
+  @Permission({ method: 'GET', resource: 'user' })
   getAllWithQuery(@Body() query: FindManyOptions) {
     return this.sampleRepo.find(query);
   }
 
-  @Get('sample/:id')
-  @Permission({ method: 'GET', resource: 'sample' })
+  @Get('user/:id')
+  @Permission({ method: 'GET', resource: 'user' })
   getById(@Param('id', ParseIntPipe) id: number) {
     return this.sampleRepo.findOne(id);
   }
 
-  @Post('sample')
-  @Permission({ method: 'POST', resource: 'sample' })
-  createOne(@Body(ValidateCreate) body: SampleDTO) {
+  @Post('user')
+  @Permission({ method: 'POST', resource: 'user' })
+  createOne(@Body(ValidateCreate) body: UserDTO) {
     return this.sampleRepo.save(body);
   }
 
-  @Patch('sample/:id')
-  @Permission({ method: 'PATCH', resource: 'sample' })
+  @Patch('user/:id')
+  @Permission({ method: 'PATCH', resource: 'user' })
   patchOne(
     @Param('id', ParseIntPipe) id: number,
-    @Body(ValidateUpdate) body: SampleDTO
+    @Body(ValidateUpdate) body: UserDTO
   ) {
     return this.sampleRepo.update(id, body);
   }
 
-  @Delete('sample/:id')
-  @Permission({ method: 'DELETE', resource: 'sample' })
+  @Delete('user/:id')
+  @Permission({ method: 'DELETE', resource: 'user' })
   deleteOne(@Param('id', ParseIntPipe) id: number) {
     return this.sampleRepo.delete(id);
   }

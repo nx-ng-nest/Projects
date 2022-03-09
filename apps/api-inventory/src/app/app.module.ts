@@ -1,10 +1,20 @@
+import { Repository } from 'typeorm';
+
 import {
   CacheModule,
   Module,
+  OnModuleInit,
 } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import {
+  InjectRepository,
+  TypeOrmModule,
+} from '@nestjs/typeorm';
+import {
+  AuthModule,
+  User,
+} from '@projects/auth';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,11 +26,11 @@ import { SampleModule } from './sample/sample.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'database/inventory.sqlite',
-      entities: [Sample],
+      entities: [Sample, User],
       synchronize: true,
       dropSchema: true,
     }),
-    TypeOrmModule.forFeature([Sample]),
+    TypeOrmModule.forFeature([Sample, User]),
     ThrottlerModule.forRoot({
       ttl: 10,
       limit: 5,
@@ -28,9 +38,19 @@ import { SampleModule } from './sample/sample.module';
     CacheModule.register({}),
     ScheduleModule.forRoot(),
 
+    AuthModule,
     SampleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+  onModuleInit() {
+    this.userRepo.save({
+      username: 'aemrebasus@gmail.com',
+      password: 'password',
+      permissions: true,
+    });
+  }
+}
