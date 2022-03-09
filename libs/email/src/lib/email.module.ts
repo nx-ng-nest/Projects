@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 import {
   MAILER_OPTIONS,
   MailerModule,
@@ -25,7 +27,7 @@ const options: MailerOptions = {
     from: '"Authdare" <support@authdare.com>',
   },
   template: {
-    dir: __dirname + '/templates',
+    dir: join(__dirname, 'assets', 'templates') + '/',
     adapter: new HandlebarsAdapter(),
     options: {
       strict: false,

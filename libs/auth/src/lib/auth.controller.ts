@@ -41,11 +41,12 @@ export class AuthController {
   ) {
     const token = await this.authService.login(req.user);
     const result = await this.emailService.sendMail({
-      from: 'security@authdare.com',
       to: req.user.username,
       subject: 'Welcome',
-      html: '<h1>Welcome back!</h1>',
-      text: 'Welcome back!',
+      template: 'welcome',
+      context: {
+        message: 'Welcom back!',
+      },
     });
 
     console.log(result);
