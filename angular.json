@@ -2,12 +2,13 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
-    "api-interfaces": "libs/api-interfaces",
     "api-inventory": "apps/api-inventory",
     "client-inventory": "apps/client-inventory",
     "client-inventory-e2e": "apps/client-inventory-e2e",
+    "entity": "libs/entity",
     "hello": "apps/hello",
     "hello-e2e": "apps/hello-e2e",
+    "resource": "libs/resource",
     "transformer": "libs/transformer",
     "utils": "libs/utils",
     "validation": "libs/validation"

@@ -3,7 +3,7 @@ import {
   Entity,
 } from 'typeorm';
 
-import { BaseEntity } from '@projects/orm';
+import { BaseEntity } from '@projects/entity';
 
 @Entity()
 export class Sample extends BaseEntity {

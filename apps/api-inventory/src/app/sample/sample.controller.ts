@@ -1,5 +1,3 @@
-import { Repository } from 'typeorm';
-
 import {
   Body,
   Controller,
@@ -9,89 +7,50 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
-import {
-  ApiCreatedResponse,
-  ApiInternalServerErrorResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import { InjectRepository } from '@nestjs/typeorm';
-import {
-  DeletePermission,
-  GetPermission,
-  PatchPermission,
-  PostPermission,
-} from '@projects/auth';
+import { ApiTags } from '@nestjs/swagger';
 import {
   ValidateCreate,
   ValidateUpdate,
 } from '@projects/validation';
 
 import { SampleDTO } from './sample.dto';
-import { Sample } from './sample.entity';
+import { SampleService } from './sample.service';
 
 @ApiTags(SampleController.name)
 @Controller()
 export class SampleController {
-  constructor(
-    @InjectRepository(Sample) private sampleRepo: Repository<Sample>
-  ) {}
+  constructor(private readonly sampleService: SampleService) {}
 
-  @ApiOkResponse({ description: 'Entities found and returned.' })
-  @ApiInternalServerErrorResponse({
-    description: 'There is an internal error!',
-  })
-  @GetPermission('sample')
   @Get('samples')
-  findAll() {
-    return this.sampleRepo.find();
+  async findAll(
+    @Query('page', ParseIntPipe) page: number,
+    @Query('query') query: string
+  ) {
+    return this.sampleService.findAll(page, query);
   }
 
-  @GetPermission('sample')
-  @ApiOkResponse({ description: 'Entity is found and returned.' })
-  @ApiNotFoundResponse({ description: 'Entity with the id is not found!' })
-  @ApiInternalServerErrorResponse({
-    description: 'There is an internal error!',
-  })
-  @Get('sample/:id')
-  findOneById(@Param('id', ParseIntPipe) id: number) {
-    return this.sampleRepo.findOne(id);
+  @Get('sample:id')
+  findById(@Param('id', ParseIntPipe) id: number) {
+    return this.sampleService.findById(id);
   }
 
-  @PostPermission('sample')
-  @ApiCreatedResponse({ description: 'Entity is created.' })
-  @ApiInternalServerErrorResponse({
-    description: 'There is an internal error!',
-  })
   @Post('sample')
-  save(@Body(ValidateCreate) body: SampleDTO) {
-    return this.sampleRepo.save(body);
+  createOne(@Body(ValidateCreate) body: SampleDTO) {
+    return this.sampleService.createOne(body);
   }
 
-  @PatchPermission('sample')
-  @ApiOkResponse({ description: 'Entity with the id is updated.' })
-  @ApiNotFoundResponse({ description: 'Entity with id is not found!' })
-  @ApiInternalServerErrorResponse({
-    description: 'There is an internal error!',
-  })
   @Patch('sample/:id')
-  update(
+  updateOne(
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidateUpdate) body: SampleDTO
   ) {
-    return this.sampleRepo.update(id, body);
+    return this.sampleService.updateOne(id, body);
   }
 
-  @DeletePermission('sample')
-  @ApiOkResponse({ description: 'Entity with id is deleted.' })
-  @ApiNotFoundResponse({ description: 'Entity with id is not found!' })
-  @ApiInternalServerErrorResponse({
-    description: 'There is an internal error!',
-  })
   @Delete('sample/:id')
-  delete(@Param('id', ParseIntPipe) id: number) {
-    return this.sampleRepo.delete(id);
+  deleteOne(@Param('id', ParseIntPipe) id: number) {
+    return this.sampleService.deleteOne(id);
   }
 }

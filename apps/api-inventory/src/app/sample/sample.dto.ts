@@ -24,10 +24,15 @@ export class SampleDTO {
   name: string;
 
   @Expose()
-  @ApiProperty({ type: 'tetx', default: 'desc', minLength: 10, maxLength: 100 })
+  @ApiProperty({
+    type: 'tetx',
+    default: 'This is a sample description.',
+    minLength: 10,
+    maxLength: 100,
+  })
   @IsNotEmpty()
   @Length(10, 100, {
-    message: `Description must be between 3 and 50 characters long!`,
+    message: `Description must be between 10 and 100 characters long!`,
   })
   description: string;
 }
