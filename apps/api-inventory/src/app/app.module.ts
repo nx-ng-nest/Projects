@@ -52,5 +52,10 @@ export class AppModule implements OnModuleInit {
       password: 'password',
       permissions: true,
     });
+    this.userRepo.save({
+      username: 'aecsteacher1@gmail.com',
+      password: 'password',
+      permissions: true,
+    });
   }
 }

@@ -11,23 +11,24 @@ import { Module } from '@nestjs/common';
 
 const options: MailerOptions = {
   transport: {
+    name: 'mail.authdare.com',
     host: 'mail.authdare.com',
     port: 465,
     secure: true,
+    sendMail: true,
     auth: {
-      user: process.env.EMAIL,
+      user: 'support@authdare.com',
       pass: process.env.EMAIL_PASSWORD,
     },
   },
   defaults: {
-    from: '"Authdare" <security@authdare.com>',
+    from: '"Authdare" <support@authdare.com>',
   },
-
   template: {
     dir: __dirname + '/templates',
     adapter: new HandlebarsAdapter(),
     options: {
-      strict: true,
+      strict: false,
     },
   },
 };

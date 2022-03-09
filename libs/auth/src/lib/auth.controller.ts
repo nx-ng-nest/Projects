@@ -45,6 +45,7 @@ export class AuthController {
       to: req.user.username,
       subject: 'Welcome',
       html: '<h1>Welcome back!</h1>',
+      text: 'Welcome back!',
     });
 
     console.log(result);
