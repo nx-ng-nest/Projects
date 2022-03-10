@@ -19,6 +19,8 @@
       "@projects/auth": ["libs/auth/src/index.ts"],
       "@projects/email": ["libs/email/src/index.ts"],
       "@projects/entity": ["libs/entity/src/index.ts"],
+      "@projects/inventory-data": ["libs/inventory-data/src/index.ts"],
+      "@projects/services": ["libs/services/src/index.ts"],
       "@projects/transformer": ["libs/transformer/src/index.ts"],
       "@projects/utils": ["libs/utils/src/index.ts"],
       "@projects/validation": ["libs/validation/src/index.ts"]

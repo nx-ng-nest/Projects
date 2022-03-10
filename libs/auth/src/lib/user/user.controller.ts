@@ -25,7 +25,7 @@ import { AuthJwtGuard } from '../guards';
 import { UserDTO } from './user.dto';
 import { User } from './user.entity';
 
-@ApiTags('user')
+@ApiTags(UserController.name)
 @UseGuards(AuthJwtGuard)
 @Controller()
 export class UserController {

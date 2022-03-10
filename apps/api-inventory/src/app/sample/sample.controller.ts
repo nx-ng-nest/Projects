@@ -1,5 +1,3 @@
-import { Repository } from 'typeorm';
-
 import {
   Body,
   Controller,
@@ -13,7 +11,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { InjectRepository } from '@nestjs/typeorm';
 import {
   AuthJwtGuard,
   Permission,
@@ -25,39 +22,36 @@ import {
 } from '@projects/validation';
 
 import { SampleDTO } from './sample.dto';
-import { Sample } from './sample.entity';
+import { SampleService } from './sample.service';
 
-@ApiTags('sample')
+@ApiTags(SampleController.name)
 @UseGuards(AuthJwtGuard)
 @Controller()
 export class SampleController {
-  constructor(
-    @InjectRepository(Sample)
-    private readonly sampleRepo: Repository<Sample>
-  ) {}
+  constructor(private readonly sampleRepo: SampleService) {}
 
   @Get('samples')
   @Permission({ method: 'GET', resource: 'sample' })
   getAll(@Query() query: Record<string, any>) {
-    return this.sampleRepo.find(query);
+    return this.sampleRepo.getAll(query);
   }
 
   @Post('samples')
   @Permission({ method: 'GET', resource: 'sample' })
   getAllWithQuery(@Body() query: FindManyOptions) {
-    return this.sampleRepo.find(query);
+    return this.sampleRepo.getAllWithQuery(query);
   }
 
   @Get('sample/:id')
   @Permission({ method: 'GET', resource: 'sample' })
   getById(@Param('id', ParseIntPipe) id: number) {
-    return this.sampleRepo.findOne(id);
+    return this.sampleRepo.getById(id);
   }
 
   @Post('sample')
   @Permission({ method: 'POST', resource: 'sample' })
   createOne(@Body(ValidateCreate) body: SampleDTO) {
-    return this.sampleRepo.save(body);
+    return this.sampleRepo.createOne(body);
   }
 
   @Patch('sample/:id')
@@ -66,12 +60,12 @@ export class SampleController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidateUpdate) body: SampleDTO
   ) {
-    return this.sampleRepo.update(id, body);
+    return this.sampleRepo.patchOne(id, body);
   }
 
   @Delete('sample/:id')
   @Permission({ method: 'DELETE', resource: 'sample' })
   deleteOne(@Param('id', ParseIntPipe) id: number) {
-    return this.sampleRepo.delete(id);
+    return this.sampleRepo.deleteOne(id);
   }
 }

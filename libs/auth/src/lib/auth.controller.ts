@@ -26,7 +26,7 @@ import { AuthLocalGuard } from './guards/auth-local.guard';
 import { User } from './user';
 
 @ApiTags(AuthController.name)
-@Controller('auth')
+@Controller(AuthController.name)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,

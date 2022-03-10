@@ -10,7 +10,7 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 @Exclude()
-export class SampleDTO {
+export class PubliconeDTO {
   @Expose()
   @ApiProperty({
     type: 'text',
