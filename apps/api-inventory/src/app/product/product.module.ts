@@ -4,6 +4,7 @@ import {
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { productList } from './product-list';
 import { ProductController } from './product.controller';
 import { Product } from './product.entity';
 import { ProductService } from './product.service';
@@ -16,7 +17,11 @@ import { ProductService } from './product.service';
 })
 export class ProductModule implements OnModuleInit {
   constructor(private readonly productService: ProductService) {}
-  onModuleInit() {
-    //
+  async onModuleInit() {
+    setTimeout(async () => {
+      for (const p of productList()) {
+        await this.productService.createOne(p);
+      }
+    }, 2000);
   }
 }
