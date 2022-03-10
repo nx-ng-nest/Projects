@@ -13,7 +13,8 @@ export class CustomerService extends RepositoryService<
   FindManyOptions
 > {
   constructor(
-    @InjectRepository(Customer) private readonly customerRepo: Repository<Customer>
+    @InjectRepository(Customer)
+    private readonly customerRepo: Repository<Customer>
   ) {
     super(customerRepo);
   }
