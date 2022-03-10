@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,10 +21,12 @@ import {
 } from '@projects/validation';
 
 import { Permission } from '../decorator';
+import { AuthJwtGuard } from '../guards';
 import { UserDTO } from './user.dto';
 import { User } from './user.entity';
 
 @ApiTags('user')
+@UseGuards(AuthJwtGuard)
 @Controller()
 export class UserController {
   constructor(

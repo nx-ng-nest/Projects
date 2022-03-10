@@ -10,10 +10,14 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Permission } from '@projects/auth';
+import {
+  AuthJwtGuard,
+  Permission,
+} from '@projects/auth';
 import { FindManyOptions } from '@projects/utils';
 import {
   ValidateCreate,
@@ -24,6 +28,7 @@ import { SampleDTO } from './sample.dto';
 import { Sample } from './sample.entity';
 
 @ApiTags('sample')
+@UseGuards(AuthJwtGuard)
 @Controller()
 export class SampleController {
   constructor(

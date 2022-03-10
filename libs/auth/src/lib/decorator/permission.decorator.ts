@@ -20,7 +20,7 @@ export function Permission(permission: PermissionOptions) {
 export function getRequiredPermission(
   context: ExecutionContext,
   reflector: Reflector
-) {
+): PermissionOptions {
   return reflector.getAllAndOverride(PERMISSION_KEY, [
     context.getClass(),
     context.getHandler(),

@@ -38,11 +38,11 @@ export class AuthService {
   }
 
   async login(user: User): Promise<string> {
-    const payload = {
-      username: user.username,
-      sub: user.id,
-      permissions: user.permissions,
-    };
+    const { password, ...payload } = user;
     return this.jwtService.sign(payload);
+  }
+
+  async resetPassword(userId: number, newPassword: string) {
+    return await this.userRepo.update(userId, { password: newPassword });
   }
 }

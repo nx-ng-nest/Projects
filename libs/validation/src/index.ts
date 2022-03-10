@@ -1,1 +1,1 @@
-export * from './lib/validators.pipe';
+export * from "./lib";

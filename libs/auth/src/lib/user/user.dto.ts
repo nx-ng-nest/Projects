@@ -9,7 +9,7 @@ import {
 
 import { ApiProperty } from '@nestjs/swagger';
 
-import { PermissionOptions } from '../permission';
+import { UserPermission } from '../permission';
 
 @Exclude()
 export class UserDTO {
@@ -27,5 +27,5 @@ export class UserDTO {
 
   @Expose()
   @ApiProperty({ type: 'object' })
-  permissions: PermissionOptions;
+  permissions: UserPermission;
 }

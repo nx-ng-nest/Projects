@@ -48,14 +48,21 @@ export class AppModule implements OnModuleInit {
   constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
   onModuleInit() {
     this.userRepo.save({
-      username: 'aemrebasus@gmail.com',
+      username: 'nxng.dev@gmail.com',
       password: 'password',
-      permissions: true,
+      permissions: {
+        user: { GET: true, POST: true, PATCH: true, DELETE: true },
+        sample: { GET: true, POST: true, PATCH: true, DELETE: true },
+      },
     });
     this.userRepo.save({
-      username: 'aecsteacher1@gmail.com',
+      username: 'aemrebas.dev@gmail.com',
       password: 'password',
-      permissions: true,
+      permissions: {
+        sample: {
+          GET: true,
+        },
+      },
     });
   }
 }

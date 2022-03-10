@@ -1,7 +1,4 @@
-import {
-  Request,
-  Response,
-} from 'express';
+import { Response } from 'express';
 
 import { MailerService } from '@nestjs-modules/mailer';
 import {
@@ -9,19 +6,23 @@ import {
   Controller,
   Get,
   Post,
-  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import {
+  UserData,
+  UserID,
+} from '@projects/utils';
+import { ValidateCreate } from '@projects/validation';
 
 import { AuthService } from './auth.service';
 import { CookiesEnum } from './cookies.enum';
-import { Public } from './decorator';
-import { AuthJwtGuard } from './guards/auth-jwt.guard';
+import { AuthJwtGuard } from './guards';
 import { AuthLocalGuard } from './guards/auth-local.guard';
+import { LoginDto } from './login.dto';
+import { ResetPasswordDTO } from './reset-password.dto';
 import { User } from './user';
-import { UserCredentials } from './user-credentials';
 
 @ApiTags(AuthController.name)
 @Controller('auth')
@@ -31,25 +32,22 @@ export class AuthController {
     private emailService: MailerService
   ) {}
 
-  @Public()
   @UseGuards(AuthLocalGuard)
   @Post('login')
   async login(
-    @Req() req: Request & { user: User },
+    @UserData() user: User,
     @Res() res: Response,
-    @Body() credentails: UserCredentials
+    @Body() credentails: LoginDto
   ) {
-    const token = await this.authService.login(req.user);
-    const result = await this.emailService.sendMail({
-      to: req.user.username,
+    const token = await this.authService.login(user);
+    await this.emailService.sendMail({
+      to: user.username,
       subject: 'Welcome',
       template: 'welcome',
       context: {
         message: 'Welcom back!',
       },
     });
-
-    console.log(result);
 
     res.cookie(CookiesEnum.AUTH_TOKEN_NAME, token, {
       httpOnly: true,
@@ -59,9 +57,18 @@ export class AuthController {
     res.send({ message: 'Welcome!' });
   }
 
-  @Get('profile')
   @UseGuards(AuthJwtGuard)
-  profile(@Req() req: Request) {
-    return req.user;
+  @Get('profile')
+  profile(@UserData() user: User) {
+    return user;
+  }
+
+  @UseGuards(AuthJwtGuard)
+  @Post('reset-password')
+  resetPassword(
+    @UserID() userid: number,
+    @Body(ValidateCreate) resetForm: ResetPasswordDTO
+  ) {
+    return this.authService.resetPassword(userid, resetForm.password);
   }
 }

@@ -9,7 +9,7 @@ import {
   ToStringFromJSONTransformer,
 } from '@projects/transformer';
 
-import { PermissionOptions } from '../permission';
+import { UserPermission } from '../permission';
 
 @Entity()
 export class User extends BaseEntity {
@@ -20,5 +20,5 @@ export class User extends BaseEntity {
     type: 'text',
     transformer: ToStringFromJSONTransformer(),
   })
-  permissions: PermissionOptions;
+  permissions: UserPermission;
 }
