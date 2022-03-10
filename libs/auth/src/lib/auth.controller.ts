@@ -18,10 +18,11 @@ import { ValidateCreate } from '@projects/validation';
 
 import { AuthService } from './auth.service';
 import { CookiesEnum } from './cookies.enum';
+import { ForgotPasswordDTO } from './dtos/forgot-password.dto';
+import { LoginDto } from './dtos/login.dto';
+import { ResetPasswordDTO } from './dtos/reset-password.dto';
 import { AuthJwtGuard } from './guards';
 import { AuthLocalGuard } from './guards/auth-local.guard';
-import { LoginDto } from './login.dto';
-import { ResetPasswordDTO } from './reset-password.dto';
 import { User } from './user';
 
 @ApiTags(AuthController.name)
@@ -57,12 +58,23 @@ export class AuthController {
     res.send({ message: 'Welcome!' });
   }
 
+  /**
+   * Get user profile data
+   * @param user
+   * @returns
+   */
   @UseGuards(AuthJwtGuard)
   @Get('profile')
   profile(@UserData() user: User) {
     return user;
   }
 
+  /**
+   * Reset user password
+   * @param userid
+   * @param resetForm
+   * @returns
+   */
   @UseGuards(AuthJwtGuard)
   @Post('reset-password')
   resetPassword(
@@ -70,5 +82,16 @@ export class AuthController {
     @Body(ValidateCreate) resetForm: ResetPasswordDTO
   ) {
     return this.authService.resetPassword(userid, resetForm.password);
+  }
+
+  /**
+   * Forgot password
+   * Request a new password through email
+   * @param body
+   * @returns
+   */
+  @Post('forgot-password')
+  forgotPassword(@Body() body: ForgotPasswordDTO) {
+    return this.authService.forgotPassword(body);
   }
 }
