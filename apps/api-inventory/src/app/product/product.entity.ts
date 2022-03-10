@@ -23,8 +23,10 @@ export class Product extends BaseEntity {
   categories?: Category[];
 
   @ManyToOne(() => Price, { nullable: true, eager: true })
+  @JoinTable()
   prices?: Price[];
 
   @ManyToOne(() => Quantity, { nullable: true, eager: true })
+  @JoinTable()
   quantities?: Quantity[];
 }

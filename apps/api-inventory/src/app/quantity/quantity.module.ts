@@ -9,5 +9,6 @@ import { QuantityService } from './quantity.service';
   imports: [TypeOrmModule.forFeature([Quantity])],
   controllers: [QuantityController],
   providers: [QuantityService],
+  exports: [QuantityService],
 })
 export class QuantityModule {}

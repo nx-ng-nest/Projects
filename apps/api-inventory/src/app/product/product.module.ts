@@ -1,4 +1,7 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  OnModuleInit,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ProductController } from './product.controller';
@@ -9,5 +12,11 @@ import { ProductService } from './product.service';
   imports: [TypeOrmModule.forFeature([Product])],
   controllers: [ProductController],
   providers: [ProductService],
+  exports: [ProductService],
 })
-export class ProductModule {}
+export class ProductModule implements OnModuleInit {
+  constructor(private readonly productService: ProductService) {}
+  onModuleInit() {
+    //
+  }
+}

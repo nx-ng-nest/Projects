@@ -27,7 +27,6 @@ export class AuthJwtGuard extends AuthGuard('jwt') {
 
     const user = getUserObject(context) as User;
     const rpermits = getRequiredPermission(context, this.reflector);
-    console.log(user, rpermits);
 
     if (rpermits) {
       if (!user.permissions[rpermits.resource]) {

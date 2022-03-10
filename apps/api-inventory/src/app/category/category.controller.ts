@@ -25,18 +25,17 @@ import { CategoryDTO } from './category.dto';
 import { CategoryService } from './category.service';
 
 @ApiTags(CategoryController.name)
-@UseGuards(AuthJwtGuard)
 @Controller()
 export class CategoryController {
   constructor(private readonly categoryRepo: CategoryService) {}
 
-  @Get('categorys')
+  @Get('categories')
   @Permission({ method: 'GET', resource: 'category' })
   getAll(@Query() query: Record<string, any>) {
     return this.categoryRepo.getAll(query);
   }
 
-  @Post('categorys')
+  @Post('categories')
   @Permission({ method: 'GET', resource: 'category' })
   getAllWithQuery(@Body() query: FindManyOptions) {
     return this.categoryRepo.getAllWithQuery(query);
@@ -48,12 +47,14 @@ export class CategoryController {
     return this.categoryRepo.getById(id);
   }
 
+  @UseGuards(AuthJwtGuard)
   @Post('category')
   @Permission({ method: 'POST', resource: 'category' })
   createOne(@Body(ValidateCreate) body: CategoryDTO) {
     return this.categoryRepo.createOne(body);
   }
 
+  @UseGuards(AuthJwtGuard)
   @Patch('category/:id')
   @Permission({ method: 'PATCH', resource: 'category' })
   patchOne(
@@ -63,6 +64,7 @@ export class CategoryController {
     return this.categoryRepo.patchOne(id, body);
   }
 
+  @UseGuards(AuthJwtGuard)
   @Delete('category/:id')
   @Permission({ method: 'DELETE', resource: 'category' })
   deleteOne(@Param('id', ParseIntPipe) id: number) {

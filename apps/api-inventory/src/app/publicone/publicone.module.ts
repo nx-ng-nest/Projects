@@ -9,5 +9,6 @@ import { PubliconeService } from './publicone.service';
   imports: [TypeOrmModule.forFeature([Publicone])],
   controllers: [PubliconeController],
   providers: [PubliconeService],
+  exports: [PubliconeService],
 })
 export class PubliconeModule {}

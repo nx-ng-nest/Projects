@@ -23,6 +23,14 @@ import {
   CategoryModule,
 } from './category';
 import {
+  Customer,
+  CustomerModule,
+} from './customer';
+import {
+  Note,
+  NoteModule,
+} from './note';
+import {
   Price,
   PriceModule,
 } from './price';
@@ -56,6 +64,8 @@ const entities = [
   Quantity,
   Store,
   Category,
+  Customer,
+  Note,
 ];
 const dataModules = [
   PubliconeModule,
@@ -65,6 +75,8 @@ const dataModules = [
   QuantityModule,
   StoreModule,
   CategoryModule,
+  CustomerModule,
+  NoteModule,
 ];
 
 @Module({
@@ -105,10 +117,13 @@ export class AppModule implements OnModuleInit {
         quantity: { GET: true, POST: true, PATCH: true, DELETE: true },
         store: { GET: true, POST: true, PATCH: true, DELETE: true },
         sale: { GET: true, POST: true, PATCH: true, DELETE: true },
+        customer: { GET: true, POST: true, PATCH: true, DELETE: true },
+        note: { GET: true, POST: true, PATCH: true, DELETE: true },
         sample: { GET: true, POST: true, PATCH: true, DELETE: true },
         publicone: { GET: true, POST: true, PATCH: true, DELETE: true },
       },
     });
+
     this.userRepo.save({
       username: 'aemrebas.dev@gmail.com',
       password: 'password',

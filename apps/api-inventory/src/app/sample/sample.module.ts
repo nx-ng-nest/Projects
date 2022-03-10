@@ -9,5 +9,6 @@ import { SampleService } from './sample.service';
   imports: [TypeOrmModule.forFeature([Sample])],
   controllers: [SampleController],
   providers: [SampleService],
+  exports: [SampleService],
 })
 export class SampleModule {}

@@ -17,6 +17,7 @@ export class Quantity extends BaseEntity {
   @ManyToOne(() => Product, {
     createForeignKeyConstraints: true,
     nullable: true,
+    cascade: true,
   })
   @JoinColumn()
   product?: Product;
@@ -24,6 +25,7 @@ export class Quantity extends BaseEntity {
   @ManyToOne(() => Store, {
     createForeignKeyConstraints: true,
     nullable: true,
+    cascade: true,
   })
   @JoinColumn()
   store?: Store;

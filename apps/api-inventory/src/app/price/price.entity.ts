@@ -17,11 +17,13 @@ export class Price extends BaseEntity {
   @ManyToOne(() => Product, {
     createForeignKeyConstraints: true,
     nullable: true,
+    cascade: true,
   })
   @JoinColumn()
   product: Product;
 
   @ManyToOne(() => Store, {
+    cascade: true,
     createForeignKeyConstraints: true,
     nullable: true,
   })
