@@ -4,7 +4,6 @@
     "api": "apps/api",
     "api-inventory": "apps/api-inventory",
     "auth": "libs/auth",
-
     "email": "libs/email",
     "entity": "libs/entity",
     "services": "libs/services",
