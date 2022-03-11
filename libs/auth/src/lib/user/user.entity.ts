@@ -3,7 +3,7 @@ import {
   Entity,
 } from 'typeorm';
 
-import { BaseEntity } from '@projects/entity';
+import { BaseEntity } from '@projects/models';
 import {
   ToHashFromStringTransformer,
   ToStringFromJSONTransformer,

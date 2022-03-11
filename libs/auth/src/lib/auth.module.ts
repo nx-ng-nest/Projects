@@ -1,4 +1,7 @@
-import { Module } from '@nestjs/common';
+import {
+  DynamicModule,
+  Module,
+} from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmailModule } from '@projects/email';
@@ -15,6 +18,18 @@ import {
   UserModule,
 } from './user';
 
+export interface AuthModuleOptions {
+  secured: {
+    [scope: string]: {
+      [resourceName: string]:
+        | {
+            [method: string]: boolean;
+          }
+        | boolean;
+    };
+  };
+}
+
 @Module({
   imports: [
     JwtModule.register({
@@ -30,4 +45,10 @@ import {
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
 })
-export class AuthModule {}
+export class AuthModule {
+  static register(): DynamicModule {
+    return {
+      module: AuthModule,
+    };
+  }
+}

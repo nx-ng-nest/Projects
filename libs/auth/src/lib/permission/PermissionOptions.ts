@@ -3,3 +3,6 @@ export type UserPermission = {
     [method: string]: boolean;
   };
 };
+
+
+

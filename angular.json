@@ -1,11 +1,11 @@
 {
   "version": 2,
   "projects": {
-    "api": "apps/api",
     "api-inventory": "apps/api-inventory",
     "auth": "libs/auth",
+    "common": "libs/common",
     "email": "libs/email",
-    "entity": "libs/entity",
+    "models": "libs/models",
     "services": "libs/services",
     "transformer": "libs/transformer",
     "utils": "libs/utils",

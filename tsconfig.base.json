@@ -17,11 +17,14 @@
     "paths": {
       "@projects/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@projects/auth": ["libs/auth/src/index.ts"],
+      "@projects/common": ["libs/common/src/index.ts"],
       "@projects/email": ["libs/email/src/index.ts"],
       "@projects/entity": ["libs/entity/src/index.ts"],
       "@projects/inventory-data": ["libs/inventory-data/src/index.ts"],
+      "@projects/models": ["libs/models/src/index.ts"],
       "@projects/services": ["libs/services/src/index.ts"],
       "@projects/transformer": ["libs/transformer/src/index.ts"],
+      "@projects/typeorm-entities": ["libs/typeorm-entities/src/index.ts"],
       "@projects/utils": ["libs/utils/src/index.ts"],
       "@projects/validation": ["libs/validation/src/index.ts"]
     }

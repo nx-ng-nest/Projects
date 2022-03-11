@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 import {
   ExecutionContext,
   Injectable,
@@ -19,6 +21,13 @@ export class AuthJwtGuard extends AuthGuard('jwt') {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const req = context.switchToHttp().getRequest() as Request;
+    console.log((req as any).user);
+
+    const resourceName = req.params['resourceName']?.toUpperCase();
+    const method = req.method.toUpperCase();
+
+    console.log(req.params);
     const isPublic = isPublicResource(context, this.reflector);
     if (isPublic) {
       return true;
