@@ -4,14 +4,20 @@
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["libs/email/**/*.ts"]
+        "lintFilePatterns": [
+          "libs/email/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/email"],
+      "outputs": [
+        "coverage/libs/email"
+      ],
       "options": {
         "jestConfig": "libs/email/jest.config.js",
         "passWithNoTests": true

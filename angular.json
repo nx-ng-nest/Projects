@@ -4,12 +4,9 @@
     "api": "apps/api",
     "api-inventory": "apps/api-inventory",
     "auth": "libs/auth",
-    "client-inventory": "apps/client-inventory",
-    "client-inventory-e2e": "apps/client-inventory-e2e",
+
     "email": "libs/email",
     "entity": "libs/entity",
-    "hello": "apps/hello",
-    "hello-e2e": "apps/hello-e2e",
     "services": "libs/services",
     "transformer": "libs/transformer",
     "utils": "libs/utils",
