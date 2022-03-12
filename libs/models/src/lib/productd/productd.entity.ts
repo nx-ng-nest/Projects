@@ -18,14 +18,26 @@ import { Store } from '../store';
 
 @Entity()
 export class Productd extends BaseEntity {
-  @Column({ type: 'numeric' })
+  @Column({
+    type: 'numeric',
+    transformer: {
+      to: (value: number) => value,
+      from: (value: string) => new Number(value),
+    },
+  })
   @ApiProperty({ type: Number, default: 200.2, format: 'number' })
   @IsNotEmpty()
   @IsNumber()
   @Min(0)
   quantity: number;
 
-  @Column({ type: 'numeric' })
+  @Column({
+    type: 'numeric',
+    transformer: {
+      to: (value: number) => value,
+      from: (value: string) => new Number(value),
+    },
+  })
   @ApiProperty({ type: Number, default: 200.2, format: 'number' })
   @IsNotEmpty()
   @IsNumber()

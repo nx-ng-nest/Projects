@@ -62,92 +62,90 @@ export class AppModule implements OnModuleInit {
 
     // Product
     const product1 = await this.ProductRepo.save({
-      name: 'product name 1',
-      description: 'product description 1',
-      barcode: 'product barcode 1',
+      name: 'pn 1',
+      description: 'pd 1',
+      barcode: 'pb 1',
     });
     const product2 = await this.ProductRepo.save({
-      name: 'product name 2',
-      description: 'product description 2',
-      barcode: 'product barcode 2',
+      name: 'pn 2',
+      description: 'pd 2',
+      barcode: 'pb 2',
     });
     const product3 = await this.ProductRepo.save({
-      name: 'product name 3',
-      description: 'product description 3',
-      barcode: 'product barcode 3',
+      name: 'pn 3',
+      description: 'pd 3',
+      barcode: 'pb 3',
     });
 
     const productDetail1 = await this.ProductdRepo.save({
-      price: 100,
+      price: 11,
       quantity: 11,
       product: 1,
       store: 1,
     });
     const productDetail2 = await this.ProductdRepo.save({
-      price: 200,
+      price: 12,
       quantity: 12,
       product: 1,
       store: 2,
     });
     const productDetail3 = await this.ProductdRepo.save({
-      price: 300,
+      price: 13,
       quantity: 13,
       product: 1,
       store: 3,
     });
 
     const productDetail4 = await this.ProductdRepo.save({
-      price: 200,
-      quantity: 30,
+      price: 21,
+      quantity: 21,
       product: 2,
       store: 1,
     });
     const productDetail5 = await this.ProductdRepo.save({
-      price: 202,
-      quantity: 12,
+      price: 22,
+      quantity: 22,
       product: 2,
       store: 2,
     });
     const productDetail6 = await this.ProductdRepo.save({
-      price: 209,
-      quantity: 63,
+      price: 23,
+      quantity: 23,
       product: 2,
       store: 3,
     });
 
     const productDetail7 = await this.ProductdRepo.save({
-      price: 523,
-      quantity: 43,
+      price: 31,
+      quantity: 31,
       product: 3,
       store: 1,
     });
     const productDetail8 = await this.ProductdRepo.save({
-      price: 55,
-      quantity: 3,
+      price: 32,
+      quantity: 32,
       product: 3,
       store: 2,
     });
     const productDetail9 = await this.ProductdRepo.save({
-      price: 6,
-      quantity: 2,
+      price: 33,
+      quantity: 33,
       product: 3,
       store: 3,
     });
 
-    // this.ProductRepo.query(
-    //   `
-    //  SELECT * FROM  (SELECT price, quantity, product."id", productd."storeId"
-    //  FROM product LEFT JOIN  productd ON product."id" = productd."productId") as data WHERE data."storeId"=2;
-    // `
-    // ).then((data) => {
-    //   console.log(data);
-    // });
-
-    // const result = await this.ProductRepo.createQueryBuilder('product')
-    //   .leftJoinAndSelect('product.productds', 'productd')
-    //   .where('productd.productId = product.id')
-    //   .getMany();
-
-    // .then(console.log);
+    this.ProductdRepo.createQueryBuilder('productd')
+      .leftJoinAndSelect(
+        'productd.product',
+        'product',
+        'product.id = productd.productId'
+      )
+      .select(
+        'product.id as pid, productd.store as store,  product.name,  productd.price, productd.quantity'
+      )
+      .andWhere('productd.store IN(:...ids)', { ids: [1, 3] })
+      .orderBy('store')
+      .execute()
+      .then(console.log);
   }
 }
