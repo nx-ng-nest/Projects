@@ -20,7 +20,6 @@ import {
   ValidateUpdate,
 } from '@projects/validation';
 
-import { Permission } from '../decorator';
 import { AuthJwtGuard } from '../guards';
 import { UserDTO } from './user.dto';
 import { User } from './user.entity';
@@ -35,31 +34,26 @@ export class UserController {
   ) {}
 
   @Get('users')
-  @Permission({ method: 'GET', resource: 'user' })
   getAll(@Query() query: Record<string, any>) {
     return this.sampleRepo.find(query);
   }
 
   @Post('users')
-  @Permission({ method: 'GET', resource: 'user' })
   getAllWithQuery(@Body() query: FindManyOptions) {
     return this.sampleRepo.find(query);
   }
 
   @Get('user/:id')
-  @Permission({ method: 'GET', resource: 'user' })
   getById(@Param('id', ParseIntPipe) id: number) {
     return this.sampleRepo.findOne(id);
   }
 
   @Post('user')
-  @Permission({ method: 'POST', resource: 'user' })
   createOne(@Body(ValidateCreate) body: UserDTO) {
     return this.sampleRepo.save(body);
   }
 
   @Patch('user/:id')
-  @Permission({ method: 'PATCH', resource: 'user' })
   patchOne(
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidateUpdate) body: UserDTO
@@ -68,7 +62,6 @@ export class UserController {
   }
 
   @Delete('user/:id')
-  @Permission({ method: 'DELETE', resource: 'user' })
   deleteOne(@Param('id', ParseIntPipe) id: number) {
     return this.sampleRepo.delete(id);
   }

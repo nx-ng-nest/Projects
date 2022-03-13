@@ -7,16 +7,20 @@ import {
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
 } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
+import { IProduct } from '@projects/common';
 
+import { Category } from '../category';
 import { BaseEntity } from '../common';
-import { Productd } from '../productd';
+import { ProductDetail } from '../productd';
 
 @Entity()
-export class Product extends BaseEntity {
+export class Product extends BaseEntity implements IProduct {
   @Column({ type: 'text', unique: true })
   @ApiProperty({ type: String, format: 'text', default: 'Product name' })
   @IsNotEmpty()
@@ -36,6 +40,10 @@ export class Product extends BaseEntity {
   @IsString()
   barcode: string;
 
-  @OneToMany(() => Productd, (p) => p.product)
-  productds: Productd[];
+  @OneToMany(() => ProductDetail, (p) => p.product)
+  productDetail: ProductDetail[];
+
+  @ManyToMany(() => Category, (c) => c.id, { eager: true })
+  @JoinTable()
+  categories: Category[];
 }

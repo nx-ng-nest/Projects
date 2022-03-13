@@ -17,7 +17,7 @@ import { Product } from '../product/product.entity';
 import { Store } from '../store';
 
 @Entity()
-export class Productd extends BaseEntity {
+export class ProductDetail extends BaseEntity {
   @Column({
     type: 'numeric',
     transformer: {

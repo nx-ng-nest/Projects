@@ -9,6 +9,7 @@ import { EmailModule } from '@projects/email';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
+import { PermissionService } from './permission.service';
 import {
   JwtStrategy,
   LocalStrategy,
@@ -43,7 +44,7 @@ export interface AuthModuleOptions {
     EmailModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, PermissionService],
 })
 export class AuthModule {
   static register(): DynamicModule {
