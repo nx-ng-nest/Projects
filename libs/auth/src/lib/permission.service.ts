@@ -18,6 +18,7 @@ interface IUserPermission {
 export class PermissionService<User extends IUserPermission> {
   private static readonly RESOURCE_NAME_KEY =
     'PermissionService_RESOURCENAME_KEY';
+
   private static readonly PERMISSION_TYPE_KEY =
     'PermissionService_PERMISSION_TYPE_KEY';
 

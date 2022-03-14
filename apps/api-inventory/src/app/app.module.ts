@@ -4,16 +4,16 @@ import {
 } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '@projects/auth';
 
-import { AppConfig } from './app.config';
+import { AppDatabaseModule } from './app-database.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(AppConfig.DATABASE_CONFIG),
-    TypeOrmModule.forFeature(AppConfig.DATABASE_CONFIG.entities as any),
+    AppDatabaseModule,
+    AuthModule,
     ThrottlerModule.forRoot({
       ttl: 10,
       limit: 5,

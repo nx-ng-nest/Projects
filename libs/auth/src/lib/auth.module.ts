@@ -5,6 +5,7 @@ import {
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmailModule } from '@projects/email';
+import { AuthUser } from '@projects/models';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -14,10 +15,6 @@ import {
   JwtStrategy,
   LocalStrategy,
 } from './strategies';
-import {
-  User,
-  UserModule,
-} from './user';
 
 export interface AuthModuleOptions {
   secured: {
@@ -39,8 +36,7 @@ export interface AuthModuleOptions {
         expiresIn: '3h',
       },
     }),
-    TypeOrmModule.forFeature([User]),
-    UserModule,
+    TypeOrmModule.forFeature([AuthUser]),
     EmailModule,
   ],
   controllers: [AuthController],
