@@ -24,6 +24,7 @@ export class ProductDetail extends BaseEntity {
       to: (value: number) => value,
       from: (value: string) => new Number(value),
     },
+    default: 0,
   })
   @ApiProperty({ type: Number, default: 200.2, format: 'number' })
   @IsNotEmpty()
@@ -37,6 +38,7 @@ export class ProductDetail extends BaseEntity {
       to: (value: number) => value,
       from: (value: string) => new Number(value),
     },
+    default: 0,
   })
   @ApiProperty({ type: Number, default: 200.2, format: 'number' })
   @IsNotEmpty()

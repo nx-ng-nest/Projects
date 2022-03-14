@@ -11,6 +11,10 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
+  AuthUser,
+  UserDetail,
+} from '@projects/models';
+import {
   UserData,
   UserID,
 } from '@projects/utils';
@@ -23,7 +27,6 @@ import { LoginDto } from './dtos/login.dto';
 import { ResetPasswordDTO } from './dtos/reset-password.dto';
 import { AuthJwtGuard } from './guards';
 import { AuthLocalGuard } from './guards/auth-local.guard';
-import { User } from './user';
 
 @ApiTags(AuthController.name)
 @Controller(AuthController.name)
@@ -36,7 +39,7 @@ export class AuthController {
   @UseGuards(AuthLocalGuard)
   @Post('login')
   async login(
-    @UserData() user: User,
+    @UserData() user: AuthUser,
     @Res() res: Response,
     @Body() credentails: LoginDto
   ) {
@@ -65,7 +68,7 @@ export class AuthController {
    */
   @UseGuards(AuthJwtGuard)
   @Get('profile')
-  profile(@UserData() user: User) {
+  profile(@UserData() user: UserDetail) {
     return user;
   }
 

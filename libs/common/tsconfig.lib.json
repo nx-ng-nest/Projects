@@ -6,6 +6,6 @@
     "types": [],
     "target": "es6"
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "../auth/src/lib/permission-type.enum.ts"],
   "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }

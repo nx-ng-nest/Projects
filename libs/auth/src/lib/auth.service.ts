@@ -10,16 +10,16 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AuthUser } from '@projects/models';
 import { genPassword } from '@projects/utils';
 
 import { ForgotPasswordDTO } from './dtos/forgot-password.dto';
-import { User } from './user';
 
 @Injectable()
 export class AuthService {
   logger = new Logger(AuthService.name);
   constructor(
-    @InjectRepository(User) private readonly userRepo: Repository<User>,
+    @InjectRepository(AuthUser) private readonly userRepo: Repository<AuthUser>,
     private readonly jwtService: JwtService,
     private readonly email: MailerService
   ) {}
@@ -27,7 +27,7 @@ export class AuthService {
   async validateUser(
     username: string,
     password: string
-  ): Promise<Omit<User, 'password'> | null> {
+  ): Promise<Omit<AuthUser, 'password'> | null> {
     try {
       const user = await this.userRepo.findOneOrFail({ username });
       const isPasswordMatch = await compare(password, user.password);
@@ -42,7 +42,7 @@ export class AuthService {
     }
   }
 
-  async login(user: User): Promise<string> {
+  async login(user: AuthUser): Promise<string> {
     const { password, ...payload } = user;
     return this.jwtService.sign(payload);
   }

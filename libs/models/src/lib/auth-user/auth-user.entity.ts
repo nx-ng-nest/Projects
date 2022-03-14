@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsString,
   Length,
+  Matches,
 } from 'class-validator';
 import {
   Column,
@@ -10,12 +11,15 @@ import {
 } from 'typeorm';
 
 import { ApiProperty } from '@nestjs/swagger';
-import { ToHashFromStringTransformer } from '@projects/transformer';
+import {
+  ToHashFromStringTransformer,
+  ToStringFromJSONTransformer,
+} from '@projects/transformer';
 
 import { BaseEntity } from '../common';
 
 @Entity()
-export class User extends BaseEntity {
+export class AuthUser extends BaseEntity {
   @Column({ type: 'text' })
   @ApiProperty({ type: String })
   @IsNotEmpty()
@@ -28,4 +32,16 @@ export class User extends BaseEntity {
   @IsNotEmpty()
   @Length(6, 30)
   password: string;
+
+  @Column({ type: 'text', transformer: ToStringFromJSONTransformer() })
+  @ApiProperty({
+    type: String,
+    format: 'array',
+  })
+  @IsNotEmpty()
+  @Matches(/^(GET | POST | PUT | DELETE | UPDATE | PATCH):[A-Z]/, {
+    each: true,
+    message: 'Permission string must be in a format of METHOD:RESOURCE_NAME',
+  })
+  permissions: string[];
 }
