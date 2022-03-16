@@ -38,8 +38,8 @@ export function TextColumn(options?: ApiPropertyOptions & ColumnOptions) {
     Column({
       type: 'text',
       unique: !!options?.unique,
-
       nullable: options?.required == false ? true : false,
+      update: options?.update == false ? false : true
     }),
     IsRequired(options?.required == false ? false : true),
     Length(options?.minLength || 1, options?.maxLength || 50)
@@ -57,6 +57,7 @@ export function NumericColumn(options?: ApiPropertyOptions & ColumnOptions) {
       type: 'numeric',
       unique: !!options?.unique,
       nullable: options?.required == false ? true : false,
+      update: options?.update == false ? false : true
     }),
     IsRequired(options?.required == false ? false : true),
     Min(options?.minimum || Number.MAX_SAFE_INTEGER),
@@ -75,6 +76,7 @@ export function DateColumn(options?: ApiPropertyOptions & ColumnOptions) {
       type: 'date',
       unique: !!options?.unique,
       nullable: options?.required == false ? true : false,
+      update: options?.update == false ? false : true,
     }),
     IsRequired(options?.required == false ? false : true)
   );
@@ -91,6 +93,7 @@ export function EmailColumn(options?: ApiPropertyOptions & ColumnOptions) {
       type: 'text',
       unique: true,
       nullable: options?.required == false ? true : false,
+      update: options?.update == false ? false : true
     }),
     IsRequired(options?.required == false ? false : true),
     IsEmail()
@@ -111,6 +114,7 @@ export function PasswordColumn(options?: ApiPropertyOptions & ColumnOptions) {
       type: 'text',
       nullable: options?.required == false ? true : false,
       transformer: HashTransformer(),
+      update: options?.update == false ? false : true
     }),
     IsRequired(options?.required == false ? false : true),
     MinLength(6, { message: msg('6') }),
@@ -132,6 +136,7 @@ export function ArrayTextColumn(options?: ApiPropertyOptions & ColumnOptions) {
       type: 'text',
       transformer: jsonStringTransformer(),
       nullable: options?.required == false ? true : false,
+      update: options?.update == false ? false : true
     }),
     IsRequired(options?.required == false ? false : true),
     Length(options?.minLength || 1, options?.maxLength || 50, { each: true })
