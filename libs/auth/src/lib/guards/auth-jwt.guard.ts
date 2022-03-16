@@ -1,41 +1,40 @@
 import {
   ExecutionContext,
   Injectable,
-  Scope,
+  Logger,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
 import {
-  HasPermission,
-  IsPublic,
-} from '../interfaces';
-import { InjectHasPermission } from '../providers/has-permission.provider';
-import { InjectIsPublic } from '../providers/is-public.provider';
+  hasPermission,
+  isPublicResource,
+} from '../decorators';
 
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class AuthJwtGuard extends AuthGuard('jwt') {
-  constructor(
-    private readonly reflector: Reflector,
-    @InjectIsPublic() private readonly isPublicService: IsPublic,
-    @InjectHasPermission() private readonly hasPermissionService: HasPermission
-  ) {
+  private logger = new Logger(AuthJwtGuard.name);
+  constructor(private readonly reflector: Reflector) {
     super();
   }
 
+  /**
+   * 1 - check is public resource
+   * 2 - check the user has permission.
+   * @param context
+   * @returns
+   */
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const superResult = (await super.canActivate(context)) as any;
-
-    if (await this.isPublicService.isPublic(context, this.reflector)) {
+    if (isPublicResource(context, this.reflector)) {
       return true;
     }
 
-    if (
-      await this.hasPermissionService.hasPermission(context, this.reflector)
-    ) {
-      return true;
-    }
+    const result = await super.canActivate(context);
 
-    return superResult;
+    if (hasPermission(context, this.reflector)) {
+      return result as any;
+    } else {
+      return false;
+    }
   }
 }

@@ -1,9 +1,5 @@
 import { compare } from 'bcrypt';
-import { ClassConstructor } from 'class-transformer';
-import {
-  getRepository,
-  Repository,
-} from 'typeorm';
+import { Repository } from 'typeorm';
 
 import {
   Injectable,
@@ -13,30 +9,27 @@ import {
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '@projects/models';
 
 import { AUTH_EVENTS } from './auth-events.enum';
 import { ForgotPasswordDTO } from './dtos/forgot-password.dto';
-import { IAuthUser } from './IAuthUser';
-import { InjectAuthUserEntity } from './providers';
 import { genPassword } from './utils/gen-password';
 
 @Injectable()
 export class AuthService {
   logger = new Logger(AuthService.name);
-  private readonly userRepo: Repository<IAuthUser>;
 
   constructor(
-    @InjectAuthUserEntity() userEntity: ClassConstructor<IAuthUser>,
+    @InjectRepository(User) private readonly userRepo: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly eventEmitter: EventEmitter2
-  ) {
-    this.userRepo = getRepository(userEntity);
-  }
+  ) {}
 
   async validateUser(
     username: string,
     password: string
-  ): Promise<Omit<IAuthUser, 'password'> | null> {
+  ): Promise<Omit<User, 'password'> | null> {
     try {
       const user = await this.userRepo.findOneOrFail({ username });
       const isPasswordMatch = await compare(password, user.password);
@@ -51,7 +44,7 @@ export class AuthService {
     }
   }
 
-  async login(user: IAuthUser): Promise<string> {
+  async login(user: User): Promise<string> {
     const { password, ...payload } = user;
     const token = this.jwtService.sign(payload);
     this.eventEmitter.emit(AUTH_EVENTS.LOGIN, {

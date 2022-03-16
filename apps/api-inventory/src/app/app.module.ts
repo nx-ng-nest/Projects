@@ -1,5 +1,4 @@
 import { Repository } from 'typeorm';
-import { v4 } from 'uuid';
 
 import {
   CacheModule,
@@ -14,15 +13,12 @@ import {
   TypeOrmModule,
 } from '@nestjs/typeorm';
 import { AuthModule } from '@projects/auth';
+import { User } from '@projects/models';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {
-  AuthUser,
-  HasPermissionImp,
-} from './auth';
 
-const ENTITIES = [AuthUser];
+const ENTITIES = [User];
 
 @Module({
   imports: [
@@ -31,27 +27,13 @@ const ENTITIES = [AuthUser];
       username: 'postgres',
       password: 'password',
       database: 'api-inventory',
-      entities: [AuthUser],
+      entities: ENTITIES,
       synchronize: true,
       dropSchema: true,
     }),
-    TypeOrmModule.forFeature([AuthUser]),
+    TypeOrmModule.forFeature(ENTITIES),
 
-    AuthModule.register({
-      authCookieKey: 'auth-token',
-      authCookieOptions: {
-        secure: true,
-        sameSite: true,
-        expires: new Date(),
-        httpOnly: true,
-      },
-      authUserEntity: AuthUser,
-      hasPermission: HasPermissionImp,
-
-      jwtModuleOptions: {
-        secret: v4(),
-      },
-    }),
+    AuthModule,
 
     ThrottlerModule.forRoot({
       ttl: 10,
@@ -65,14 +47,12 @@ const ENTITIES = [AuthUser];
   providers: [AppService],
 })
 export class AppModule implements OnModuleInit {
-  constructor(
-    @InjectRepository(AuthUser) private userRepo: Repository<AuthUser>
-  ) {}
+  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
   onModuleInit() {
     this.userRepo.save({
       username: 'nxng.dev@gmail.com',
       password: 'password',
-      permissions: [],
+      permissions: ['GET:HELLO'],
     });
   }
 }

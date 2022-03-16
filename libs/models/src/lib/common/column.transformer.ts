@@ -1,3 +1,4 @@
+import { hashSync } from 'bcrypt';
 import { ValueTransformer } from 'typeorm';
 
 /**
@@ -12,3 +13,9 @@ export function jsonStringTransformer(): ValueTransformer {
   };
 }
 
+export function HashTransformer(): ValueTransformer {
+  return {
+    to: (value: string) => value && hashSync(value, 8),
+    from: (value) => value,
+  };
+}

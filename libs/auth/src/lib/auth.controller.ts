@@ -1,19 +1,20 @@
-import {
-  CookieOptions,
-  Response,
-} from 'express';
+import { Response } from 'express';
 
 import {
   Body,
   Controller,
   Get,
+  Logger,
   Post,
   Res,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { User } from '@projects/models';
 
+import { CookieOptions } from './auth-cookie.options';
+import { AuthEnum } from './auth.enum';
 import { AuthService } from './auth.service';
 import {
   UserData,
@@ -28,31 +29,24 @@ import {
   AuthJwtGuard,
   AuthLocalGuard,
 } from './guards';
-import { IAuthUser } from './IAuthUser';
-import {
-  InjectAuthCookie,
-  InjectAuthCookieOptions,
-} from './providers';
 
 @ApiTags(AuthController.name)
 @Controller(AuthController.name)
 export class AuthController {
-  constructor(
-    @InjectAuthCookie() private readonly AUTH_COOKIE_KEY: string,
-    @InjectAuthCookieOptions()
-    private readonly AUTH_COOKIE_OPTIONS: CookieOptions,
-    private readonly authService: AuthService
-  ) {}
+  private readonly logger = new Logger(AuthController.name);
+
+  constructor(private readonly authService: AuthService) {}
 
   @UseGuards(AuthLocalGuard)
   @Post('login')
   async login(
-    @UserData() user: IAuthUser,
+    @UserData() user: User,
     @Res() res: Response,
-    @Body(ValidationPipe) credentails: LoginDto
+    @Body() credentails: LoginDto
   ) {
     const token = await this.authService.login(user);
-    res.cookie(this.AUTH_COOKIE_KEY, token, this.AUTH_COOKIE_OPTIONS);
+
+    res.cookie(AuthEnum.AUTH_TOKEN_COOKIE_KEY, token, CookieOptions);
     res.end();
   }
 

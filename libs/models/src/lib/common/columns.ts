@@ -19,7 +19,10 @@ import {
   ApiPropertyOptions,
 } from '@nestjs/swagger';
 
-import { jsonStringTransformer } from './column.transformer';
+import {
+  HashTransformer,
+  jsonStringTransformer,
+} from './column.transformer';
 
 function IsRequired(required: boolean | null) {
   return required ? IsNotEmpty() : IsOptional();
@@ -30,15 +33,15 @@ export function TextColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'text',
       default: 'Text Column',
-      required: options.required == false ? false : true,
+      required: options?.required == false ? false : true,
     }),
     Column({
       type: 'text',
       unique: !!options?.unique,
-      length: options?.maxLength || 50,
-      nullable: options.required == false ? true : false,
+
+      nullable: options?.required == false ? true : false,
     }),
-    IsRequired(options.required == false ? false : true),
+    IsRequired(options?.required == false ? false : true),
     Length(options?.minLength || 1, options?.maxLength || 50)
   );
 }
@@ -48,14 +51,14 @@ export function NumericColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'number',
       default: 1,
-      required: options.required == false ? false : true,
+      required: options?.required == false ? false : true,
     }),
     Column({
       type: 'numeric',
       unique: !!options?.unique,
-      nullable: options.required == false ? true : false,
+      nullable: options?.required == false ? true : false,
     }),
-    IsRequired(options.required == false ? false : true),
+    IsRequired(options?.required == false ? false : true),
     Min(options?.minimum || Number.MAX_SAFE_INTEGER),
     Max(options?.maximum || Number.MAX_SAFE_INTEGER)
   );
@@ -66,14 +69,14 @@ export function DateColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'date',
       default: '1-1-2005',
-      required: options.required == false ? false : true,
+      required: options?.required == false ? false : true,
     }),
     Column({
       type: 'date',
       unique: !!options?.unique,
-      nullable: options.required == false ? true : false,
+      nullable: options?.required == false ? true : false,
     }),
-    IsRequired(options.required == false ? false : true)
+    IsRequired(options?.required == false ? false : true)
   );
 }
 
@@ -82,14 +85,14 @@ export function EmailColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'email',
       default: 'Text Column',
-      required: options.required == false ? false : true,
+      required: options?.required == false ? false : true,
     }),
     Column({
       type: 'text',
       unique: true,
-      nullable: options.required == false ? true : false,
+      nullable: options?.required == false ? true : false,
     }),
-    IsRequired(options.required == false ? false : true),
+    IsRequired(options?.required == false ? false : true),
     IsEmail()
   );
 }
@@ -102,14 +105,14 @@ export function PasswordColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'password',
       default: '!Password.!@11',
-      required: options.required == false ? false : true,
+      required: options?.required == false ? false : true,
     }),
     Column({
       type: 'text',
-      length: options?.maxLength || 50,
-      nullable: options.required == false ? true : false,
+      nullable: options?.required == false ? true : false,
+      transformer: HashTransformer(),
     }),
-    IsRequired(options.required == false ? false : true),
+    IsRequired(options?.required == false ? false : true),
     MinLength(6, { message: msg('6') }),
     Matches(/[a-z]{1,}/, { message: msg('a lowercase') }),
     Matches(/[A-Z]{1,}/, { message: msg('a uppercase') }),
@@ -123,14 +126,14 @@ export function ArrayTextColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'array',
       default: ['a', 'b'],
-      required: options.required == false ? false : true,
+      required: options?.required == false ? false : true,
     }),
     Column({
       type: 'text',
       transformer: jsonStringTransformer(),
-      nullable: options.required == false ? true : false,
+      nullable: options?.required == false ? true : false,
     }),
-    IsRequired(options.required == false ? false : true),
+    IsRequired(options?.required == false ? false : true),
     Length(options?.minLength || 1, options?.maxLength || 50, { each: true })
   );
 }
