@@ -1,2 +1,2 @@
+export * from "./HasPermission";
 export * from "./IsPublic";
-export * from './HasPermission'

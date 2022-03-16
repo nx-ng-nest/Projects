@@ -17,8 +17,7 @@ import { User } from '@projects/models';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
-const ENTITIES = [User];
+import { AppEntities } from './resources/app.entities';
 
 @Module({
   imports: [
@@ -27,11 +26,11 @@ const ENTITIES = [User];
       username: 'postgres',
       password: 'password',
       database: 'api-inventory',
-      entities: ENTITIES,
+      entities: AppEntities,
       synchronize: true,
       dropSchema: true,
     }),
-    TypeOrmModule.forFeature(ENTITIES),
+    TypeOrmModule.forFeature(AppEntities),
 
     AuthModule,
 
@@ -42,6 +41,8 @@ const ENTITIES = [User];
     CacheModule.register({}),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
+
+
   ],
   controllers: [AppController],
   providers: [AppService],

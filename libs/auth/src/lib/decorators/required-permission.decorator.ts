@@ -19,6 +19,20 @@ export function SetPermission<P = string>(permission: P) {
   return SetMetadata(REQUIRED_PERMISSION_TOKEN, permission);
 }
 
+export function ReadPermission(resource: string) {
+  return SetMetadata(
+    REQUIRED_PERMISSION_TOKEN,
+    `READ:${resource.toUpperCase()}`
+  );
+}
+
+export function WritePermission(resource: string) {
+  return SetMetadata(
+    REQUIRED_PERMISSION_TOKEN,
+    `READ:${resource.toUpperCase()}`
+  );
+}
+
 /**
  * Check the resource is secured by permission
  * @param context

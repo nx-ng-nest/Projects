@@ -2,6 +2,7 @@ import {
   ExecutionContext,
   Injectable,
   Logger,
+  UseGuards,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
@@ -10,6 +11,10 @@ import {
   hasPermission,
   isPublicResource,
 } from '../decorators';
+
+export function Secure() {
+  return UseGuards(AuthJwtGuard);
+}
 
 @Injectable()
 export class AuthJwtGuard extends AuthGuard('jwt') {
