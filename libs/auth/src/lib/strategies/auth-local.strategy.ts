@@ -2,9 +2,9 @@ import { Strategy } from 'passport-local';
 
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { AuthUser } from '@projects/models';
 
 import { AuthService } from '../auth.service';
+import { IAuthUser } from '../IAuthUser';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -15,7 +15,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   async validate(
     username: string,
     password: string
-  ): Promise<Omit<AuthUser, 'password'> | never> {
+  ): Promise<Omit<IAuthUser, 'password'> | never> {
     return await this.authService.validateUser(username, password);
   }
 }

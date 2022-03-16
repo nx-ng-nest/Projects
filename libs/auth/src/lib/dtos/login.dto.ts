@@ -5,7 +5,8 @@ import {
 import { IsEmail } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
-import { PasswordFieldValidation } from '@projects/validation';
+
+import { PasswordFieldValidation } from './common';
 
 @Exclude()
 export class LoginDto {

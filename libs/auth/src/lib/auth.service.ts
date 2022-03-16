@@ -1,33 +1,42 @@
 import { compare } from 'bcrypt';
-import { Repository } from 'typeorm';
+import { ClassConstructor } from 'class-transformer';
+import {
+  getRepository,
+  Repository,
+} from 'typeorm';
 
-import { MailerService } from '@nestjs-modules/mailer';
 import {
   Injectable,
   Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AuthUser } from '@projects/models';
-import { genPassword } from '@projects/utils';
 
+import { AUTH_EVENTS } from './auth-events.enum';
 import { ForgotPasswordDTO } from './dtos/forgot-password.dto';
+import { IAuthUser } from './IAuthUser';
+import { InjectAuthUserEntity } from './providers';
+import { genPassword } from './utils/gen-password';
 
 @Injectable()
 export class AuthService {
   logger = new Logger(AuthService.name);
+  private readonly userRepo: Repository<IAuthUser>;
+
   constructor(
-    @InjectRepository(AuthUser) private readonly userRepo: Repository<AuthUser>,
+    @InjectAuthUserEntity() userEntity: ClassConstructor<IAuthUser>,
     private readonly jwtService: JwtService,
-    private readonly email: MailerService
-  ) {}
+    private readonly eventEmitter: EventEmitter2
+  ) {
+    this.userRepo = getRepository(userEntity);
+  }
 
   async validateUser(
     username: string,
     password: string
-  ): Promise<Omit<AuthUser, 'password'> | null> {
+  ): Promise<Omit<IAuthUser, 'password'> | null> {
     try {
       const user = await this.userRepo.findOneOrFail({ username });
       const isPasswordMatch = await compare(password, user.password);
@@ -42,42 +51,44 @@ export class AuthService {
     }
   }
 
-  async login(user: AuthUser): Promise<string> {
+  async login(user: IAuthUser): Promise<string> {
     const { password, ...payload } = user;
-    return this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload);
+    this.eventEmitter.emit(AUTH_EVENTS.LOGIN, {
+      ...user,
+      token,
+    });
+    return token;
   }
 
   async resetPassword(userId: number, newPassword: string) {
-    const _ = await this.userRepo.update(userId, {
+    const foundUser = await this.userRepo.findOne(userId);
+
+    const updatedUserPassword = await this.userRepo.update(userId, {
       password: newPassword,
     });
-    return { message: 'Changed your password.' };
+
+    this.eventEmitter.emit(AUTH_EVENTS.RESET_PASSWORD, {
+      ...foundUser,
+      password: newPassword,
+    });
   }
 
   async forgotPassword(body: ForgotPasswordDTO) {
     try {
-      const found = await this.userRepo.findOneOrFail({
+      const { id, username } = await this.userRepo.findOneOrFail({
         where: { username: body.username },
       });
+
       const newPassword = genPassword();
 
-      await this.userRepo.update(found.id, { password: newPassword });
+      await this.userRepo.update(id, { password: newPassword });
 
-      this.email.sendMail({
-        to: body.username,
-        from: `Forgot Password <security@authdare.com>`,
-
-        subject: 'Forgot Password',
-        template: 'forgot-password',
-        context: {
-          title: 'Forgot Password',
-          message: `Here is your new password. Please change it asap.`,
-          password: newPassword,
-        },
+      this.eventEmitter.emit(AUTH_EVENTS.FORGOT_PASSWORD, {
+        id,
+        username,
+        password: newPassword,
       });
-      return {
-        message: `Your new password is sent to your email ${body.username}. Please reset it asap.`,
-      };
     } catch (err) {
       throw new NotFoundException('User not found!');
     }

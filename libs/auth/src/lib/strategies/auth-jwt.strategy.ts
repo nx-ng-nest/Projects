@@ -2,20 +2,26 @@ import { Request } from 'express';
 import { Strategy } from 'passport-jwt';
 
 import { Injectable } from '@nestjs/common';
+import { JwtModuleOptions } from '@nestjs/jwt';
 import { PassportStrategy } from '@nestjs/passport';
 
-import { jwtConstants } from '../constants';
-import { CookiesEnum } from '../cookies.enum';
+import {
+  InjectAuthCookie,
+  InjectJwtOptions,
+} from '../providers';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(
+    @InjectAuthCookie() authCookieKey: string,
+    @InjectJwtOptions() jwtOptions: JwtModuleOptions
+  ) {
     super({
       jwtFromRequest: (req: Request) => {
-        return req.cookies && req.cookies[CookiesEnum.AUTH_TOKEN_NAME];
+        return req.cookies && req.cookies[authCookieKey];
       },
       ignoreExpiration: false,
-      secretOrKey: jwtConstants.secret,
+      secretOrKey: jwtOptions.secret,
     });
   }
 

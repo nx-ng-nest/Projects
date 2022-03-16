@@ -1,6 +1,8 @@
-import { Response } from 'express';
+import {
+  CookieOptions,
+  Response,
+} from 'express';
 
-import { MailerService } from '@nestjs-modules/mailer';
 import {
   Body,
   Controller,
@@ -8,57 +10,50 @@ import {
   Post,
   Res,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  AuthUser,
-  UserDetail,
-} from '@projects/models';
+
+import { AuthService } from './auth.service';
 import {
   UserData,
   UserID,
-} from '@projects/utils';
-import { ValidateCreate } from '@projects/validation';
-
-import { AuthService } from './auth.service';
-import { CookiesEnum } from './cookies.enum';
-import { ForgotPasswordDTO } from './dtos/forgot-password.dto';
-import { LoginDto } from './dtos/login.dto';
-import { ResetPasswordDTO } from './dtos/reset-password.dto';
-import { AuthJwtGuard } from './guards';
-import { AuthLocalGuard } from './guards/auth-local.guard';
+} from './decorators';
+import {
+  ForgotPasswordDTO,
+  LoginDto,
+  ResetPasswordDTO,
+} from './dtos/';
+import {
+  AuthJwtGuard,
+  AuthLocalGuard,
+} from './guards';
+import { IAuthUser } from './IAuthUser';
+import {
+  InjectAuthCookie,
+  InjectAuthCookieOptions,
+} from './providers';
 
 @ApiTags(AuthController.name)
 @Controller(AuthController.name)
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
-    private emailService: MailerService
+    @InjectAuthCookie() private readonly AUTH_COOKIE_KEY: string,
+    @InjectAuthCookieOptions()
+    private readonly AUTH_COOKIE_OPTIONS: CookieOptions,
+    private readonly authService: AuthService
   ) {}
 
   @UseGuards(AuthLocalGuard)
   @Post('login')
   async login(
-    @UserData() user: AuthUser,
+    @UserData() user: IAuthUser,
     @Res() res: Response,
-    @Body() credentails: LoginDto
+    @Body(ValidationPipe) credentails: LoginDto
   ) {
     const token = await this.authService.login(user);
-    await this.emailService.sendMail({
-      to: user.username,
-      subject: 'Welcome',
-      template: 'welcome',
-      context: {
-        message: 'Welcom back!',
-      },
-    });
-
-    res.cookie(CookiesEnum.AUTH_TOKEN_NAME, token, {
-      httpOnly: true,
-      sameSite: true,
-      secure: true,
-    });
-    res.send({ message: 'Welcome!' });
+    res.cookie(this.AUTH_COOKIE_KEY, token, this.AUTH_COOKIE_OPTIONS);
+    res.end();
   }
 
   /**
@@ -68,7 +63,7 @@ export class AuthController {
    */
   @UseGuards(AuthJwtGuard)
   @Get('profile')
-  profile(@UserData() user: UserDetail) {
+  profile(@UserData() user: any) {
     return user;
   }
 
@@ -82,7 +77,7 @@ export class AuthController {
   @Post('reset-password')
   resetPassword(
     @UserID() userid: number,
-    @Body(ValidateCreate) resetForm: ResetPasswordDTO
+    @Body(ValidationPipe) resetForm: ResetPasswordDTO
   ) {
     return this.authService.resetPassword(userid, resetForm.password);
   }

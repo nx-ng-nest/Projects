@@ -1,51 +1,83 @@
+import { ClassConstructor } from 'class-transformer';
+import { CookieOptions } from 'express';
+
 import {
   DynamicModule,
   Module,
 } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import {
+  JwtModule,
+  JwtModuleOptions,
+} from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EmailModule } from '@projects/email';
-import { AuthUser } from '@projects/models';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { jwtConstants } from './constants';
-import { PermissionService } from './permission.service';
+import { IAuthUser } from './IAuthUser';
+import { IsPublicImp } from './imps';
+import { HasPermission } from './interfaces';
+import {
+  provideAuthCookieKey,
+  provideAuthCookieOptions,
+  provideAuthUserEntity,
+  providehasPermission,
+  provideIsPublicProvider,
+  provideJwtModuleOptions,
+} from './providers';
 import {
   JwtStrategy,
   LocalStrategy,
 } from './strategies';
 
-export interface AuthModuleOptions {
-  secured: {
-    [scope: string]: {
-      [resourceName: string]:
-        | {
-            [method: string]: boolean;
-          }
-        | boolean;
-    };
-  };
+export interface AuthModuleOptions<PermissionType> {
+  jwtModuleOptions: JwtModuleOptions;
+  authUserEntity: ClassConstructor<IAuthUser<PermissionType>>;
+  authCookieKey: string;
+  authCookieOptions: CookieOptions;
+  hasPermission: ClassConstructor<HasPermission>;
 }
 
-@Module({
-  imports: [
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: {
-        expiresIn: '3h',
-      },
-    }),
-    TypeOrmModule.forFeature([AuthUser]),
-    EmailModule,
-  ],
-  controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy, PermissionService],
-})
+@Module({})
 export class AuthModule {
-  static register(): DynamicModule {
+  static register<PermissionType = any>({
+    authUserEntity,
+    jwtModuleOptions,
+    authCookieKey,
+    authCookieOptions,
+    hasPermission,
+  }: AuthModuleOptions<PermissionType>): DynamicModule {
     return {
       module: AuthModule,
+      imports: [
+        JwtModule.register(jwtModuleOptions),
+        TypeOrmModule.forFeature([authUserEntity]),
+        EventEmitterModule,
+      ],
+      controllers: [AuthController],
+      providers: [
+        AuthService,
+        LocalStrategy,
+        JwtStrategy,
+
+        provideAuthUserEntity(authUserEntity),
+        provideAuthCookieKey(authCookieKey),
+        provideJwtModuleOptions(jwtModuleOptions),
+        provideAuthCookieOptions(authCookieOptions),
+        provideIsPublicProvider(IsPublicImp),
+        providehasPermission(hasPermission),
+      ],
+      exports: [
+        AuthService,
+        LocalStrategy,
+        JwtStrategy,
+        provideAuthCookieKey(authCookieKey),
+        provideJwtModuleOptions(jwtModuleOptions),
+        provideAuthCookieOptions(authCookieOptions),
+        provideIsPublicProvider(IsPublicImp),
+        providehasPermission(hasPermission),
+        provideAuthUserEntity(authUserEntity),
+      ],
     };
   }
 }
