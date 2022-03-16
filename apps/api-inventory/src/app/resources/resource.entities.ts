@@ -10,7 +10,7 @@ import {
   User,
 } from '@projects/models';
 
-export const AppEntities = [
+export const ResourceEntities = [
   Category,
   ClockIn,
   Message,

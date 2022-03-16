@@ -8,7 +8,6 @@ export const UpdateValidationPipe = new ValidationPipe({
   skipUndefinedProperties: true,
   transform: true,
   transformOptions: {
-    excludeExtraneousValues: true,
     exposeDefaultValues: false,
     exposeUnsetFields: false,
   },

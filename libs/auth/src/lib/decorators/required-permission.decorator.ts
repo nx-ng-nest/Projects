@@ -19,18 +19,18 @@ export function SetPermission<P = string>(permission: P) {
   return SetMetadata(REQUIRED_PERMISSION_TOKEN, permission);
 }
 
+export function readPermission(resource: string) {
+  return `READ:${resource.toUpperCase()}`;
+}
+export function writePermission(resource: string) {
+  return `WRITE:${resource.toUpperCase()}`;
+}
 export function ReadPermission(resource: string) {
-  return SetMetadata(
-    REQUIRED_PERMISSION_TOKEN,
-    `READ:${resource.toUpperCase()}`
-  );
+  return SetMetadata(REQUIRED_PERMISSION_TOKEN, readPermission(resource));
 }
 
 export function WritePermission(resource: string) {
-  return SetMetadata(
-    REQUIRED_PERMISSION_TOKEN,
-    `READ:${resource.toUpperCase()}`
-  );
+  return SetMetadata(REQUIRED_PERMISSION_TOKEN, writePermission(resource));
 }
 
 /**

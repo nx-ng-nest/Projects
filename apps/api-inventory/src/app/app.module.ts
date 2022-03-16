@@ -12,12 +12,17 @@ import {
   InjectRepository,
   TypeOrmModule,
 } from '@nestjs/typeorm';
-import { AuthModule } from '@projects/auth';
+import {
+  AuthModule,
+  readPermission,
+  writePermission,
+} from '@projects/auth';
 import { User } from '@projects/models';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AppEntities } from './resources/app.entities';
+import { ResourceModules } from './resources';
+import { ResourceEntities } from './resources/resource.entities';
 
 @Module({
   imports: [
@@ -26,11 +31,11 @@ import { AppEntities } from './resources/app.entities';
       username: 'postgres',
       password: 'password',
       database: 'api-inventory',
-      entities: AppEntities,
+      entities: ResourceEntities,
       synchronize: true,
       dropSchema: true,
     }),
-    TypeOrmModule.forFeature(AppEntities),
+    TypeOrmModule.forFeature(ResourceEntities),
 
     AuthModule,
 
@@ -41,8 +46,7 @@ import { AppEntities } from './resources/app.entities';
     CacheModule.register({}),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
-
-
+    ...ResourceModules,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -53,7 +57,7 @@ export class AppModule implements OnModuleInit {
     this.userRepo.save({
       username: 'nxng.dev@gmail.com',
       password: 'password',
-      permissions: ['GET:HELLO'],
+      permissions: [readPermission('product'), writePermission('product')],
     });
   }
 }
