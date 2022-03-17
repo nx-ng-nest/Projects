@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@projects/auth": ["libs/auth/src/index.ts"],
+      "@projects/client-service": ["libs/client-service/src/index.ts"],
       "@projects/email": ["libs/email/src/index.ts"],
       "@projects/models": ["libs/models/src/index.ts"]
     }

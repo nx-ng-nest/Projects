@@ -1,5 +1,3 @@
-import { Repository } from 'typeorm';
-
 import {
   CacheModule,
   Module,
@@ -8,24 +6,18 @@ import {
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
-import {
-  InjectRepository,
-  TypeOrmModule,
-} from '@nestjs/typeorm';
-import {
-  AuthModule,
-  readPermission,
-  writePermission,
-} from '@projects/auth';
-import { User } from '@projects/models';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '@projects/auth';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { GlobalModule } from './common';
 import { ResourceModules } from './resources';
 import { ResourceEntities } from './resources/resource.entities';
 
 @Module({
   imports: [
+    GlobalModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       username: 'postgres',
@@ -36,9 +28,7 @@ import { ResourceEntities } from './resources/resource.entities';
       dropSchema: true,
     }),
     TypeOrmModule.forFeature(ResourceEntities),
-
     AuthModule,
-
     ThrottlerModule.forRoot({
       ttl: 10,
       limit: 5,
@@ -52,12 +42,8 @@ import { ResourceEntities } from './resources/resource.entities';
   providers: [AppService],
 })
 export class AppModule implements OnModuleInit {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+  constructor(private readonly appService: AppService) {}
   onModuleInit() {
-    this.userRepo.save({
-      username: 'nxng.dev@gmail.com',
-      password: 'password',
-      permissions: [readPermission('product'), writePermission('product')],
-    });
+    this.appService.initStore();
   }
 }

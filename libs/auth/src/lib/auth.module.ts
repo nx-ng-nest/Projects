@@ -12,6 +12,10 @@ import {
   LocalStrategy,
 } from './strategies';
 
+export type AuthModuleOptions = {
+  isActive: boolean;
+};
+
 @Module({
   imports: [
     JwtModule.register(JwtOptions),

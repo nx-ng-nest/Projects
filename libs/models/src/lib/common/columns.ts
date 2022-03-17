@@ -152,3 +152,22 @@ export function BarcodeColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ...options,
   });
 }
+
+export function JsonColumn(options?: ApiPropertyOptions & ColumnOptions) {
+  return applyDecorators(
+    ApiProperty({
+      format: 'object',
+      default: options?.default || {},
+      required: options?.required == false ? false : true,
+    }),
+    Column({
+      type: 'text',
+      unique: !!options?.unique,
+      nullable: options?.required == false ? true : false,
+      update: options?.update == false ? false : true,
+      transformer: jsonStringTransformer(),
+      default: {},
+    }),
+    IsRequired(options?.required == false ? false : true)
+  );
+}

@@ -1,5 +1,6 @@
 import {
   ExecutionContext,
+  Inject,
   Injectable,
   Logger,
   UseGuards,
@@ -7,6 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
+import { AuthEnum } from '../auth.enum';
 import {
   hasPermission,
   isPublicResource,
@@ -19,7 +21,10 @@ export function Secure() {
 @Injectable()
 export class AuthJwtGuard extends AuthGuard('jwt') {
   private logger = new Logger(AuthJwtGuard.name);
-  constructor(private readonly reflector: Reflector) {
+  constructor(
+    private readonly reflector: Reflector,
+     @Inject(AuthEnum.IS_ACTIVE) private readonly isActive: boolean
+  ) {
     super();
   }
 
@@ -33,7 +38,11 @@ export class AuthJwtGuard extends AuthGuard('jwt') {
     if (isPublicResource(context, this.reflector)) {
       return true;
     }
+    console.log(this.isActive)
 
+    if (this.isActive == false) {
+      return true;
+    }
     const result = await super.canActivate(context);
 
     if (hasPermission(context, this.reflector)) {

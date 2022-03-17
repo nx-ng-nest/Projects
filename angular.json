@@ -2,9 +2,11 @@
   "version": 2,
   "projects": {
     "api-inventory": "apps/api-inventory",
-    "api-str": "apps/api-str",
     "auth": "libs/auth",
+    "client-service": "libs/client-service",
     "email": "libs/email",
+    "inventory": "apps/inventory",
+    "inventory-e2e": "apps/inventory-e2e",
     "models": "libs/models"
   }
 }
