@@ -1,4 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 
 /* eslint-disable */
 
@@ -456,7 +460,9 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
               </svg>
               <span>You&apos;re up and running</span>
             </h2>
-            <a href="#commands"> What&apos;s next? </a>
+            <a [routerLink]="['app']" routerLinkActive="router-link-active">
+              Go to App
+            </a>
           </div>
           <div class="logo-container">
             <svg

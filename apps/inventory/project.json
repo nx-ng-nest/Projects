@@ -16,10 +16,13 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "apps/inventory/src/favicon.ico",
-          "apps/inventory/src/assets"
+          "apps/inventory/src/assets",
+          "apps/inventory/src/manifest.webmanifest"
         ],
         "styles": ["apps/inventory/src/styles.scss"],
-        "scripts": []
+        "scripts": [],
+        "serviceWorker": true,
+        "ngswConfigPath": "apps/inventory/ngsw-config.json"
       },
       "configurations": {
         "production": {
@@ -63,6 +66,10 @@
         "development": {
           "browserTarget": "inventory:build:development"
         }
+      },
+      "options": {
+        "browserTarget": "inventory:build",
+        "proxyConfig": "apps/inventory/proxy.conf.json"
       },
       "defaultConfiguration": "development"
     },

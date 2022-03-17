@@ -7,6 +7,7 @@
     "email": "libs/email",
     "inventory": "apps/inventory",
     "inventory-e2e": "apps/inventory-e2e",
+    "material": "libs/material",
     "models": "libs/models"
   }
 }
