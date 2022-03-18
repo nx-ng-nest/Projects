@@ -1,0 +1,28 @@
+{
+  "root": "apps/material-e2e",
+  "sourceRoot": "apps/material-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/material-e2e/cypress.json",
+        "devServerTarget": "material:storybook"
+      },
+      "configurations": {
+        "ci": {
+          "devServerTarget": "material:storybook:ci"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/material-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["material"]
+}

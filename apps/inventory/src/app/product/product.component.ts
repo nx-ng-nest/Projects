@@ -13,13 +13,5 @@ import { ProductService } from '@projects/client-service';
 export class ProductComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
-  ngOnInit() {
-    this.productService.getAll().subscribe((data) => {
-      console.log(data);
-    });
-
-    this.productService.entities$.subscribe((data) => {
-      console.log(data);
-    });
-  }
+  ngOnInit() {}
 }
