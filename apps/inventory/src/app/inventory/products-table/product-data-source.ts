@@ -1,4 +1,7 @@
-import { CollectionViewer } from '@angular/cdk/collections';
+import {
+  CollectionViewer,
+  DataSource,
+} from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -7,26 +10,25 @@ import { Observable } from 'rxjs';
 import { SubSink } from 'subsink';
 
 import {
-  EntityCollectionServiceBase,
-  EntityCollectionServiceElementsFactory,
-} from '@ngrx/data';
+  Product,
+  ProductService,
+} from '@projects/client-service';
 
-import { Product } from './product.entity';
-
-@Injectable({ providedIn: 'root' })
-export class ProductService extends EntityCollectionServiceBase<Product> {
+@Injectable()
+export class ProductDataSource extends DataSource<Product> {
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
+
   subsink = new SubSink();
-  constructor(elementsFactory: EntityCollectionServiceElementsFactory) {
-    super('Product', elementsFactory);
+
+  constructor(private productService: ProductService) {
+    super();
   }
 
   connect(collectionViewer: CollectionViewer): Observable<readonly Product[]> {
-    this.subsink.sink = this.getAll().subscribe();
-    return this.filteredEntities$;
+    this.subsink.sink = this.productService.getAll().subscribe();
+    return this.productService.entities$;
   }
-
   disconnect(collectionViewer: CollectionViewer): void {
     this.subsink.unsubscribe();
   }

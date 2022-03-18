@@ -460,7 +460,10 @@ import {
               </svg>
               <span>You&apos;re up and running</span>
             </h2>
-            <a [routerLink]="['app']" routerLinkActive="router-link-active">
+            <a
+              [routerLink]="['inventory']"
+              routerLinkActive="router-link-active"
+            >
               Go to App
             </a>
           </div>

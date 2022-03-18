@@ -1,19 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableComponent } from './table.component';
-import { MatTableModule } from '@angular/material/table';
+import { NgModule } from '@angular/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 
-
+import { TableComponent } from './table.component';
 
 @NgModule({
   declarations: [TableComponent],
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule
-  ]
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule],
+  exports: [TableComponent],
 })
-export class TableModule { }
+export class TableModule {}

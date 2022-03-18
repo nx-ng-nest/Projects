@@ -3,8 +3,14 @@ import {
   EntityMetadataMap,
 } from '@ngrx/data';
 
+import { Product } from './product.entity';
+
 const entityMetadata: EntityMetadataMap = {
-  Product: {},
+  Product: {
+    filterFn: (products: Product[], fnFunction: (e: Product) => boolean) => {
+      return products?.filter(fnFunction);
+    },
+  },
 };
 
 const pluralNames = {

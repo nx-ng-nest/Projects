@@ -1,2 +1,2 @@
-export * from "./task.component";
-export * from "./task.module";
+export * from './task.component';
+export * from './task.module';

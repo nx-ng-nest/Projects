@@ -13,7 +13,7 @@
         mat-list-item
         [routerLink]="[n.path]"
         routerLinkActive="router-link-active"
-        *ngFor="let n of navigationMenu"
+        *ngFor="let n of navItems"
         (click)="pageName = n.path"
       >
         <mat-icon mat-list-icon color="primary"> {{ n.icon }}</mat-icon>
@@ -35,6 +35,9 @@
 
       <span>{{ pageName | titlecase }}</span>
     </mat-toolbar>
-    <ng-content select="[MAIN]"></ng-content>
+
+    <div class="main-content">
+      <ng-content></ng-content>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

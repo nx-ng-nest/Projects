@@ -13,10 +13,11 @@ import {
   shareReplay,
 } from 'rxjs/operators';
 
-type NavItem = {
+export type NavItem = {
   path: string;
   icon: string;
 };
+
 @Component({
   selector: 'projects-navigation',
   templateUrl: './navigation.component.html',
@@ -32,11 +33,7 @@ export class NavigationComponent {
 
   pageName = '';
 
-  @Input() navigationMenu: NavItem[] = [
-    { path: 'products', icon: 'inventory' },
-    { path: 'users', icon: 'people' },
-    { path: 'config', icon: 'settings' },
-  ];
+  @Input() navItems: NavItem[] = [];
 
   constructor(private breakpointObserver: BreakpointObserver) {}
 }
