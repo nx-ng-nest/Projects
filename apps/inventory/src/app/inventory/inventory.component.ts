@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit,
-} from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NavItem } from '@projects/material';
 
@@ -10,11 +7,6 @@ import { NavItem } from '@projects/material';
   templateUrl: './inventory.component.html',
   styleUrls: ['./inventory.component.scss'],
 })
-export class InventoryComponent implements OnInit {
-  navItems: NavItem[] = [{ path: 'products', icon: 'inventory' }];
-  constructor() {
-    //
-  }
-
-  ngOnInit(): void {}
+export class InventoryComponent {
+  navItems: NavItem[] = [{ path: 'products-table', icon: 'inventory', label:'Products' }];
 }

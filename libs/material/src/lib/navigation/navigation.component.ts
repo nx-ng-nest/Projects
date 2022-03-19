@@ -16,6 +16,7 @@ import {
 export type NavItem = {
   path: string;
   icon: string;
+  label: string;
 };
 
 @Component({
@@ -30,8 +31,6 @@ export class NavigationComponent {
       map((result) => result.matches),
       shareReplay()
     );
-
-  pageName = '';
 
   @Input() navItems: NavItem[] = [];
 

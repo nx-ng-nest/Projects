@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterModule } from '@angular/router';
 
 import { ProductService } from '@projects/client-service';
@@ -25,6 +26,7 @@ import {
   ],
   imports: [
     CommonModule,
+    MatProgressBarModule,
     RouterModule.forChild([
       {
         path: '',
