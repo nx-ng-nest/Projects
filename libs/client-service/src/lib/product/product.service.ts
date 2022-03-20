@@ -1,5 +1,6 @@
 import { CollectionViewer } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 
@@ -15,6 +16,7 @@ import { Product } from './product.entity';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService extends EntityCollectionServiceBase<Product> {
+  searchControl = new FormControl('');
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
   subsink = new SubSink();
@@ -24,6 +26,13 @@ export class ProductService extends EntityCollectionServiceBase<Product> {
 
   connect(collectionViewer: CollectionViewer): Observable<readonly Product[]> {
     this.subsink.sink = this.getAll().subscribe();
+    this.subsink.sink = this.searchControl.valueChanges.subscribe(
+      (filterText) => {
+        this.setFilter((p: Product) => {
+          return p.name.toLowerCase().includes(filterText.toLowerCase());
+        });
+      }
+    );
     return this.filteredEntities$;
   }
 

@@ -17,6 +17,13 @@ export class ProductsTableComponent implements OnInit {
   constructor(public readonly productService: ProductService) {}
   displayedColumns = ['id', 'name', 'description', 'price', 'quantity'];
 
+  rowActions = [
+    {
+      icon: 'preview',
+      label: 'Preview',
+    },
+  ];
+
   ngOnInit(): void {
     this.productService.setFilter((p: Product) => {
       // Filter functions
@@ -25,5 +32,9 @@ export class ProductsTableComponent implements OnInit {
     this.productService.filter$.subscribe((data) => {
       console.log(data);
     });
+  }
+
+  rowClickHandler(product: any) {
+    console.log(product);
   }
 }

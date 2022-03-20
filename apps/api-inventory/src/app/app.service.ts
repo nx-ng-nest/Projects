@@ -24,13 +24,22 @@ export class AppService {
       username: 'nxng.dev@gmail.com',
       password: 'password',
       permissions: [readPermission('product'), writePermission('product')],
-
     });
 
     const product = await this.productService.save({
       name: 'Sample Product',
       description: 'Product description',
-      barcode: '123456789123',
+      barcode: '1234567891231',
+    });
+    const product1 = await this.productService.save({
+      name: 'Sample Product 1',
+      description: 'Product description 1',
+      barcode: '1234567891232',
+    });
+    const product2 = await this.productService.save({
+      name: 'Sample Product 2',
+      description: 'Product description 2',
+      barcode: '1234567891233',
     });
 
     const toyCategory = await this.categoryService.save({ name: 'Toy' });
