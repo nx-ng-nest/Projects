@@ -3,10 +3,7 @@ import {
   OnInit,
 } from '@angular/core';
 
-import {
-  Product,
-  ProductService,
-} from '@projects/client-service';
+import { ProductService } from '@projects/client-service';
 
 @Component({
   selector: 'projects-products-table',
@@ -24,15 +21,7 @@ export class ProductsTableComponent implements OnInit {
     },
   ];
 
-  ngOnInit(): void {
-    this.productService.setFilter((p: Product) => {
-      // Filter functions
-      return p.name.includes('S');
-    });
-    this.productService.filter$.subscribe((data) => {
-      console.log(data);
-    });
-  }
+  ngOnInit(): void {}
 
   rowClickHandler(product: any) {
     console.log(product);

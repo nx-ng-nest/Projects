@@ -27,18 +27,18 @@ export class AppService {
     });
 
     const product = await this.productService.save({
-      name: 'Sample Product',
-      description: 'Product description',
+      name: 'Ps4 Controller',
+      description: 'PS4 Controller',
       barcode: '1234567891231',
     });
     const product1 = await this.productService.save({
-      name: 'Sample Product 1',
-      description: 'Product description 1',
+      name: 'TY bear',
+      description: 'TY',
       barcode: '1234567891232',
     });
     const product2 = await this.productService.save({
-      name: 'Sample Product 2',
-      description: 'Product description 2',
+      name: 'Atari 2004',
+      description: 'Atari',
       barcode: '1234567891233',
     });
 

@@ -28,9 +28,18 @@ export class ProductService extends EntityCollectionServiceBase<Product> {
     this.subsink.sink = this.getAll().subscribe();
     this.subsink.sink = this.searchControl.valueChanges.subscribe(
       (filterText) => {
-        this.setFilter((p: Product) => {
-          return p.name.toLowerCase().includes(filterText.toLowerCase());
-        });
+        if (filterText && filterText.trim().length > 0) {
+          console.log('Filtering!');
+          this.setFilter((p: Product) => {
+            const textString = JSON.stringify(p).toLowerCase();
+            const filterTexts = filterText
+              ?.toLowerCase()
+              .split(' ') as string[];
+            return filterTexts
+              .map((t) => textString.includes(t))
+              .reduce((p, c) => p && c);
+          });
+        }
       }
     );
     return this.filteredEntities$;

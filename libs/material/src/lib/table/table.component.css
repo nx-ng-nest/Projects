@@ -5,3 +5,11 @@
 table {
   width: 100%;
 }
+
+.search-input {
+  width: 100%;
+  position: relative;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+}
