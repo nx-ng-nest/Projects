@@ -1,8 +1,10 @@
 import {
   Entity,
   JoinColumn,
-  OneToMany,
+  ManyToOne,
 } from 'typeorm';
+
+import { ApiProperty } from '@nestjs/swagger';
 
 import {
   BaseEntity,
@@ -16,11 +18,13 @@ export class ProductDetail extends BaseEntity {
   @NumericColumn({ minimum: 0 }) price: number;
   @NumericColumn({ minimum: 0 }) quantity: number;
 
-  @OneToMany(() => Store, (s) => s.id)
+  @ManyToOne(() => Store, (s) => s.id, { eager: true })
   @JoinColumn()
+  @ApiProperty({ default: { id: 1 } })
   store: Store;
 
-  @OneToMany(() => Product, (p) => p.id)
+  @ManyToOne(() => Product, (p) => p.id, { eager: true })
   @JoinColumn()
+  @ApiProperty({ default: { id: 1 } })
   product: Product;
 }

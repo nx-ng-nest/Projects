@@ -15,4 +15,17 @@ export class ProductDetailService extends BaseDataService<ProductDetail> {
   ) {
     super(productDetailRepo);
   }
+
+  async getProductDetailsByStore(storeId: number) {
+    // return this.repo
+    //   .createQueryBuilder('product_detail')
+    //   .leftJoinAndSelect('product_detail.store', 'store')
+    //   .leftJoinAndSelect('product_detail.product', 'product')
+    //   .where('store.id = :storeId', { storeId })
+    //   .select('*')
+    //   .execute();
+
+    const founds = await this.find();
+    return founds.filter((e) => e.store.id == storeId);
+  }
 }

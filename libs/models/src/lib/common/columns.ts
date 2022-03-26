@@ -33,6 +33,7 @@ export function TextColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'text',
       default: options?.default || 'Text Column',
+      nullable: options?.required == false ? true : false,
       required: options?.required == false ? false : true,
     }),
     Column({
@@ -51,6 +52,7 @@ export function NumericColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'number',
       default: options?.default || 1,
+      nullable: options?.required == false ? true : false,
       required: options?.required == false ? false : true,
     }),
     Column({
@@ -70,6 +72,7 @@ export function DateColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'date',
       default: options?.default || '1-1-2005',
+      nullable: options?.required == false ? true : false,
       required: options?.required == false ? false : true,
     }),
     Column({
@@ -87,6 +90,7 @@ export function EmailColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'email',
       default: options?.default || 'Text Column',
+      nullable: options?.required == false ? true : false,
       required: options?.required == false ? false : true,
     }),
     Column({
@@ -108,6 +112,7 @@ export function PasswordColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'password',
       default: options?.default || '!Password.!@11',
+      nullable: options?.required == false ? true : false,
       required: options?.required == false ? false : true,
     }),
     Column({
@@ -130,6 +135,7 @@ export function ArrayTextColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'array',
       default: options?.default || ['a', 'b'],
+      nullable: options?.required == false ? true : false,
       required: options?.required == false ? false : true,
     }),
     Column({
@@ -158,6 +164,7 @@ export function JsonColumn(options?: ApiPropertyOptions & ColumnOptions) {
     ApiProperty({
       format: 'object',
       default: options?.default || {},
+      nullable: options?.required == false ? true : false,
       required: options?.required == false ? false : true,
     }),
     Column({

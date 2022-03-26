@@ -8,8 +8,8 @@ import { ValueTransformer } from 'typeorm';
  */
 export function jsonStringTransformer(): ValueTransformer {
   return {
-    to: (value: any) => value && JSON.stringify(value),
-    from: (value: any) => value && JSON.parse(value),
+    to: (value: any) => (value ? JSON.stringify(value) : {}),
+    from: (value: any) => (value ? JSON.parse(value) : {}),
   };
 }
 

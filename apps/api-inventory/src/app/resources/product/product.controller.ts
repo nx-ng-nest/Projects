@@ -23,6 +23,7 @@ import {
   UpdateValidationPipe,
 } from '@projects/models';
 
+import { ProductCreateDTO } from './product-create.dto';
 import { ProductService } from './product.service';
 
 const SINGULAR = 'product';
@@ -42,8 +43,23 @@ export class ProductController {
 
   @WritePermission(SINGULAR)
   @Post(SINGULAR)
-  post(@Body(CreateValidationPipe) body: Product) {
-    return this.productService.save(body);
+  post(@Body(CreateValidationPipe) body: ProductCreateDTO) {
+    const newProduct = this.productService.save(body.product);
+  }
+
+  @WritePermission(SINGULAR)
+  @Post(`create${SINGULAR}`)
+  createProduct(
+    @Param('storeId', ParseIntPipe) storeId: number,
+    @Body() product: ProductCreateDTO
+  ) {
+    return this.productService.createProduct(product);
+  }
+
+  @ReadPermission(SINGULAR)
+  @Get(`get${SINGULAR}/:storeId`)
+  getProducts(@Param('storeId', ParseIntPipe) storeId: number) {
+    return this.productService.getProducts(storeId);
   }
 
   @WritePermission(SINGULAR)

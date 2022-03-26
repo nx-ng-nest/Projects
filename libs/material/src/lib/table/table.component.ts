@@ -27,7 +27,7 @@ export type RowActions = RowAction[];
 })
 export class TableComponent implements AfterViewInit, OnInit {
   selectedItems = new Set<number>();
-  @Output() clickAction = new EventEmitter<{}>();
+  @Output() clickAction = new EventEmitter<any>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<TableItem>;
