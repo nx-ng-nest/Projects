@@ -11,11 +11,10 @@ import {
   EntityCollectionServiceBase,
   EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-
-import { Product } from './product.entity';
+import { IProduct } from '@projects/interface';
 
 @Injectable({ providedIn: 'root' })
-export class ProductService extends EntityCollectionServiceBase<Product> {
+export class ProductService extends EntityCollectionServiceBase<IProduct> {
   searchControl = new FormControl('');
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
@@ -25,12 +24,12 @@ export class ProductService extends EntityCollectionServiceBase<Product> {
     super('Product', elementsFactory);
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<readonly Product[]> {
+  connect(collectionViewer: CollectionViewer): Observable<readonly IProduct[]> {
     this.subsink.sink = this.getAll().subscribe();
     this.subsink.sink = this.searchControl.valueChanges.subscribe(
       (filterText) => {
         if (filterText && filterText.trim().length > 0) {
-          this.setFilter((p: Product) => {
+          this.setFilter((p: IProduct) => {
             const textString = JSON.stringify(p).toLowerCase();
             const filterTexts = filterText
               ?.toLowerCase()

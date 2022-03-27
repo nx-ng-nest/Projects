@@ -1,7 +1,4 @@
-import {
-  EntityDataModuleConfig,
-  EntityMetadataMap,
-} from '@ngrx/data';
+import { EntityDataModuleConfig, EntityMetadataMap } from '@ngrx/data';
 import { productEntityConfig } from '@projects/client-service';
 
 const entityMetadata: EntityMetadataMap = {

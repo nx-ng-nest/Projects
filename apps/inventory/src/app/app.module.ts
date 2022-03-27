@@ -26,9 +26,7 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { entityConfig } from './entity-metadata';
 import { NavigationComponent } from './navigation/navigation.component';
-import {
-  ProductsTableComponent,
-} from './product/products-table/products-table.component';
+import { ProductsTableComponent } from './product/products-table/products-table.component';
 
 @NgModule({
   declarations: [

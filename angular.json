@@ -5,6 +5,7 @@
     "auth": "libs/auth",
     "client-service": "libs/client-service",
     "email": "libs/email",
+    "interface": "libs/interface",
     "inventory": "apps/inventory",
     "inventory-e2e": "apps/inventory-e2e",
     "material": "libs/material",

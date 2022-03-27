@@ -1,13 +1,10 @@
-import {
-  Entity,
-  JoinTable,
-  ManyToMany,
-} from 'typeorm';
+import { Entity, JoinTable, ManyToMany } from 'typeorm';
 
 import { Category } from '../category';
 import {
   BarcodeColumn,
   BaseEntity,
+  ID,
   JsonColumn,
   TextColumn,
 } from '../common';
@@ -21,5 +18,5 @@ export class Product extends BaseEntity {
 
   @ManyToMany(() => Category, (c) => c.id, { nullable: true })
   @JoinTable()
-  categories?: Category[];
+  categories?: ID[];
 }

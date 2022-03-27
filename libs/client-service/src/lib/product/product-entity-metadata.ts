@@ -1,13 +1,9 @@
-import {
-  EntityDataModuleConfig,
-  EntityMetadataMap,
-} from '@ngrx/data';
-
-import { Product } from './product.entity';
+import { EntityDataModuleConfig, EntityMetadataMap } from '@ngrx/data';
+import { IProduct } from '@projects/interface';
 
 const entityMetadata: EntityMetadataMap = {
   Product: {
-    filterFn: (products: Product[], fnFunction: (e: Product) => boolean) => {
+    filterFn: (products: IProduct[], fnFunction: (e: IProduct) => boolean) => {
       if (fnFunction) {
         return products?.filter(fnFunction);
       } else {
@@ -25,3 +21,5 @@ export const productEntityConfig: EntityDataModuleConfig = {
   entityMetadata,
   pluralNames,
 };
+
+

@@ -12,11 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  ReadPermission,
-  Secure,
-  WritePermission,
-} from '@projects/auth';
+import { ReadPermission, Secure, WritePermission } from '@projects/auth';
 import {
   CreateValidationPipe,
   Product,
@@ -45,21 +41,6 @@ export class ProductController {
   @Post(SINGULAR)
   post(@Body(CreateValidationPipe) body: ProductCreateDTO) {
     const newProduct = this.productService.save(body.product);
-  }
-
-  @WritePermission(SINGULAR)
-  @Post(`create${SINGULAR}`)
-  createProduct(
-    @Param('storeId', ParseIntPipe) storeId: number,
-    @Body() product: ProductCreateDTO
-  ) {
-    return this.productService.createProduct(product);
-  }
-
-  @ReadPermission(SINGULAR)
-  @Get(`get${SINGULAR}/:storeId`)
-  getProducts(@Param('storeId', ParseIntPipe) storeId: number) {
-    return this.productService.getProducts(storeId);
   }
 
   @WritePermission(SINGULAR)

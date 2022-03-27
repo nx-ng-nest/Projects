@@ -12,11 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import {
-  ReadPermission,
-  Secure,
-  WritePermission,
-} from '@projects/auth';
+import { ReadPermission, Secure, WritePermission } from '@projects/auth';
 import {
   CreateValidationPipe,
   ProductDetail,

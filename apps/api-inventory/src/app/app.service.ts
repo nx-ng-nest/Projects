@@ -1,14 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import {
-  readPermission,
-  writePermission,
-} from '@projects/auth';
-
+import { readPermission, writePermission } from '@projects/auth';
 import { ProductService } from './resources';
 import { CategoryService } from './resources/category';
 import { ProductDetailService } from './resources/product-detail';
 import { StoreService } from './resources/store';
 import { UserService } from './resources/user';
+import { commerce, company } from 'faker';
+import { v4 } from 'uuid';
+import { IProduct } from '@projects/interface';
+
+function randomItem(items: any[]): any {
+  return items[Math.floor(Math.random() * items.length - 1)];
+}
+
+function fakeProduct(category: { id: number }): IProduct {
+  return {
+    barcode: v4(),
+    name: commerce.productName() + Math.floor(Math.random() * 1000),
+    description: commerce.productDescription(),
+    features: {
+      [commerce.productAdjective()]: commerce.productDescription(),
+    },
+    categories: [category],
+  };
+}
 
 @Injectable()
 export class AppService {
@@ -21,50 +36,38 @@ export class AppService {
   ) {}
 
   async initStore() {
-    const store1 = await this.storeService.save({ name: 'Store 1' });
-    const store2 = await this.storeService.save({ name: 'Store 2' });
+    // create stores
+
+    const store1 = await this.storeService.save({ name: 'Houston 1' });
+    const store2 = await this.storeService.save({ name: 'Victoria 2' });
+    const store3 = await this.storeService.save({ name: 'Baumant 3' });
+    const store4 = await this.storeService.save({ name: 'Lake Jackson 4' });
+    const store5 = await this.storeService.save({ name: 'Killen 1' });
+    const store6 = await this.storeService.save({ name: 'Killen 2' });
+
+    const cat1 = await this.categoryService.save({ name: 'Technology' });
+    const cat2 = await this.categoryService.save({ name: 'Plush' });
+    const cat3 = await this.categoryService.save({ name: 'Console' });
+    const cat4 = await this.categoryService.save({ name: 'Accessories' });
+    const cat5 = await this.categoryService.save({ name: 'Drones' });
+
+    function randCategory() {
+      return randomItem([cat1, cat2, cat3, cat4, cat5]);
+    }
+
+    for (let i = 0; i < 1000; i++) {
+      const cat = randCategory();
+      const product = fakeProduct(cat);
+      await this.productService.save(product);
+    }
+
     const user = await this.userService.save({
       username: 'nxng.dev@gmail.com',
       password: 'password',
       permissions: [readPermission('product'), writePermission('product')],
     });
-
-    const product = await this.productService.save({
-      name: 'Ps4 Controller',
-      description: 'PS4 Controller',
-      barcode: '1234567891231',
-    });
-
-    const product1 = await this.productService.save({
-      name: 'TY bear',
-      description: 'TY',
-      barcode: '1234567891232',
-    });
-    const product2 = await this.productService.save({
-      name: 'Atari 2004',
-      description: 'Atari',
-      barcode: '1234567891233',
-    });
-
-    const toyCategory = await this.categoryService.save({ name: 'Toy' });
-    const consoleCategory = await this.categoryService.save({
-      name: 'Console',
-    });
-
-    const pDetail1 = await this.productDetailService.save({
-      price: 100,
-      quantity: 200,
-      product: { id: product1.id },
-      store: { id: store1.id },
-    });
-
-    const pDetail2 = await this.productDetailService.save({
-      price: 200,
-      quantity: 10,
-      product: { id: product1.id },
-      store: { id: store2.id },
-    });
   }
+
   getData(): { message: string } {
     return { message: 'Welcome to api-inventory!' };
   }
