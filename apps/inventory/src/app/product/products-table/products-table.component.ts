@@ -28,12 +28,18 @@ export class ProductsTableComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.productService.entities$.subscribe((data) => {
-      console.log(data);
+    this.productService.filteredEntities$.subscribe((data) => {
       this.dataSource = new MatTableDataSource(data);
-
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    });
+  }
+
+  setFilter(filterValue: string) {
+    this.productService.setFilter((p: IProduct) => {
+      return JSON.stringify(p)
+        .toLowerCase()
+        .includes(filterValue.toLowerCase());
     });
   }
 }

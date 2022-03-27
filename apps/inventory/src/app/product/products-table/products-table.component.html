@@ -1,4 +1,8 @@
 <div class="mat-elevation-z8">
+  <mat-form-field appearance="outline" style="width: 100%"  >
+    <input #filterInput matInput autocomplete="off" (keyup)="setFilter(filterInput.value)"/>
+  </mat-form-field>
+
   <table
     mat-table
     class="full-width-table"
