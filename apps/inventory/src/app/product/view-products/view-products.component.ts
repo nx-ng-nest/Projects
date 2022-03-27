@@ -74,7 +74,7 @@ export class ViewProductsComponent implements OnInit, AfterViewInit {
   viewItems() {
     for (const p of this.productService.selectedItems$.getValue()) {
       const url = this.router.serializeUrl(
-        this.router.createUrlTree(['/product', p.id])
+        this.router.createUrlTree(['/product', p.id], { queryParams: { ...p } })
       );
 
       window.open(`#/${url}`, '_blank');

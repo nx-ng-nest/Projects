@@ -33,6 +33,7 @@ import { ViewProductsComponent } from './product/view-products/view-products.com
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditProductComponent } from './product/edit-product/edit-product.component';
+import { appReducer } from './app-store.reducers';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,12 @@ import { EditProductComponent } from './product/edit-product/edit-product.compon
     HttpClientModule,
     MatDialogModule,
     // StoreModue, EffectsModule, and EntityDataModule will be the following order
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot(
+      { app: appReducer },
+      {
+        initialState: {},
+      }
+    ),
     EffectsModule.forRoot([]),
     EntityDataModule.forRoot(entityConfig),
 
