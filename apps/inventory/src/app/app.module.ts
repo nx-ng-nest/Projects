@@ -33,6 +33,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { entityConfig } from './entity-metadata';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ProductsTableComponent } from './product/products-table/products-table.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -68,25 +69,16 @@ import { ProductsTableComponent } from './product/products-table/products-table.
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
-
+    MatCheckboxModule,
     MatButtonModule,
-
     MatSidenavModule,
-
     MatIconModule,
-
     MatListModule,
-
     MatTableModule,
-
     MatPaginatorModule,
-
     MatSortModule,
-
     MatGridListModule,
-
     MatCardModule,
-
     MatMenuModule,
   ],
 

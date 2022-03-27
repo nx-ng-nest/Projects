@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -16,8 +17,10 @@ export class ProductsTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<ProductsTableItem>;
 
+  selectedItems: IProduct[] = [];
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['select', 'id', 'name'];
 
   dataSource!: MatTableDataSource<IProduct>;
 
@@ -25,6 +28,8 @@ export class ProductsTableComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.productService.getAll();
+
+    this.productService.selectedItems$.subscribe(console.log);
   }
 
   ngAfterViewInit(): void {
@@ -41,5 +46,13 @@ export class ProductsTableComponent implements OnInit, AfterViewInit {
         .toLowerCase()
         .includes(filterValue.toLowerCase());
     });
+  }
+
+  selectItem(event: MatCheckboxChange, productId: number) {
+    if (event.checked) {
+      this.productService.selectItem(productId);
+    } else {
+      this.productService.deselectItem(productId);
+    }
   }
 }
