@@ -1,21 +1,22 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { IProduct } from '@projects/interface';
 import { ProductService } from '../product.service';
-import { ProductsTableItem } from './products-table-datasource';
 
 @Component({
   selector: 'projects-products-table',
-  templateUrl: './products-table.component.html',
-  styleUrls: ['./products-table.component.css'],
+  templateUrl: './view-products.component.html',
+  styleUrls: ['./view-products.component.css'],
 })
-export class ProductsTableComponent implements OnInit, AfterViewInit {
+export class ViewProductsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<ProductsTableItem>;
+  @ViewChild(MatTable) table!: MatTable<IProduct>;
 
   selectedItems: IProduct[] = [];
 
@@ -24,9 +25,15 @@ export class ProductsTableComponent implements OnInit, AfterViewInit {
 
   dataSource!: MatTableDataSource<IProduct>;
 
-  constructor(public productService: ProductService) {}
+  constructor(
+    public productService: ProductService,
+    public dialog: MatDialog,
+    public router: Router
+  ) {}
 
   ngOnInit() {
+    document.title = `View Products`;
+
     this.productService.getAll();
 
     this.productService.selectedItems$.subscribe(console.log);
@@ -48,22 +55,30 @@ export class ProductsTableComponent implements OnInit, AfterViewInit {
     });
   }
 
-  selectItem(event: MatCheckboxChange, productId: number) {
+  selectItem(event: MatCheckboxChange, product: IProduct) {
     if (event.checked) {
-      this.productService.selectItem(productId);
+      this.productService.selectItem(product);
     } else {
-      this.productService.deselectItem(productId);
+      this.productService.deselectItem(product.id || -1);
     }
   }
 
   isSelected(id: number) {
-    return this.productService.selectedItems$.getValue().includes(id);
+    return (
+      this.productService.selectedItems$
+        .getValue()
+        .findIndex((e) => e.id == id) >= 0
+    );
   }
 
   viewItems() {
-    console.log(
-      `View the selected items ${this.productService.selectedItems$.getValue()}`
-    );
+    for (const p of this.productService.selectedItems$.getValue()) {
+      const url = this.router.serializeUrl(
+        this.router.createUrlTree(['/product', p.id])
+      );
+
+      window.open(`#/${url}`, '_blank');
+    }
   }
 
   deleteItems() {
@@ -85,7 +100,7 @@ export class ProductsTableComponent implements OnInit, AfterViewInit {
   }
 
   selectAllItems(items: IProduct[]) {
-    this.productService.selectAllItems(items.map((e) => e.id || 0));
+    this.productService.selectAllItems(items);
   }
 
   deselectAllItems() {

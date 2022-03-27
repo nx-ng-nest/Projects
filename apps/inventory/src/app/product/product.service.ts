@@ -10,24 +10,25 @@ import { SubSink } from 'subsink';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService extends EntityCollectionServiceBase<IProduct> {
-  selectedItems$ = new BehaviorSubject<number[]>([]);
+  selectedItems$ = new BehaviorSubject<IProduct[]>([]);
   subsink = new SubSink();
   constructor(elementsFactory: EntityCollectionServiceElementsFactory) {
     super('Product', elementsFactory);
   }
 
-  selectItem(id: number) {
+  selectItem(id: IProduct) {
     this.selectedItems$.next([...this.selectedItems$.getValue(), id]);
   }
 
   deselectItem(id: number) {
     const items = this.selectedItems$.getValue();
-    const itemIndex = items.indexOf(id);
+    const itemIndex = items.findIndex((e) => e.id == id);
+
     const __ = items.splice(itemIndex, 1);
     this.selectedItems$.next(items);
   }
 
-  selectAllItems(filteredItems: number[]) {
+  selectAllItems(filteredItems: IProduct[]) {
     this.selectedItems$.next(filteredItems);
   }
 

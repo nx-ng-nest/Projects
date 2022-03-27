@@ -4,10 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import {
-  MatFormFieldControl,
-  MatFormFieldModule,
-} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -32,22 +29,25 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { entityConfig } from './entity-metadata';
 import { NavigationComponent } from './navigation/navigation.component';
-import { ProductsTableComponent } from './product/products-table/products-table.component';
+import { ViewProductsComponent } from './product/view-products/view-products.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { EditProductComponent } from './product/edit-product/edit-product.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    ProductsTableComponent,
+    ViewProductsComponent,
     DashboardComponent,
+    EditProductComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-
+    MatDialogModule,
     // StoreModue, EffectsModule, and EntityDataModule will be the following order
     StoreModule.forRoot({}, {}),
     EffectsModule.forRoot([]),
@@ -61,7 +61,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     }),
 
     LayoutModule,
-
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
