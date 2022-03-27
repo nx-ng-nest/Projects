@@ -55,4 +55,40 @@ export class ProductsTableComponent implements OnInit, AfterViewInit {
       this.productService.deselectItem(productId);
     }
   }
+
+  isSelected(id: number) {
+    return this.productService.selectedItems$.getValue().includes(id);
+  }
+
+  viewItems() {
+    console.log(
+      `View the selected items ${this.productService.selectedItems$.getValue()}`
+    );
+  }
+
+  deleteItems() {
+    console.log(
+      `Delete the selected items ${this.productService.selectedItems$.getValue()}`
+    );
+  }
+
+  transferItems() {
+    console.log(
+      `Transfer items ${this.productService.selectedItems$.getValue()}`
+    );
+  }
+
+  printBarcodes() {
+    console.log(
+      `Print barcodes ${this.productService.selectedItems$.getValue()}`
+    );
+  }
+
+  selectAllItems(items: IProduct[]) {
+    this.productService.selectAllItems(items.map((e) => e.id || 0));
+  }
+
+  deselectAllItems() {
+    this.productService.deselectAllItems();
+  }
 }
