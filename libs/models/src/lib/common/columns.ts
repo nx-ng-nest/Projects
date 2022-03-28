@@ -8,21 +8,12 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import {
-  Column,
-  ColumnOptions,
-} from 'typeorm';
+import { Column, ColumnOptions } from 'typeorm';
 
 import { applyDecorators } from '@nestjs/common';
-import {
-  ApiProperty,
-  ApiPropertyOptions,
-} from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 
-import {
-  HashTransformer,
-  jsonStringTransformer,
-} from './column.transformer';
+import { HashTransformer, jsonStringTransformer } from './column.transformer';
 
 function IsRequired(required: boolean | null) {
   return required ? IsNotEmpty() : IsOptional();
@@ -174,6 +165,23 @@ export function JsonColumn(options?: ApiPropertyOptions & ColumnOptions) {
       update: options?.update == false ? false : true,
       transformer: jsonStringTransformer(),
       default: {},
+    }),
+    IsRequired(options?.required == false ? false : true)
+  );
+}
+export function BooleanColumn(options?: ApiPropertyOptions & ColumnOptions) {
+  return applyDecorators(
+    ApiProperty({
+      format: 'checkbox',
+      default: options?.default || false,
+      nullable: options?.required == false ? true : false,
+      required: options?.required == false ? false : true,
+    }),
+    Column({
+      type: 'boolean',
+      nullable: options?.required == false ? true : false,
+      update: options?.update == false ? false : true,
+      default: options.default || false,
     }),
     IsRequired(options?.required == false ? false : true)
   );

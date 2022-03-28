@@ -6,4 +6,5 @@ export interface IProduct extends IID {
   barcode: string;
   features: Record<string, unknown>;
   categories?: IID[];
+  selected?: boolean;
 }

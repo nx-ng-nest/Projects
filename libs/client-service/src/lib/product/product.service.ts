@@ -1,52 +1,15 @@
-import { CollectionViewer } from '@angular/cdk/collections';
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 
-import { Observable } from 'rxjs';
-import { SubSink } from 'subsink';
+import { BehaviorSubject } from 'rxjs';
 
-import {
-  EntityCollectionServiceBase,
-  EntityCollectionServiceElementsFactory,
-} from '@ngrx/data';
+import { EntityCollectionServiceElementsFactory } from '@ngrx/data';
 import { IProduct } from '@projects/interface';
+import { BaseCollectionService } from '../base';
 
 @Injectable({ providedIn: 'root' })
-export class ProductService extends EntityCollectionServiceBase<IProduct> {
-  searchControl = new FormControl('');
-  paginator: MatPaginator | undefined;
-  sort: MatSort | undefined;
-  subsink = new SubSink();
-
-  constructor(elementsFactory: EntityCollectionServiceElementsFactory) {
-    super('Product', elementsFactory);
-  }
-
-  connect(collectionViewer: CollectionViewer): Observable<readonly IProduct[]> {
-    this.subsink.sink = this.getAll().subscribe();
-    this.subsink.sink = this.searchControl.valueChanges.subscribe(
-      (filterText) => {
-        if (filterText && filterText.trim().length > 0) {
-          this.setFilter((p: IProduct) => {
-            const textString = JSON.stringify(p).toLowerCase();
-            const filterTexts = filterText
-              ?.toLowerCase()
-              .split(' ') as string[];
-            return filterTexts
-              .map((t) => textString.includes(t))
-              .reduce((p, c) => p && c);
-          });
-        } else {
-          this.setFilter((p: any) => p);
-        }
-      }
-    );
-    return this.filteredEntities$;
-  }
-
-  disconnect(collectionViewer: CollectionViewer): void {
-    this.subsink.unsubscribe();
+export class ProductService extends BaseCollectionService<IProduct> {
+  selectedItems$ = new BehaviorSubject<IProduct[]>([]);
+  constructor(elementFactory: EntityCollectionServiceElementsFactory) {
+    super('Product', elementFactory);
   }
 }

@@ -15,3 +15,12 @@
   top: 0;
   z-index: 1;
 }
+
+a {
+  border-left: 0px solid transparent;
+  transition: border-left ease-in-out 400ms;
+}
+
+a.router-link-active {
+  border-left: 10px solid royalblue;
+}

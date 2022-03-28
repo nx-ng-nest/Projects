@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { AppState, AppUpState } from '../../app-store';
-import { actions } from '../../app-store.actions';
-import { ProductService } from '../product.service';
+import { ProductService } from '@projects/client-service';
+import { map } from 'rxjs';
+import { AppService } from '../../app.service';
 
 @Component({
   selector: 'projects-edit-product',
@@ -12,35 +10,20 @@ import { ProductService } from '../product.service';
   styleUrls: ['./edit-product.component.css'],
 })
 export class EditProductComponent implements OnInit {
-  idControl = new FormControl({ value: '', disabled: true });
-  nameControl = new FormControl('');
-  descriptionControl = new FormControl('');
-
-  formGroup = new FormGroup({
-    id: this.idControl,
-    name: this.nameControl,
-    description: this.descriptionControl,
-  });
-
+  products$ = this.productService.filteredEntities$.pipe(
+    map((items) => items.filter((e) => e.selected))
+  );
   constructor(
     public productService: ProductService,
     public activatedRoute: ActivatedRoute,
-    private store: Store<AppUpState>
+    public appService: AppService
   ) {}
 
   ngOnInit(): void {
-    const queryParams = this.activatedRoute.snapshot.queryParamMap;
+    this.appService.setPageName('Edit Products');
+  }
 
-    this.idControl.setValue(queryParams.get('id'));
-    this.nameControl.setValue(queryParams.get('name'));
-    this.descriptionControl.setValue(queryParams.get('description'));
-    this.activatedRoute.params.subscribe((data) => {
-      document.title = `View Product ${data['id']}`;
-    });
-    this.store.dispatch(
-      actions.SET_CURRENT_PAGE({
-        currentPage: `Edit Product ${queryParams.get('id')}`,
-      })
-    );
+  close(id: any) {
+    this.productService.updateOneInCache({ id, selected: false });
   }
 }

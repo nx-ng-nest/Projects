@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { AppUpState } from './app-store';
 
 @Component({
   selector: 'projects-root',
@@ -9,7 +10,7 @@ import { Store } from '@ngrx/store';
 export class AppComponent {
   title = 'inventory';
 
-  constructor(private store: Store) {
+  constructor(private store: Store<AppUpState>) {
     this.store.subscribe(console.log);
   }
 }

@@ -4,6 +4,7 @@ import { Category } from '../category';
 import {
   BarcodeColumn,
   BaseEntity,
+  BooleanColumn,
   ID,
   JsonColumn,
   TextColumn,
