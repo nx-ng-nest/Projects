@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -25,6 +26,9 @@ export class ViewProductsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<IProduct>;
+
+  searchKeyOptionControl = new FormControl('', []);
+  searchKeyOptions = ['barcode', 'id', 'name', 'description'];
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['selected', 'barcode', 'name', 'description'];
@@ -53,11 +57,16 @@ export class ViewProductsComponent implements OnInit, AfterViewInit {
   }
 
   setFilter(filterValue: string) {
-    this.productService.setFilter((p: IProduct) => {
-      return JSON.stringify(p)
-        .toLowerCase()
-        .includes(filterValue.toLowerCase());
-    });
+    const keyOptions = this.searchKeyOptionControl.value as (keyof IProduct)[];
+    if (keyOptions) {
+      //
+    } else {
+      this.productService.setFilter((p: IProduct) => {
+        return JSON.stringify(p)
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
+      });
+    }
   }
 
   selectItem(event: MatCheckboxChange, product: IProduct) {

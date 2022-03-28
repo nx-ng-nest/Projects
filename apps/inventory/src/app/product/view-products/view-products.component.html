@@ -1,12 +1,37 @@
 <div class="mat-elevation-z8">
-  <mat-form-field appearance="outline" style="width: 100%">
-    <input
-      #filterInput
-      matInput
-      autocomplete="off"
-      (keyup)="setFilter(filterInput.value)"
-    />
-  </mat-form-field>
+  <div class="search-input">
+    <mat-form-field appearance="outline" class="search-key">
+      <mat-label>Search By Key</mat-label>
+      <mat-select [formControl]="searchKeyOptionControl">
+        <mat-select-trigger>
+          {{
+            searchKeyOptionControl.value ? searchKeyOptionControl.value[0] : ''
+          }}
+          <span
+            *ngIf="searchKeyOptionControl.value?.length > 1"
+            class="example-additional-selection"
+          >
+            (+{{ searchKeyOptionControl.value.length - 1 }}
+            {{
+              searchKeyOptionControl.value?.length === 2 ? 'other' : 'others'
+            }})
+          </span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let option of searchKeyOptions" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%">
+      <input
+        #filterInput
+        matInput
+        autocomplete="off"
+        (keyup)="setFilter(filterInput.value)"
+      />
+    </mat-form-field>
+  </div>
 
   <table
     mat-table

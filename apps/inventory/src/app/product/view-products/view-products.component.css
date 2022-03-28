@@ -5,3 +5,15 @@
 td:first-child {
   width: 70px;
 }
+.search-input{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+}
+
+.search-key{
+  /* width: 100px; */
+}
+
+
