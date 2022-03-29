@@ -1,12 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EditProductComponent } from './product/edit-product/edit-product.component';
-import { ViewProductsComponent } from './product/view-products/view-products.component';
-import { RoutePath } from './navigation/route-path.enum';
+import { AppRoutePaths } from './app-route-paths';
 
 const routes: Routes = [
-  { path: RoutePath.VIEW_PRODUCTS, component: ViewProductsComponent },
-  { path: RoutePath.EDIT_PRODUCTS, component: EditProductComponent },
+  {
+    path: AppRoutePaths.WEBSITE,
+    loadChildren: () =>
+      import('./website/website.module').then((m) => m.WebsiteModule),
+  },
+  {
+    path: AppRoutePaths.INVENTORY,
+    loadChildren: () =>
+      import('./inventory/inventory.module').then((m) => m.InventoryModule),
+  },
 ];
 
 @NgModule({

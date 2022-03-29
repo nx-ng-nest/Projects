@@ -19,8 +19,8 @@
       "@projects/client-service": ["libs/client-service/src/index.ts"],
       "@projects/email": ["libs/email/src/index.ts"],
       "@projects/interface": ["libs/interface/src/index.ts"],
-      "@projects/material": ["libs/material/src/index.ts"],
-      "@projects/models": ["libs/models/src/index.ts"]
+      "@projects/models": ["libs/models/src/index.ts"],
+      "@projects/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

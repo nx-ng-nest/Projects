@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppUpState } from './app-store';
+import { Component, OnInit } from '@angular/core';
+import { NavigationService } from '@projects/ui';
 
 @Component({
   selector: 'projects-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'inventory';
 
-  constructor(private store: Store<AppUpState>) {
-    this.store.subscribe(console.log);
+  constructor(private readonly navigationService: NavigationService) {}
+  ngOnInit(): void {
+    this.navigationService.setNavigationMenuItems([]);
   }
 }
