@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationService } from '@projects/ui';
+import { appRoutes } from '../app-routes';
 
 @Component({
   selector: 'projects-website',
   templateUrl: './website.component.html',
-  styleUrls: ['./website.component.scss']
+  styleUrls: ['./website.component.scss'],
 })
 export class WebsiteComponent implements OnInit {
+  constructor(private readonly navigationService: NavigationService) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  ngOnInit(): void {}
+  goToInventory() {
+    this.navigationService.navigate(appRoutes.inventory);
   }
-
 }

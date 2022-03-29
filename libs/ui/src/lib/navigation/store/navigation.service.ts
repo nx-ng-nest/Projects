@@ -19,6 +19,7 @@ export class NavigationService {
 
   constructor(private store: Store, private router: Router) {
     this.store.subscribe(console.log);
+    this.pageName$.subscribe(console.log);
   }
 
   setNavigationMenuItems(navigationMenu: NavigationMenuItem[]) {
@@ -41,7 +42,14 @@ export class NavigationService {
     );
   }
 
+  setUrl(url: string) {
+    this.store.dispatch(navigationActions.SET_URL({ url }));
+  }
+
   navigate(navigationMenuItem: NavigationMenuItem) {
+    this.setCurrentPage(navigationMenuItem.pageName);
+    this.setUrl(navigationMenuItem.path);
+    this.setCurrentlyClickedNavigationMenuItem(navigationMenuItem);
     this.router.navigate([navigationMenuItem.path]);
   }
 }

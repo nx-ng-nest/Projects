@@ -12,8 +12,8 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { entityConfig } from './entity-metadata';
-import { NavigationModule, NavigationStoreModule } from '@projects/ui';
 import '@angular/localize/init';
+import { NavigationModule } from '@projects/ui';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,8 +22,8 @@ import '@angular/localize/init';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    NavigationStoreModule,
 
+    NavigationModule,
     // StoreModue, EffectsModule, and EntityDataModule will be the following order
     StoreModule.forRoot({}, { initialState: {} }),
     EffectsModule.forRoot([]),
@@ -35,7 +35,6 @@ import '@angular/localize/init';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    NavigationModule,
   ],
   bootstrap: [AppComponent],
 })

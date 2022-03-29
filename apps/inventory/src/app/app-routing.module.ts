@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppRoutePaths } from './app-route-paths';
+import { appRoutes } from './app-routes';
 
 const routes: Routes = [
   {
-    path: AppRoutePaths.WEBSITE,
+    path: appRoutes.website.path,
     loadChildren: () =>
       import('./website/website.module').then((m) => m.WebsiteModule),
   },
   {
-    path: AppRoutePaths.INVENTORY,
+    path: appRoutes.inventory.path,
     loadChildren: () =>
       import('./inventory/inventory.module').then((m) => m.InventoryModule),
   },

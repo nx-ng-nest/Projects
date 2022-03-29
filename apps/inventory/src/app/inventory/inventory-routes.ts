@@ -1,12 +1,16 @@
 import { NavigationMenuItem } from '@projects/ui';
-import { ProductsComponent } from './products/products.component';
 
-export const inventoryRoutes: Readonly<NavigationMenuItem[]> = [
-  {
-    path: $localize`view-products`,
-    icon: `inventory`,
-    label: `Products`,
-    pageName: `View Products`,
-    component: ProductsComponent,
+export interface InventoryRouteInterface {
+  readonly products: NavigationMenuItem;
+}
+/**
+ * Routes for app.
+ */
+export const inventoryRoutes: InventoryRouteInterface = {
+  products: {
+    icon: '',
+    path: '',
+    label: 'products',
+    pageName: 'products',
   },
-];
+};

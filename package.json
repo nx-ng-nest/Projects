@@ -9,6 +9,7 @@
     "build": "nx build",
     "inventory:build": "nx run inventory:build",
     "inventory:build:tr": "nx run inventory:build:tr",
+    "inventory:serve": "nx run inventory:serve",
     "inventory:serve:tr": "nx run inventory:serve:tr",
     "test": "nx test"
   },
