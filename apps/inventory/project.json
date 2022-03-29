@@ -5,7 +5,10 @@
   "prefix": "projects",
   "i18n": {
     "locales": {
-      "tr": "apps/inventory/src/assets/i18n/messages.tr.json"
+      "tr": {
+        "baseHref": "",
+        "translation": "apps/inventory/src/assets/i18n/messages.tr.json"
+      }
     }
   },
   "targets": {
@@ -31,6 +34,7 @@
       },
       "configurations": {
         "production": {
+          "baseHref": "/",
           "budgets": [
             {
               "type": "initial",

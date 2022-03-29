@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { entityConfig } from './entity-metadata';
 import { NavigationModule, NavigationStoreModule } from '@projects/ui';
 import '@angular/localize/init';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -36,7 +37,6 @@ import '@angular/localize/init';
     }),
     NavigationModule,
   ],
-
   bootstrap: [AppComponent],
 })
 export class AppModule {}
