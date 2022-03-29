@@ -13,7 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { entityConfig } from './entity-metadata';
 import { NavigationModule, NavigationStoreModule } from '@projects/ui';
-
+import '@angular/localize/init';
 @NgModule({
   declarations: [AppComponent],
   imports: [

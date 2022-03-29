@@ -11,6 +11,13 @@ export class AppComponent implements OnInit {
 
   constructor(private readonly navigationService: NavigationService) {}
   ngOnInit(): void {
-    this.navigationService.setNavigationMenuItems([]);
+    this.navigationService.setNavigationMenuItems([
+      {
+        icon: 'inventory',
+        path: 'products',
+        label: $localize`Products`,
+        pageName: $localize`View Products`,
+      },
+    ]);
   }
 }
