@@ -52,7 +52,11 @@ export class AppService {
     for (let i = 0; i < 200; i++) {
       // const cat = randCategory();
       const product = fakeProduct();
-      await this.productService.save(product);
+      try {
+        await this.productService.save(product);
+      } catch (err) {
+        continue;
+      }
     }
 
     // const user = await this.userService.save({

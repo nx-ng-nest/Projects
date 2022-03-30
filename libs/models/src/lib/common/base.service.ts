@@ -42,7 +42,7 @@ export abstract class BaseDataService<T> {
 
   async delete(id: number) {
     try {
-      return this.repo.delete(id);
+      return this.repo.softDelete(id);
     } catch (err) {
       throw new UnprocessableEntityException(err.message);
     }

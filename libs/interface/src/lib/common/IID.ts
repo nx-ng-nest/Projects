@@ -12,8 +12,7 @@ export interface IIDS {
   /**
    * Unique id
    */
-  uuid?: string;
-
+  id1?: string;
   /**
    * Unique id
    */

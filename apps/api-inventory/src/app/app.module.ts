@@ -1,12 +1,8 @@
-import {
-  CacheModule,
-  Module,
-  OnModuleInit,
-} from '@nestjs/common';
+import { CacheModule, Module, OnModuleInit } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AuthModule } from '@projects/auth';
 
 import { AppController } from './app.controller';
@@ -15,14 +11,23 @@ import { GlobalModule } from './common';
 import { ResourceModules } from './resources';
 import { ResourceEntities } from './resources/resource.entities';
 
+const dbConfig: { [key: string]: TypeOrmModuleOptions } = {
+  sqlite: {
+    type: 'sqlite',
+    database: 'database/inventory.sqlite',
+  },
+  postgres: {
+    type: 'postgres',
+    username: 'postgres',
+    password: 'password',
+    database: 'api-inventory',
+  },
+};
 @Module({
   imports: [
     GlobalModule,
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      username: 'postgres',
-      password: 'password',
-      database: 'api-inventory',
+      ...dbConfig.sqlite,
       entities: ResourceEntities,
       synchronize: true,
       dropSchema: true,

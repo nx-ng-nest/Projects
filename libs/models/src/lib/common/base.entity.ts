@@ -8,7 +8,6 @@ import {
 import { BooleanColumn, TextColumn } from './columns';
 
 export class BaseEntity implements ICommonFields {
-  @PrimaryGeneratedColumn('uuid') uuid: string;
   @PrimaryGeneratedColumn() id: number;
   @CreateDateColumn() createdA?: Date;
   @UpdateDateColumn() updatedA?: Date;

@@ -26,6 +26,12 @@ const PLURAL = 'products';
 
 class ProductQueryDTO {
   @ApiProperty({ required: false })
+  take: number;
+
+  @ApiProperty({ required: false })
+  skip: number;
+
+  @ApiProperty({ required: false })
   id?: number;
 
   @ApiProperty({ required: false })
@@ -55,7 +61,6 @@ export class ProductController {
       });
     }
 
-    console.log(query);
     if (query.q) {
       return this.productService.find({
         where: [{ name: query.q }, { description: query.q }],

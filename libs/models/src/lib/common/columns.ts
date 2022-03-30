@@ -172,7 +172,6 @@ export function JsonColumn(options?: ApiPropertyOptions & ColumnOptions) {
       nullable: options?.required == false ? true : false,
       update: options?.update == false ? false : true,
       transformer: jsonStringTransformer(),
-      default: {},
     }),
     IsRequired(options?.required == false ? false : true)
   );
