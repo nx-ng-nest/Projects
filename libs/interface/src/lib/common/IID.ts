@@ -2,21 +2,25 @@ export interface IID {
   /**
    * Primary Generated Unique id
    */
-  id: number;
+  id?: number;
 }
+
+/**
+ * Those fields are used for barcode, universal product id, or serial number.
+ */
 export interface IIDS {
   /**
    * Unique id
    */
-  id1: string | null;
+  uuid?: string;
 
   /**
    * Unique id
    */
-  id2: string | null;
+  id2?: string;
 
   /**
    * Unique id
    */
-  id3: string | null;
+  id3?: string;
 }

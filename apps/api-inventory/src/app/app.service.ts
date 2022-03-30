@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { ProductService } from './resources';
 
-import { commerce, company } from 'faker';
+import { commerce } from 'faker';
 import { v4 } from 'uuid';
-import { IProductCreateDTO } from '@projects/interface';
+import { IID, IProduct } from '@projects/interface';
 
 function randomItem(items: any[]): any {
   return items[Math.floor(Math.random() * items.length - 1)];
 }
 
-function fakeProduct(category?: { id: number }): IProductCreateDTO {
+function fakeProduct(category?: IID): IProduct {
   return {
-    barcode: v4(),
+    uuid: v4(),
     name: commerce.productName() + Math.floor(Math.random() * 2000),
     description: commerce.productDescription(),
     features: {

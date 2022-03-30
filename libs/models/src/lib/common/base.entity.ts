@@ -8,17 +8,18 @@ import {
 import { BooleanColumn, TextColumn } from './columns';
 
 export class BaseEntity implements ICommonFields {
+  @PrimaryGeneratedColumn('uuid') uuid: string;
   @PrimaryGeneratedColumn() id: number;
-  @CreateDateColumn() createdAt: Date;
-  @UpdateDateColumn() updatedAt: Date;
-  @DeleteDateColumn() deletedAt: Date;
-  @BooleanColumn({ required: false, default: false }) selected: boolean;
-  @BooleanColumn({ required: false, default: false }) active: boolean;
+  @CreateDateColumn() createdA?: Date;
+  @UpdateDateColumn() updatedA?: Date;
+  @DeleteDateColumn() deletedA?: Date;
+  @BooleanColumn({ required: false, default: false }) selected?: boolean;
+  @BooleanColumn({ required: false, default: false }) active?: boolean;
 
   @TextColumn({ unique: true, required: false })
-  id1: string;
+  id1?: string;
   @TextColumn({ unique: true, required: false })
-  id2: string;
+  id2?: string;
   @TextColumn({ unique: true, required: false })
-  id3: string;
+  id3?: string;
 }

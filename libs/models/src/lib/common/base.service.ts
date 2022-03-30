@@ -23,9 +23,9 @@ export abstract class BaseDataService<T> {
     }
   }
 
-  async find(options?: T) {
+  async find(options?: FindManyOptions) {
     try {
-      return await this.repo.find({ where: options });
+      return await this.repo.find(options);
     } catch (err) {
       throw new UnprocessableEntityException(err.message);
     }

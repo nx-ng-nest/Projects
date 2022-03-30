@@ -1,4 +1,4 @@
-import { ICategory, ICreateCategoryDTO } from '@projects/interface';
+import { ICategory } from '@projects/interface';
 import { Entity } from 'typeorm';
 
 import { BaseEntity, TextColumn } from '../common';
@@ -7,8 +7,3 @@ import { BaseEntity, TextColumn } from '../common';
 export class Category extends BaseEntity implements ICategory {
   @TextColumn({ unique: true, minLength: 3, maxLength: 10 }) name: string;
 }
-export class CategoryCreateDTO implements ICreateCategoryDTO {
-  @TextColumn({ minLength: 3, maxLength: 10 }) name: string;
-}
-
-

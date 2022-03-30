@@ -1,4 +1,3 @@
-
 import {
   Body,
   Controller,
@@ -10,21 +9,32 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { ReadPermission, Secure, WritePermission } from '@projects/auth';
 import {
   CreateValidationPipe,
   Product,
-  ProductCreateDTO,
-  QueryValidationPipe,
   UpdateValidationPipe,
 } from '@projects/models';
+import { Transform } from 'class-transformer';
+import { ILike } from 'typeorm';
 
 import { ProductService } from './product.service';
-import { IProductCreateDTO } from '@projects/interface';
 
 const SINGULAR = 'product';
 const PLURAL = 'products';
+
+class ProductQueryDTO {
+  @ApiProperty({ required: false })
+  id?: number;
+
+  @ApiProperty({ required: false })
+  uuid: string;
+
+  @ApiProperty({ required: false })
+  @Transform(({ value }) => value && ILike(`%${value}%`))
+  q?: string;
+}
 
 @Secure()
 @ApiTags(ProductController.name)
@@ -34,14 +44,30 @@ export class ProductController {
 
   @ReadPermission(SINGULAR)
   @Get(PLURAL)
-  get(@Query(QueryValidationPipe) options: Product) {
-    console.log(options);
-    return this.productService.find(options);
+  get(@Query(UpdateValidationPipe) query: ProductQueryDTO) {
+    if (query.id) {
+      return this.productService.find({ where: { id: query.id } });
+    }
+
+    if (query.uuid) {
+      return this.productService.find({
+        where: [{ uuid: query.uuid }, { id2: query.uuid }, { id3: query.uuid }],
+      });
+    }
+
+    console.log(query);
+    if (query.q) {
+      return this.productService.find({
+        where: [{ name: query.q }, { description: query.q }],
+      });
+    }
+
+    return this.productService.find();
   }
 
   @WritePermission(SINGULAR)
   @Post(SINGULAR)
-  post(@Body(CreateValidationPipe) body: ProductCreateDTO) {
+  post(@Body(CreateValidationPipe) body: Product) {
     const newProduct = this.productService.save(body);
     return newProduct;
   }
@@ -50,7 +76,7 @@ export class ProductController {
   @Patch(SINGULAR + '/:id')
   patch(
     @Param('id', ParseIntPipe) id: number,
-    @Body(UpdateValidationPipe) updated: ProductCreateDTO
+    @Body(UpdateValidationPipe) updated: Product
   ) {
     return this.productService.update(id, updated);
   }

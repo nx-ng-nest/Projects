@@ -1,12 +1,5 @@
 import { ICategory } from '../category';
-import {
-  ICommonFields,
-  IID,
-  IIDS,
-  IStatus,
-  ITimestamp,
-  OmitFields,
-} from '../common';
+import { ICommonFields } from '../common';
 
 export interface IProduct<Category = ICategory> extends ICommonFields {
   /**
@@ -19,11 +12,6 @@ export interface IProduct<Category = ICategory> extends ICommonFields {
   description: string;
 
   /**
-   * Required barcode
-   */
-  barcode: string;
-
-  /**
    * Optional features object
    */
   features: Record<string, unknown>;
@@ -31,8 +19,5 @@ export interface IProduct<Category = ICategory> extends ICommonFields {
   /**
    * Optional categories
    */
-  categories: Category[];
+  categories: Partial<Category>[];
 }
-
-export interface IProductCreateDTO
-  extends OmitFields<IProduct<IID>, ITimestamp & IID> {}

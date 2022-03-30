@@ -1,4 +1,4 @@
 export interface IStatus {
-  selected: boolean;
-  active: boolean;
+  selected?: boolean;
+  active?: boolean;
 }

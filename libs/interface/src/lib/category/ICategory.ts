@@ -1,4 +1,4 @@
-import { ICommonFields, IID, IStatus, ITimestamp, OmitFields } from '../common';
+import { ICommonFields } from '../common';
 
 export interface ICategory extends ICommonFields {
   /**
@@ -6,6 +6,3 @@ export interface ICategory extends ICommonFields {
    */
   name: string;
 }
-
-export interface ICreateCategoryDTO
-  extends OmitFields<ICategory, ICommonFields> {}
