@@ -7,6 +7,7 @@ import { StoreService } from './resources/store';
 import { UserService } from './resources/user';
 import { commerce, company } from 'faker';
 import { v4 } from 'uuid';
+import { ProductCreateDTO } from '@projects/models';
 import { IProductCreateDTO } from '@projects/interface';
 
 function randomItem(items: any[]): any {
@@ -16,7 +17,7 @@ function randomItem(items: any[]): any {
 function fakeProduct(category: { id: number }): IProductCreateDTO {
   return {
     barcode: v4(),
-    name: commerce.productName() + Math.floor(Math.random() * 1000),
+    name: commerce.productName() + Math.floor(Math.random() * 2000),
     description: commerce.productDescription(),
     features: {
       [commerce.productAdjective()]: commerce.productDescription(),

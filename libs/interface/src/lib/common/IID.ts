@@ -8,15 +8,15 @@ export interface IIDS {
   /**
    * Unique id
    */
-  id1: string;
+  id1: string | null;
 
   /**
    * Unique id
    */
-  id2: string;
+  id2: string | null;
 
   /**
    * Unique id
    */
-  id3: string;
+  id3: string | null;
 }

@@ -1,5 +1,12 @@
 import { ICategory } from '../category';
-import { ICommonFields, IID, IStatus, ITimestamp, OmitFields } from '../common';
+import {
+  ICommonFields,
+  IID,
+  IIDS,
+  IStatus,
+  ITimestamp,
+  OmitFields,
+} from '../common';
 
 export interface IProduct<Category = ICategory> extends ICommonFields {
   /**

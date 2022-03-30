@@ -1,3 +1,4 @@
+import { Optional } from '@angular/core';
 import { IID, IProduct, IProductCreateDTO } from '@projects/interface';
 import { Entity, JoinTable, ManyToMany, Unique } from 'typeorm';
 
