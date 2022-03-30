@@ -7,13 +7,13 @@ import { StoreService } from './resources/store';
 import { UserService } from './resources/user';
 import { commerce, company } from 'faker';
 import { v4 } from 'uuid';
-import { IProduct } from '@projects/interface';
+import { IProductCreateDTO } from '@projects/interface';
 
 function randomItem(items: any[]): any {
   return items[Math.floor(Math.random() * items.length - 1)];
 }
 
-function fakeProduct(category: { id: number }): IProduct {
+function fakeProduct(category: { id: number }): IProductCreateDTO {
   return {
     barcode: v4(),
     name: commerce.productName() + Math.floor(Math.random() * 1000),

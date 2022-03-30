@@ -4,10 +4,10 @@ import {
   EntityCollectionServiceBase,
   EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-import { IID } from '@projects/interface';
+import { ICommonFields } from '@projects/interface';
 
 export class BaseCollectionService<
-  T extends IID
+  T extends ICommonFields
 > extends EntityCollectionServiceBase<T> {
   constructor(
     entityName: string,

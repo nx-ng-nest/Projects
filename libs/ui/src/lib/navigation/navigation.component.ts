@@ -23,16 +23,19 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     public navigationService: NavigationService
   ) {}
-  ngOnDestroy(): void {
-    this.subsink.unsubscribe();
-  }
 
   ngOnInit(): void {
     this.subsink.sink = this.navigationService.navigationItem$.subscribe(
-      (i: NavigationMenuItem) => {
-        this.navigationService.navigate(i);
+      (data) => {
+        console.log(data);
+        if (data) {
+          this.navigationService.navigate(data);
+        }
       }
     );
+  }
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   navigationItemClickHandler(p: NavigationMenuItem) {

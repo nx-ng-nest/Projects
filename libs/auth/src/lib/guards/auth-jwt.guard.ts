@@ -9,10 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
 import { AuthEnum } from '../auth.enum';
-import {
-  hasPermission,
-  isPublicResource,
-} from '../decorators';
+import { hasPermission, isPublicResource } from '../decorators';
 
 export function Secure() {
   return UseGuards(AuthJwtGuard);
@@ -23,7 +20,7 @@ export class AuthJwtGuard extends AuthGuard('jwt') {
   private logger = new Logger(AuthJwtGuard.name);
   constructor(
     private readonly reflector: Reflector,
-     @Inject(AuthEnum.IS_ACTIVE) private readonly isActive: boolean
+    @Inject(AuthEnum.IS_ACTIVE) private readonly isActive: boolean
   ) {
     super();
   }
@@ -38,7 +35,6 @@ export class AuthJwtGuard extends AuthGuard('jwt') {
     if (isPublicResource(context, this.reflector)) {
       return true;
     }
-    console.log(this.isActive)
 
     if (this.isActive == false) {
       return true;

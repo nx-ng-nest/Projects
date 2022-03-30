@@ -1,8 +1,28 @@
-import { IID } from '../common';
+import { ICommonFields, IID, OmitFields } from '../common';
+import { IStore } from '../store';
+import { IUser } from '../user';
 
-export interface ClockIn extends IID {
+export interface IClockIn<User = IUser, Store = IStore> extends ICommonFields {
+  /**
+   * Start date
+   */
   start: Date;
+
+  /**
+   * Stop date
+   */
   stop: Date;
-  user: IID;
-  store: IID;
+
+  /**
+   * Owner
+   */
+  user: User;
+
+  /**
+   * Store
+   */
+  store: Store;
 }
+
+export interface IClockInCreateDTO
+  extends OmitFields<IClockIn<IID, IID>, ICommonFields> {}

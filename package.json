@@ -10,7 +10,10 @@
     "inventory:build": "nx run inventory:build",
     "inventory:build:tr": "nx run inventory:build:tr",
     "inventory:serve": "nx run inventory:serve",
+    "api-inventory:serve": "nx run api-inventory:serve",
+    "api-inventory:build": "nx run api-inventory:build:",
     "inventory:serve:tr": "nx run inventory:serve:tr",
+    "extract-i18n": "nx extract-i18n inventory",
     "test": "nx test"
   },
   "private": true,

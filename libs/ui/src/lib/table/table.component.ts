@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { IBaseCollectionService, ICommonFields, IProduct, IUser } from '@projects/interface';
 
 export interface IData {
   id: number;
@@ -28,16 +29,15 @@ export class TableComponent implements OnInit {
   displayedColumns = ['selected', 'barcode', 'name', 'description'];
 
   dataSource!: MatTableDataSource<IData>;
-  @Input() dataService!: any;
+
+  @Input() dataService!: IBaseCollectionService;
 
   constructor(
     // public appService: AppService,
     public dialog: MatDialog // public navService: NavigationService
   ) {}
 
-  ngOnInit() {
-    // this.appService.setPageName('View Products');
-  }
+  ngOnInit() {}
 
   ngAfterViewInit(): void {
     this.dataService?.filteredEntities$.subscribe((data: any) => {

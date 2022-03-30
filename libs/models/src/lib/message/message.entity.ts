@@ -1,18 +1,11 @@
-import {
-  Entity,
-  JoinColumn,
-  ManyToOne,
-} from 'typeorm';
+import { IMessage } from '@projects/interface';
+import { Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import {
-  BaseEntity,
-  TextColumn,
-} from '../common';
+import { BaseEntity, TextColumn } from '../common';
 import { User } from '../user';
 
 @Entity()
-export class Message extends BaseEntity {
-
+export class Message extends BaseEntity implements IMessage {
   @ManyToOne(() => User, (u) => u.id)
   @JoinColumn()
   from: User;

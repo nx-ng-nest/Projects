@@ -63,7 +63,6 @@
           "sourceMap": true,
           "namedChunks": true
         },
-
         "tr": {
           "aot": true,
           "outputPath": "dist/apps/inventory",

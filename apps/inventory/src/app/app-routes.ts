@@ -11,12 +11,12 @@ export const appRoutes: AppRouteInterface = {
   website: {
     icon: '',
     path: '',
-    label: 'Website',
+    label: 'website',
     pageName: 'Website',
   },
   inventory: {
     icon: 'inventory',
-    path: 'Inventory',
+    path: 'inventory',
     label: 'inventory',
     pageName: 'View Products',
   },

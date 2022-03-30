@@ -16,11 +16,12 @@ import { ReadPermission, Secure, WritePermission } from '@projects/auth';
 import {
   CreateValidationPipe,
   Product,
+  ProductCreateDTO,
   UpdateValidationPipe,
 } from '@projects/models';
 
-import { ProductCreateDTO } from './product-create.dto';
 import { ProductService } from './product.service';
+import { IProductCreateDTO } from '@projects/interface';
 
 const SINGULAR = 'product';
 const PLURAL = 'products';
@@ -40,14 +41,15 @@ export class ProductController {
   @WritePermission(SINGULAR)
   @Post(SINGULAR)
   post(@Body(CreateValidationPipe) body: ProductCreateDTO) {
-    const newProduct = this.productService.save(body.product);
+    const newProduct = this.productService.save(body);
+    return newProduct;
   }
 
   @WritePermission(SINGULAR)
   @Patch(SINGULAR + '/:id')
   patch(
     @Param('id', ParseIntPipe) id: number,
-    @Body(UpdateValidationPipe) updated: Product
+    @Body(UpdateValidationPipe) updated: ProductCreateDTO
   ) {
     return this.productService.update(id, updated);
   }

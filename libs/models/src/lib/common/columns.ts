@@ -14,9 +14,10 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 
 import { HashTransformer, jsonStringTransformer } from './column.transformer';
+import { v4 } from 'uuid';
 
 function IsRequired(required: boolean | null) {
-  return required ? IsNotEmpty() : IsOptional();
+  return required == false ? IsOptional() : IsNotEmpty();
 }
 
 export function TextColumn(options?: ApiPropertyOptions & ColumnOptions) {
@@ -33,7 +34,7 @@ export function TextColumn(options?: ApiPropertyOptions & ColumnOptions) {
       nullable: options?.required == false ? true : false,
       update: options?.update == false ? false : true,
     }),
-    IsRequired(options?.required == false ? false : true),
+    IsRequired(options?.required),
     Length(options?.minLength || 1, options?.maxLength || 50)
   );
 }
@@ -52,7 +53,7 @@ export function NumericColumn(options?: ApiPropertyOptions & ColumnOptions) {
       nullable: options?.required == false ? true : false,
       update: options?.update == false ? false : true,
     }),
-    IsRequired(options?.required == false ? false : true),
+    IsRequired(options?.required),
     Min(options?.minimum || Number.MAX_SAFE_INTEGER),
     Max(options?.maximum || Number.MAX_SAFE_INTEGER)
   );
@@ -90,7 +91,7 @@ export function EmailColumn(options?: ApiPropertyOptions & ColumnOptions) {
       nullable: options?.required == false ? true : false,
       update: options?.update == false ? false : true,
     }),
-    IsRequired(options?.required == false ? false : true),
+    IsRequired(options?.required),
     IsEmail()
   );
 }
@@ -112,7 +113,7 @@ export function PasswordColumn(options?: ApiPropertyOptions & ColumnOptions) {
       transformer: HashTransformer(),
       update: options?.update == false ? false : true,
     }),
-    IsRequired(options?.required == false ? false : true),
+    IsRequired(options?.required),
     MinLength(6, { message: msg('6') }),
     Matches(/[a-z]{1,}/, { message: msg('a lowercase') }),
     Matches(/[A-Z]{1,}/, { message: msg('a uppercase') }),
@@ -135,16 +136,16 @@ export function ArrayTextColumn(options?: ApiPropertyOptions & ColumnOptions) {
       nullable: options?.required == false ? true : false,
       update: options?.update == false ? false : true,
     }),
-    IsRequired(options?.required == false ? false : true),
+    IsRequired(options?.required),
     Length(options?.minLength || 1, options?.maxLength || 50, { each: true })
   );
 }
 
 export function BarcodeColumn(options?: ApiPropertyOptions & ColumnOptions) {
   return TextColumn({
-    default: options?.default || '123456123456',
-    minLength: 12,
-    maxLength: 12,
+    default: v4(),
+    minLength: 5,
+    maxLength: 50,
     unique: true,
     ...options,
   });

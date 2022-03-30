@@ -17,10 +17,7 @@ export class NavigationService {
   url$ = this.store.select(selectURL);
   navigationItem$ = this.store.select(selectClickedNavigationMenuItem);
 
-  constructor(private store: Store, private router: Router) {
-    this.store.subscribe(console.log);
-    this.pageName$.subscribe(console.log);
-  }
+  constructor(private store: Store, private router: Router) {}
 
   setNavigationMenuItems(navigationMenu: NavigationMenuItem[]) {
     this.store.dispatch(

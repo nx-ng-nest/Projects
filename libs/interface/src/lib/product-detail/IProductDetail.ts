@@ -1,8 +1,29 @@
-import { IID } from '../common';
+import { ICommonFields, IID, IIDS, ITimestamp, OmitFields } from '../common';
+import { IProduct } from '../product/IProduct';
+import { IStore } from '../store';
 
-export interface IProductDetail extends IID {
+export interface IProductDetail<Store = IStore, Product = IProduct>
+  extends ICommonFields {
+  /**
+   * Price
+   */
   price: number;
+
+  /**
+   * Quantity
+   */
   quantity: number;
-  store: IID;
-  product: IID;
+
+  /**
+   * Store
+   */
+  store: Store;
+
+  /**
+   * Product
+   */
+  product: Product;
 }
+
+export interface IProductDetailCreateDTO
+  extends OmitFields<IProductDetail<IID, IID>, ITimestamp | IID | IIDS> {}

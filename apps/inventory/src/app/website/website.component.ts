@@ -11,7 +11,8 @@ export class WebsiteComponent implements OnInit {
   constructor(private readonly navigationService: NavigationService) {}
 
   ngOnInit(): void {}
-  goToInventory() {
+
+  goToInventoryApp() {
     this.navigationService.navigate(appRoutes.inventory);
   }
 }

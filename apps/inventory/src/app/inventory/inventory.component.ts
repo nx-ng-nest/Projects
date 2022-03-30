@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationService } from '@projects/ui';
 
 @Component({
   selector: 'projects-inventory',
@@ -7,12 +6,7 @@ import { NavigationService } from '@projects/ui';
   styleUrls: ['./inventory.component.scss'],
 })
 export class InventoryComponent implements OnInit {
-  constructor(private readonly navigationService: NavigationService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-
-    this.navigationService.setNavigationMenuItems([
-
-    ])
-  }
+  ngOnInit(): void {}
 }

@@ -1,16 +1,23 @@
-import {
-  DeepPartial,
-  FindManyOptions,
-  Repository,
-} from 'typeorm';
-import {
-  QueryDeepPartialEntity,
-} from 'typeorm/query-builder/QueryPartialEntity';
+import { DeepPartial, FindManyOptions, Repository } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 import { UnprocessableEntityException } from '@nestjs/common';
 
 export abstract class BaseDataService<T> {
   constructor(protected readonly repo: Repository<T>) {}
+
+  async isUnique(t: any) {
+    const uniqueColumns = this.repo.metadata.uniques.map(
+      (e) => e.givenColumnNames[0]
+    );
+
+    for (const u of uniqueColumns) {
+      const count = await this.repo.count({ [u]: t[u] });
+      if (count > 0) {
+        throw new UnprocessableEntityException(`${u} must be unique!`);
+      }
+    }
+  }
 
   async find(options?: FindManyOptions) {
     try {
@@ -21,6 +28,7 @@ export abstract class BaseDataService<T> {
   }
 
   async save(body: DeepPartial<T>) {
+    await this.isUnique(body);
     try {
       return await this.repo.save(body);
     } catch (err) {
@@ -37,6 +45,7 @@ export abstract class BaseDataService<T> {
   }
 
   async update(id: number, updated: QueryDeepPartialEntity<T>) {
+    await this.isUnique(updated);
     try {
       return await this.repo.update(id, updated);
     } catch (err) {
