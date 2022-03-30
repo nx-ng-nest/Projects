@@ -8,9 +8,13 @@ import { firstValueFrom } from 'rxjs';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
+  tableName!: string;
+  tableViewName!: string;
   constructor(public productService: ProductService) {}
 
   async ngOnInit() {
+    this.tableName = 'Products';
+    this.tableViewName = 'Default';
     await firstValueFrom(this.productService.getAll());
   }
 }

@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,7 +14,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { IBaseCollectionService } from '@projects/interface';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
+import { SubSink } from 'subsink';
 import {
   selectTableColumns,
   selectTableDisplayedColumns,
@@ -24,7 +32,8 @@ export interface IData {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
+  subsink = new SubSink();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
@@ -35,40 +44,47 @@ export class TableComponent implements OnInit {
   searchKeyOptionControl = new FormControl('', []);
   searchKeyOptions = ['barcode', 'id', 'name', 'description'];
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  columns$!: Observable<string[]>;
-  displayedColumns$!: Observable<string[]>;
+  columns$ = this.store
+    .select(selectTableColumns(this.tableName, this.tableViewName))
+    .pipe(
+      catchError((err, caught) => {
+        return of([]);
+      })
+    );
+
+  displayedColumns$ = this.store
+    .select(selectTableDisplayedColumns(this.tableName, this.tableViewName))
+    .pipe(
+      catchError((err, caught) => {
+        return of([]);
+      })
+    );
+
   tableActions$!: Observable<TableActions[]>;
 
-  dataSource!: MatTableDataSource<IData>;
+  dataSource = new MatTableDataSource([]);
 
   @Input() dataService!: IBaseCollectionService<any>;
 
-  constructor(
-    private store: Store,
-
-    public dialog: MatDialog
-  ) {}
+  constructor(private store: Store, public dialog: MatDialog) {}
 
   ngOnInit() {
     if (!this.tableName) throw new Error('You must provide the table name!');
+  }
 
-    this.columns$ = this.store.select(
-      selectTableColumns(this.tableName, this.tableViewName)
-    );
-
-    this.displayedColumns$ = this.store.select(
-      selectTableDisplayedColumns(this.tableName, this.tableViewName)
+  ngAfterViewInit() {
+    this.subsink.sink = this.dataService?.filteredEntities$.subscribe(
+      (data: any) => {
+        this.dataSource.data = data;
+        this.paginator._formFieldAppearance = 'outline';
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      }
     );
   }
 
-  ngAfterViewInit(): void {
-    this.dataService?.filteredEntities$.subscribe((data: any) => {
-      this.paginator._formFieldAppearance = 'outline';
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+  ngOnDestroy(): void {
+    this.subsink.unsubscribe();
   }
 
   setFilter(filterValue: string) {

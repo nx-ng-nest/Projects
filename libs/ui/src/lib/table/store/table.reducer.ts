@@ -55,6 +55,7 @@ export const tableReducer = createReducer<TableStoreState>(
   })
 );
 
+// Table selectors
 const selectNavigationFeature = (appState: any) => {
   return appState[TableStoreEnum.tableStoreName];
 };
@@ -63,11 +64,9 @@ export const selectTableDisplayedColumns = (
   tableName: string,
   tableView: string
 ) =>
-  createSelector(
-    selectNavigationFeature,
-    (state: TableStoreState) =>
-      state && state[tableName].views[tableView].displayedColumns
-  );
+  createSelector(selectNavigationFeature, (state: TableStoreState) => {
+    return state[tableName].views[tableView].displayedColumns;
+  });
 
 export const selectTableColumns = (tableName: string, tableView: string) =>
   createSelector(
