@@ -1,15 +1,7 @@
 import { EntityCollectionServiceBase } from '@ngrx/data';
-import { ICategory } from '../category';
-import { ICommonFields } from '../common';
-import { IProduct } from '../product';
-import { IProductDetail } from '../product-detail';
-import { ISale } from '../sale';
-import { IStore } from '../store';
-import { IUser } from '../user';
 
-export interface IBaseCollectionService<
-  T extends ICommonFields = IUser | IProduct | ICategory | IProductDetail | IStore | ISale
-> extends EntityCollectionServiceBase<T> {
+export interface IBaseCollectionService<T>
+  extends EntityCollectionServiceBase<T> {
   /**
    * Set the selected property item true.
    * @param id T id
@@ -39,5 +31,5 @@ export interface IBaseCollectionService<
    * Find selected item by id
    * @param id T id
    */
-  findSelecteseledItemById(id: number): Promise<T>;
+  findSelecteseledItemById(id: number): Promise<T | undefined>;
 }

@@ -22,11 +22,16 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private readonly navigationService: NavigationService
   ) {}
+
   ngOnInit(): void {
-    this.subsink.sink = this.store.subscribe((data) => {
-      localStorage.setItem('store', JSON.stringify(data));
-    });
+    const lastPageStr = localStorage.getItem('lastPage');
+    if (lastPageStr) {
+      const lastPage = JSON.parse(lastPageStr) as any;
+      this.navigationService.navigate(lastPage);
+    }
+
     this.subsink.sink = this.lastNavigationItem$.subscribe((d) => {
+      localStorage.setItem('lastPage', JSON.stringify(d));
       this.navigationService.navigate(d);
     });
   }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
-import { NavigationEnum } from './navigation-store-name';
+import { NavigationEnum } from './navigation-store.enum';
 import { navigationReducer } from './navigation.reducer';
 
 @NgModule({

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ProductService } from '@projects/client-service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'projects-products',
@@ -6,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  constructor() {}
+  constructor(public productService: ProductService) {}
 
-  ngOnInit(): void {}
+  async ngOnInit() {
+    await firstValueFrom(this.productService.getAll());
+  }
 }

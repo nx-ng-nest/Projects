@@ -4,16 +4,24 @@ import {
   EntityCollectionServiceBase,
   EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-import { ICommonFields } from '@projects/interface';
+import { IBaseCollectionService, ICommonFields } from '@projects/interface';
 
-export class BaseCollectionService<
-  T extends ICommonFields
-> extends EntityCollectionServiceBase<T> {
+export class BaseCollectionService<T extends ICommonFields>
+  extends EntityCollectionServiceBase<T>
+  implements IBaseCollectionService<T>
+{
   constructor(
     entityName: string,
     elementsFactory: EntityCollectionServiceElementsFactory
   ) {
     super(entityName, elementsFactory);
+  }
+  getFilteredEntities(): Promise<T[]> {
+    return firstValueFrom(this.filteredEntities$);
+  }
+  async findSelecteseledItemById(id: number): Promise<T | undefined> {
+    const items = await this.getItems();
+    return items.filter((e) => e.selected).find((e) => e.id == id);
   }
 
   selectItem(id: number) {
@@ -43,8 +51,8 @@ export class BaseCollectionService<
     );
   }
 
-  async findSelecteseledItemById(id: number) {
-    const items = await this.getItems();
-    return items.filter((e) => e.selected).find((e) => e.id == id);
-  }
+  // async findSelecteseledItemById(id: number) {
+  //   const items = await this.getItems();
+  //   return items.filter((e) => e.selected).find((e) => e.id == id);
+  // }
 }

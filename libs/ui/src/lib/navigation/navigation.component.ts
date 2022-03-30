@@ -27,7 +27,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subsink.sink = this.navigationService.navigationItem$.subscribe(
       (data) => {
-        console.log(data);
         if (data) {
           this.navigationService.navigate(data);
         }

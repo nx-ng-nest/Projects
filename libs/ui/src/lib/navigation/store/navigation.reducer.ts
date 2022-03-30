@@ -6,7 +6,7 @@ import {
   props,
 } from '@ngrx/store';
 import { NavigationMenuItem } from './navigation-item.class';
-import { NavigationEnum } from './navigation-store-name';
+import { NavigationEnum } from './navigation-store.enum';
 
 /**
  * Navigation store state

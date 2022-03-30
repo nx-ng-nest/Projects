@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NavigationModule, TableModule } from '@projects/ui';
 import { ProductsComponent } from './products/products.component';
 import { inventoryRoutes } from './inventory-routes';
+import { ProductService } from '@projects/client-service';
 
 const routes: Routes = [
   {
@@ -27,5 +28,6 @@ const routes: Routes = [
     TableModule,
     NavigationModule,
   ],
+  providers: [ProductService],
 })
 export class InventoryModule {}

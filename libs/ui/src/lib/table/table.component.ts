@@ -5,7 +5,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { IBaseCollectionService, ICommonFields, IProduct, IUser } from '@projects/interface';
+import { Store } from '@ngrx/store';
+import { IBaseCollectionService } from '@projects/interface';
+import { Observable } from 'rxjs';
+import {
+  selectTableColumns,
+  selectTableDisplayedColumns,
+  TableActions,
+} from './store';
 
 export interface IData {
   id: number;
@@ -22,27 +29,42 @@ export class TableComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
 
+  @Input() tableName = 'first';
+  @Input() tableViewName = 'first';
+
   searchKeyOptionControl = new FormControl('', []);
   searchKeyOptions = ['barcode', 'id', 'name', 'description'];
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['selected', 'barcode', 'name', 'description'];
+  columns$!: Observable<string[]>;
+  displayedColumns$!: Observable<string[]>;
+  tableActions$!: Observable<TableActions[]>;
 
   dataSource!: MatTableDataSource<IData>;
 
-  @Input() dataService!: IBaseCollectionService;
+  @Input() dataService!: IBaseCollectionService<any>;
 
   constructor(
-    // public appService: AppService,
-    public dialog: MatDialog // public navService: NavigationService
+    private store: Store,
+
+    public dialog: MatDialog
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.tableName) throw new Error('You must provide the table name!');
+
+    this.columns$ = this.store.select(
+      selectTableColumns(this.tableName, this.tableViewName)
+    );
+
+    this.displayedColumns$ = this.store.select(
+      selectTableDisplayedColumns(this.tableName, this.tableViewName)
+    );
+  }
 
   ngAfterViewInit(): void {
     this.dataService?.filteredEntities$.subscribe((data: any) => {
       this.paginator._formFieldAppearance = 'outline';
-
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -64,32 +86,16 @@ export class TableComponent implements OnInit {
 
   selectItem(event: MatCheckboxChange, product: IData) {
     this.dataService.updateOneInCache({
-      ...product,
+      id: product.id,
       selected: event.checked,
     });
   }
 
-  editProducts() {
-    // this.navService.editProducts();
-  }
-
-  deleteProducts() {
-    throw new Error('Not Implemented');
-  }
-
-  transferProducts() {
-    throw new Error('Not Implemented');
-  }
-
-  printBarcodes() {
-    throw new Error('Not Implemented');
-  }
-
-  selectAllProducts(items: IData[]) {
+  selectAllItems() {
     this.dataService.selectAllItems();
   }
 
-  async deselectAllProducts() {
+  deselectAllItems() {
     this.dataService.deselectAllItems();
   }
 }
