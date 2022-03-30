@@ -3,7 +3,13 @@ import { IID, IProduct, IProductCreateDTO } from '@projects/interface';
 import { Entity, JoinTable, ManyToMany, Unique } from 'typeorm';
 
 import { Category } from '../category';
-import { BarcodeColumn, BaseEntity, JsonColumn, TextColumn } from '../common';
+import {
+  BarcodeColumn,
+  BaseEntity,
+  JsonColumn,
+  QueryDTO,
+  TextColumn,
+} from '../common';
 
 @Entity()
 export class Product extends BaseEntity implements IProduct<Category> {

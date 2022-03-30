@@ -1,4 +1,3 @@
-import { FindManyOptions } from 'typeorm';
 
 import {
   Body,
@@ -17,6 +16,7 @@ import {
   CreateValidationPipe,
   Product,
   ProductCreateDTO,
+  QueryValidationPipe,
   UpdateValidationPipe,
 } from '@projects/models';
 
@@ -34,7 +34,8 @@ export class ProductController {
 
   @ReadPermission(SINGULAR)
   @Get(PLURAL)
-  get(@Query() options: FindManyOptions) {
+  get(@Query(QueryValidationPipe) options: Product) {
+    console.log(options);
     return this.productService.find(options);
   }
 

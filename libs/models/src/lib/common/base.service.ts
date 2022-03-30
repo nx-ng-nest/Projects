@@ -6,6 +6,10 @@ import { UnprocessableEntityException } from '@nestjs/common';
 export abstract class BaseDataService<T> {
   constructor(protected readonly repo: Repository<T>) {}
 
+  /**
+   * Check data is already in the database or not
+   * @param t T
+   */
   async isUnique(t: any) {
     const uniqueColumns = this.repo.metadata.uniques.map(
       (e) => e.givenColumnNames[0]
@@ -19,9 +23,9 @@ export abstract class BaseDataService<T> {
     }
   }
 
-  async find(options?: FindManyOptions) {
+  async find(options?: T) {
     try {
-      return await this.repo.find(options);
+      return await this.repo.find({ where: options });
     } catch (err) {
       throw new UnprocessableEntityException(err.message);
     }

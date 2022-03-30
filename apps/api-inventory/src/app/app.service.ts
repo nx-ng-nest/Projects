@@ -1,20 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { readPermission, writePermission } from '@projects/auth';
 import { ProductService } from './resources';
-import { CategoryService } from './resources/category';
-import { ProductDetailService } from './resources/product-detail';
-import { StoreService } from './resources/store';
-import { UserService } from './resources/user';
+
 import { commerce, company } from 'faker';
 import { v4 } from 'uuid';
-import { ProductCreateDTO } from '@projects/models';
 import { IProductCreateDTO } from '@projects/interface';
 
 function randomItem(items: any[]): any {
   return items[Math.floor(Math.random() * items.length - 1)];
 }
 
-function fakeProduct(category: { id: number }): IProductCreateDTO {
+function fakeProduct(category?: { id: number }): IProductCreateDTO {
   return {
     barcode: v4(),
     name: commerce.productName() + Math.floor(Math.random() * 2000),
@@ -29,44 +24,42 @@ function fakeProduct(category: { id: number }): IProductCreateDTO {
 @Injectable()
 export class AppService {
   constructor(
-    private readonly storeService: StoreService,
-    private readonly userService: UserService,
-    protected readonly productService: ProductService,
-    protected readonly categoryService: CategoryService,
-    protected readonly productDetailService: ProductDetailService
+    // private readonly storeService: StoreService,
+    // private readonly userService: UserService,
+    protected readonly productService: ProductService // protected readonly categoryService: CategoryService, // protected readonly productDetailService: ProductDetailService
   ) {}
 
   async initStore() {
     // create stores
 
-    const store1 = await this.storeService.save({ name: 'Houston 1' });
-    const store2 = await this.storeService.save({ name: 'Victoria 2' });
-    const store3 = await this.storeService.save({ name: 'Baumant 3' });
-    const store4 = await this.storeService.save({ name: 'Lake Jackson 4' });
-    const store5 = await this.storeService.save({ name: 'Killen 1' });
-    const store6 = await this.storeService.save({ name: 'Killen 2' });
+    // const store1 = await this.storeService.save({ name: 'Houston 1' });
+    // const store2 = await this.storeService.save({ name: 'Victoria 2' });
+    // const store3 = await this.storeService.save({ name: 'Baumant 3' });
+    // const store4 = await this.storeService.save({ name: 'Lake Jackson 4' });
+    // const store5 = await this.storeService.save({ name: 'Killen 1' });
+    // const store6 = await this.storeService.save({ name: 'Killen 2' });
 
-    const cat1 = await this.categoryService.save({ name: 'Technology' });
-    const cat2 = await this.categoryService.save({ name: 'Plush' });
-    const cat3 = await this.categoryService.save({ name: 'Console' });
-    const cat4 = await this.categoryService.save({ name: 'Accessories' });
-    const cat5 = await this.categoryService.save({ name: 'Drones' });
+    // const cat1 = await this.categoryService.save({ name: 'Technology' });
+    // const cat2 = await this.categoryService.save({ name: 'Plush' });
+    // const cat3 = await this.categoryService.save({ name: 'Console' });
+    // const cat4 = await this.categoryService.save({ name: 'Accessories' });
+    // const cat5 = await this.categoryService.save({ name: 'Drones' });
 
-    function randCategory() {
-      return randomItem([cat1, cat2, cat3, cat4, cat5]);
-    }
+    // function randCategory() {
+    //   return randomItem([cat1, cat2, cat3, cat4, cat5]);
+    // }
 
-    for (let i = 0; i < 1000; i++) {
-      const cat = randCategory();
-      const product = fakeProduct(cat);
+    for (let i = 0; i < 200; i++) {
+      // const cat = randCategory();
+      const product = fakeProduct();
       await this.productService.save(product);
     }
 
-    const user = await this.userService.save({
-      username: 'nxng.dev@gmail.com',
-      password: 'password',
-      permissions: [readPermission('product'), writePermission('product')],
-    });
+    // const user = await this.userService.save({
+    //   username: 'nxng.dev@gmail.com',
+    //   password: 'password',
+    //   permissions: [readPermission('product'), writePermission('product')],
+    // });
   }
 
   getData(): { message: string } {

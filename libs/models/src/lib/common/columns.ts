@@ -8,7 +8,7 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import { Column, ColumnOptions } from 'typeorm';
+import { Column, ColumnOptions, ILike } from 'typeorm';
 
 import { applyDecorators } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
@@ -18,6 +18,12 @@ import { v4 } from 'uuid';
 
 function IsRequired(required: boolean | null) {
   return required == false ? IsOptional() : IsNotEmpty();
+}
+
+export enum TransformGroups {
+  QUERY = 'query',
+  CREATE = 'create',
+  UPDATE = 'update',
 }
 
 export function TextColumn(options?: ApiPropertyOptions & ColumnOptions) {
@@ -34,7 +40,8 @@ export function TextColumn(options?: ApiPropertyOptions & ColumnOptions) {
       nullable: options?.required == false ? true : false,
       update: options?.update == false ? false : true,
     }),
-    IsRequired(options?.required),
+
+    // IsRequired(options?.required),
     Length(options?.minLength || 1, options?.maxLength || 50)
   );
 }
