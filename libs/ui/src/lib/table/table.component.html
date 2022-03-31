@@ -1,35 +1,21 @@
-<div class="mat-elevation-z8">
-  <div class="search-input">
+<div class="table-container">
+  <div class="search-container">
     <mat-form-field appearance="outline" class="search-key">
-      <mat-label>Select Fields</mat-label>
-      <mat-select [formControl]="searchKeyOptionControl" multiple>
-        <mat-select-trigger>
-          {{
-            searchKeyOptionControl.value ? searchKeyOptionControl.value[0] : ''
-          }}
-          <span
-            *ngIf="searchKeyOptionControl.value?.length > 1"
-            class="example-additional-selection"
-          >
-            (+{{ searchKeyOptionControl.value.length - 1 }}
-            {{
-              searchKeyOptionControl.value?.length === 2 ? 'other' : 'others'
-            }})
-          </span>
-        </mat-select-trigger>
-        <mat-option *ngFor="let option of searchKeyOptions" [value]="option">
+      <mat-label>Select Field</mat-label>
+      <mat-select [formControl]="selectFieldControl">
+        <mat-option *ngFor="let option of searchKeys" [value]="option">
           {{ option }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" style="width: 100%">
+    <mat-form-field appearance="outline" class="search-input">
       <mat-label>Search</mat-label>
       <input
         #filterInput
         matInput
         autocomplete="off"
-        (keyup)="setFilter(filterInput.value)"
+        [formControl]="searchFieldControl"
       />
       <button mat-icon-button matSuffix (click)="setFilter(filterInput.value)">
         <mat-icon mat-list-icon>search</mat-icon>
@@ -38,11 +24,12 @@
   </div>
 
   <table
+    @enter
     mat-table
-    class="full-width-table"
     matSort
     aria-label="Elements"
     [dataSource]="dataSource"
+    style="width: 100%"
   >
     <!-- Quick Actions -->
     <ng-container matColumnDef="selected">
@@ -65,8 +52,11 @@
             <mat-icon>deselect</mat-icon>
             <span>Deselect All</span>
           </button>
-
           <hr />
+          <button mat-menu-item *ngFor="let a of tableActions">
+            <mat-icon>{{ a.icon }}</mat-icon>
+            <span>{{ a.label }}</span>
+          </button>
         </mat-menu>
       </th>
 
@@ -81,7 +71,7 @@
     </ng-container>
 
     <!-- All columns -->
-    <ng-container *ngFor="let col of columns$ | async">
+    <ng-container *ngFor="let col of columns">
       <ng-container [matColumnDef]="col" *ngIf="col !== 'selected'">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ col }}</th>
         <td mat-cell *matCellDef="let row">
@@ -90,8 +80,8 @@
       </ng-container>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns$ | async"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns$ | async"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
   <mat-paginator

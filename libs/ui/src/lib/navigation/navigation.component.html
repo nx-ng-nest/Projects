@@ -21,29 +21,26 @@
       </a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <div class="sidenav-content">
-      <mat-toolbar color="primary">
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()"
-          *ngIf="isHandset$ | async"
-        >
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-        <span>{{ navigationService.pageName$ | async }}</span>
-      </mat-toolbar>
+  <mat-sidenav-content style="overflow: hidden;">
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async"
+      >
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>{{ navigationService.pageName$ | async }}</span>
+    </mat-toolbar>
 
-      <ng-content></ng-content>
-      <div style="flex: 1"></div>
+    <ng-content></ng-content>
 
-      <mat-toolbar class="footer-toolbar">
-        <button mat-icon-button>
-          <mat-icon color="primary">home</mat-icon>
-        </button>
-      </mat-toolbar>
-    </div>
+    <mat-toolbar class="footer-toolbar">
+      <button mat-icon-button>
+        <mat-icon color="primary">home</mat-icon>
+      </button>
+    </mat-toolbar>
   </mat-sidenav-content>
 </mat-sidenav-container>

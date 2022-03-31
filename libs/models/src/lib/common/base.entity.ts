@@ -9,9 +9,9 @@ import { BooleanColumn, TextColumn } from './columns';
 
 export class BaseEntity implements ICommonFields {
   @PrimaryGeneratedColumn() id: number;
-  @CreateDateColumn() createdA?: Date;
-  @UpdateDateColumn() updatedA?: Date;
-  @DeleteDateColumn() deletedA?: Date;
+  @CreateDateColumn() createdAt?: Date;
+  @UpdateDateColumn() updatedAt?: Date;
+  @DeleteDateColumn() deletedAt?: Date;
   @BooleanColumn({ required: false, default: false }) selected?: boolean;
   @BooleanColumn({ required: false, default: false }) active?: boolean;
 

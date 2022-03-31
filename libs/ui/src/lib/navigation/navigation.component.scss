@@ -1,15 +1,8 @@
-mat-sidenav-container {
-  position: relative;
-  height: 100%;
+.sidenav {
+  min-width: 200px;
+  max-width: 200px;
 }
-
-mat-sidenav-content {
-  position: relative;
-  height: 100%;
-}
-
-.sidenav-content {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+.footer-toolbar {
+  position: fixed;
+  bottom: 0px;
 }

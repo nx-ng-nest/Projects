@@ -14,23 +14,18 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { IBaseCollectionService } from '@projects/interface';
-import { catchError, Observable, of } from 'rxjs';
 import { SubSink } from 'subsink';
-import {
-  selectTableColumns,
-  selectTableDisplayedColumns,
-  TableActions,
-} from './store';
-
-export interface IData {
-  id: number;
-  selected: boolean;
-}
+import { TableAction } from './store';
+import { slideInRightOnEnterAnimation } from 'angular-animations';
+import { mergeWith } from 'rxjs';
 
 @Component({
   selector: 'projects-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
+  animations: [
+    slideInRightOnEnterAnimation({ anchor: 'enter', duration: 1000 }),
+  ],
 })
 export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
   subsink = new SubSink();
@@ -38,39 +33,19 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
 
-  @Input() tableName = 'first';
-  @Input() tableViewName = 'first';
-
-  searchKeyOptionControl = new FormControl('', []);
-  searchKeyOptions = ['barcode', 'id', 'name', 'description'];
-
-  columns$ = this.store
-    .select(selectTableColumns(this.tableName, this.tableViewName))
-    .pipe(
-      catchError((err, caught) => {
-        return of([]);
-      })
-    );
-
-  displayedColumns$ = this.store
-    .select(selectTableDisplayedColumns(this.tableName, this.tableViewName))
-    .pipe(
-      catchError((err, caught) => {
-        return of([]);
-      })
-    );
-
-  tableActions$!: Observable<TableActions[]>;
-
+  @Input() searchKeys!: string[];
+  @Input() columns!: string[];
+  @Input() displayedColumns!: string[];
+  @Input() tableActions!: TableAction[];
+  selectFieldControl = new FormControl('name', []);
+  searchFieldControl = new FormControl('', []);
   dataSource = new MatTableDataSource([]);
 
   @Input() dataService!: IBaseCollectionService<any>;
 
   constructor(private store: Store, public dialog: MatDialog) {}
 
-  ngOnInit() {
-    if (!this.tableName) throw new Error('You must provide the table name!');
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.subsink.sink = this.dataService?.filteredEntities$.subscribe(
@@ -81,6 +56,22 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource.paginator = this.paginator;
       }
     );
+
+    this.subsink.sink = this.searchFieldControl.valueChanges
+      .pipe(mergeWith(this.selectFieldControl.valueChanges))
+      .subscribe((value) => {
+        this.dataService.setFilter((p: any) => {
+          const selectField = this.selectFieldControl.value;
+          const searchValue = this.searchFieldControl.value;
+
+          if (selectField && searchValue) {
+            return p[selectField]
+              ? p[selectField].toLowerCase().includes(searchValue.toLowerCase())
+              : true;
+          }
+          return true;
+        });
+      });
   }
 
   ngOnDestroy(): void {
@@ -88,19 +79,16 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setFilter(filterValue: string) {
-    const keyOptions = this.searchKeyOptionControl.value as (keyof IData)[];
-    if (keyOptions) {
-      //
-    } else {
-      this.dataService.setFilter((p: IData) => {
-        return JSON.stringify(p)
+    if (this.selectFieldControl.value) {
+      this.dataService.setFilter((p: any) =>
+        p[this.selectFieldControl.value]
           .toLowerCase()
-          .includes(filterValue.toLowerCase());
-      });
+          .includes(filterValue.toLowerCase())
+      );
     }
   }
 
-  selectItem(event: MatCheckboxChange, product: IData) {
+  selectItem(event: MatCheckboxChange, product: any) {
     this.dataService.updateOneInCache({
       id: product.id,
       selected: event.checked,
