@@ -1,23 +1,53 @@
-<mat-toolbar>
-  <a mat-button (click)="goToInventoryApp()"> Inventory App </a>
-</mat-toolbar>
-<div class="website">
-  <header>
-    <nav>
-      <a href="#about"> About</a>
-      <a href="#prices">Prices</a>
-      <a href="#training">Training</a>
-      <div style="flex: 1"></div>
-    </nav>
-  </header>
-  <body>
-    <section>
-      <h1>Inventory mangement application with all desired features!</h1>
-    </section>
-  </body>
+<!-- Templates -->
 
-  <div style="flex: 1"></div>
-  <footer class="footer">
-    <p>Authdare</p>
-  </footer>
+<!-- Basic form field template -->
+<ng-template
+  #formField
+  let-attributes="attributes"
+  let-label="label"
+  let-icon="icon"
+>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ label }}</mat-label>
+    <input matInput [setAttributes]="attributes" />
+    <mat-icon matPrefix color="primary">{{ icon }}</mat-icon>
+  </mat-form-field>
+</ng-template>
+
+<!-- Navigation Link Template-->
+<ng-template #navLink let-label="label" let-href="href" let-id="id">
+  <a [id]="id" [href]="href">{{ label }}</a>
+</ng-template>
+
+<!-- Content -->
+<div class="container">
+  <nav>
+    <ng-container *ngFor="let i of navItems">
+      <ng-container *ngTemplateOutlet="navLink; context: i"></ng-container>
+    </ng-container>
+  </nav>
+
+  <!-- Login Section -->
+  <div class="content">
+    <section>
+      <form [formGroup]="loginForm" name="loginForm" ngNativeValidate>
+        <fieldset class="col gap-x pad-x" autocomple="off">
+          <legend>Login</legend>
+          <ng-container *ngFor="let i of loginFields">
+            <form-field [context]="i"> </form-field>
+          </ng-container>
+
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            (click)="submit()"
+            [disabled]="loginForm.untouched ? true : loginForm.invalid"
+          >
+            Login
+          </button>
+        </fieldset>
+      </form>
+    </section>
+  </div>
 </div>

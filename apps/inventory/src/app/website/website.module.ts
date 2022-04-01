@@ -1,16 +1,28 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WebsiteComponent } from './website.component';
-import { RouterModule, Routes } from '@angular/router';
-import { MaterialModule, NavigationStoreModule } from '@projects/ui';
+import { NgModule } from '@angular/core';
+import {
+  RouterModule,
+  Routes,
+} from '@angular/router';
+
+import {
+  MaterialModule,
+  NavigationModule,
+} from '@projects/ui';
+
+import { FormFieldTemplateComponent } from './form-templates.component';
+import {
+  SetAttributeDirective,
+  WebsiteComponent,
+} from './website.component';
 
 const routes: Routes = [{ path: '', component: WebsiteComponent }];
 @NgModule({
-  declarations: [WebsiteComponent],
+  declarations: [WebsiteComponent, SetAttributeDirective, FormFieldTemplateComponent],
   imports: [
     CommonModule,
     MaterialModule,
-    NavigationStoreModule,
+    NavigationModule,
     RouterModule.forChild(routes),
   ],
 })

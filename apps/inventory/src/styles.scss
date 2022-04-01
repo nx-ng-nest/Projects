@@ -65,3 +65,7 @@ body {
   color: white;
   background-color: teal;
 }
+
+.color-animation {
+  transition: color ease-in-out 400ms;
+}

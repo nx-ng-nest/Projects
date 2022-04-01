@@ -1,0 +1,52 @@
+<!-- Basic form field template -->
+<ng-template
+  #textField
+  let-attributes="attributes"
+  let-label="label"
+  let-icon="icon"
+  let-control="control"
+>
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>{{ label }}</mat-label>
+    <input [formControl]="control" matInput [setAttributes]="attributes" />
+    <mat-icon
+      class="color-animation"
+      matPrefix
+      [color]="control.invalid ? 'accent' : 'primary'"
+      >{{ icon }}</mat-icon
+    >
+  </mat-form-field>
+</ng-template>
+
+<!-- Select Field  -->
+<ng-template
+  #selectField
+  let-attributes="attributes"
+  let-label="label"
+  let-icon="icon"
+  let-selectOptions="selectOptions"
+  let-control="control"
+>
+  <mat-form-field appearance="outline" style="width: 100%">
+    <mat-label>{{ label }}</mat-label>
+    <mat-select
+      [formControl]="control"
+      [setAttributes]="attributes"
+      [multiple]="attributes.multiple"
+    >
+      <mat-option *ngFor="let option of selectOptions" [value]="option.value">
+        {{ option.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-template>
+
+<ng-container
+  *ngIf="['text', 'number', 'email', 'password'].includes(getType())"
+>
+  <ng-content *ngTemplateOutlet="textField; context: context"></ng-content>
+</ng-container>
+
+<ng-container *ngIf="getType() === 'select'">
+  <ng-content *ngTemplateOutlet="selectField; context: context"></ng-content>
+</ng-container>

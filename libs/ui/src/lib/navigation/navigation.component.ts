@@ -1,10 +1,25 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  BreakpointObserver,
+  Breakpoints,
+} from '@angular/cdk/layout';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 
-import { Observable, map } from 'rxjs';
+import {
+  map,
+  Observable,
+} from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
-import { NavigationMenuItem, NavigationService } from './store';
 import { SubSink } from 'subsink';
+
+import {
+  NavigationMenuItem,
+  NavigationService,
+} from './store';
+
 @Component({
   selector: 'projects-navigation',
   templateUrl: './navigation.component.html',
@@ -40,5 +55,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
   navigationItemClickHandler(p: NavigationMenuItem) {
     this.navigationService.setCurrentlyClickedNavigationMenuItem(p);
     this.navigationService.setCurrentPage(p.pageName);
+  }
+
+  goHome() {
+    this.navigationService.navigate({
+      icon: '',
+      label: 'Home',
+      pageName: 'Home',
+      path: '',
+    });
   }
 }
