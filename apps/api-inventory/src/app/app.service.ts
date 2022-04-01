@@ -1,9 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { ProductService } from './resources';
-
 import { commerce } from 'faker';
 import { v4 } from 'uuid';
-import { IID, IProduct } from '@projects/interface';
+
+import { Injectable } from '@nestjs/common';
+import {
+  readPermission,
+  writePermission,
+} from '@projects/auth';
+import {
+  IID,
+  IProduct,
+} from '@projects/interface';
+
+import { ProductService } from './resources';
+import { UserService } from './resources/user';
 
 function randomItem(items: any[]): any {
   return items[Math.floor(Math.random() * items.length - 1)];
@@ -25,7 +34,7 @@ function fakeProduct(category?: IID): IProduct {
 export class AppService {
   constructor(
     // private readonly storeService: StoreService,
-    // private readonly userService: UserService,
+    private readonly userService: UserService,
     protected readonly productService: ProductService // protected readonly categoryService: CategoryService, // protected readonly productDetailService: ProductDetailService
   ) {}
 
@@ -59,11 +68,11 @@ export class AppService {
       }
     }
 
-    // const user = await this.userService.save({
-    //   username: 'nxng.dev@gmail.com',
-    //   password: 'password',
-    //   permissions: [readPermission('product'), writePermission('product')],
-    // });
+    const user = await this.userService.save({
+      username: 'nxng.dev@gmail.com',
+      password: 'password',
+      permissions: [readPermission('product'), writePermission('product')],
+    });
   }
 
   getData(): { message: string } {

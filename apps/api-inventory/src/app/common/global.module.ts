@@ -4,13 +4,9 @@ import {
 } from '@nestjs/common';
 import { AuthEnum } from '@projects/auth';
 
-import { environment } from '../../environments/environment';
-
 @Global()
 @Module({
-  providers: [
-    { provide: AuthEnum.IS_ACTIVE, useValue: environment.production },
-  ],
+  providers: [{ provide: AuthEnum.IS_ACTIVE, useValue: true }],
   exports: [AuthEnum.IS_ACTIVE],
 })
 export class GlobalModule {}

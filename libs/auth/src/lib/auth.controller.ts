@@ -31,7 +31,7 @@ import {
 } from './guards';
 
 @ApiTags(AuthController.name)
-@Controller(AuthController.name)
+@Controller('auth')
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);
 
@@ -45,7 +45,6 @@ export class AuthController {
     @Body() credentails: LoginDto
   ) {
     const token = await this.authService.login(user);
-
     res.cookie(AuthEnum.AUTH_TOKEN_COOKIE_KEY, token, CookieOptions);
     res.end();
   }

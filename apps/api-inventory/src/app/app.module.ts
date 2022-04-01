@@ -1,8 +1,15 @@
-import { CacheModule, Module, OnModuleInit } from '@nestjs/common';
+import {
+  CacheModule,
+  Module,
+  OnModuleInit,
+} from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import {
+  TypeOrmModule,
+  TypeOrmModuleOptions,
+} from '@nestjs/typeorm';
 import { AuthModule } from '@projects/auth';
 
 import { AppController } from './app.controller';
@@ -10,6 +17,7 @@ import { AppService } from './app.service';
 import { GlobalModule } from './common';
 import { ResourceModules } from './resources';
 import { ResourceEntities } from './resources/resource.entities';
+import { UserService } from './resources/user';
 
 const dbConfig: { [key: string]: TypeOrmModuleOptions } = {
   sqlite: {
@@ -44,11 +52,11 @@ const dbConfig: { [key: string]: TypeOrmModuleOptions } = {
     ...ResourceModules,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, UserService],
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly appService: AppService) {}
-  onModuleInit() {
-    this.appService.initStore();
+  async onModuleInit() {
+    await this.appService.initStore();
   }
 }
