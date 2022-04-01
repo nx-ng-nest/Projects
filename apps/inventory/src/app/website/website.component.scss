@@ -43,4 +43,9 @@ fieldset legend {
   @extend .pad-x;
   font-size: 1rem;
   text-transform: uppercase;
+  text-align: center;
+  border-right: 3px solid gray;
+  border-left: 3px solid gray;
+  color: gray;
+  letter-spacing: 3px;
 }

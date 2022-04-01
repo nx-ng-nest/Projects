@@ -1,4 +1,24 @@
-<!-- Basic form field template -->
+<!-- Errors -->
+<ng-template #error let-e="errors" let-a="attributes">
+  <ng-container *ngIf="e?.required"> {{ a.name }} is required! </ng-container>
+
+  <ng-container *ngIf="e?.email">
+    {{ a.name }} must be a valid email!
+  </ng-container>
+  <ng-container *ngIf="e?.min">
+    {{ a.name }} must be more than {{ a.min }}
+  </ng-container>
+  <ng-container *ngIf="e?.max">
+    {{ a.name }} must be less than {{ a.min }}
+  </ng-container>
+  <ng-container *ngIf="e?.minlength">
+    {{ a.name }} must be longer than {{ a.minLength }}
+  </ng-container>
+  <ng-container *ngIf="e?.maxlength">
+    {{ a.name }} must be shorter than {{ a.maxLength }}
+  </ng-container>
+</ng-template>
+
 <ng-template
   #textField
   let-attributes="attributes"
@@ -9,16 +29,27 @@
   <mat-form-field appearance="outline" style="width: 100%">
     <mat-label>{{ label }}</mat-label>
     <input [formControl]="control" matInput [setAttributes]="attributes" />
-    <mat-icon
-      class="color-animation"
-      matPrefix
-      [color]="control.invalid ? 'accent' : 'primary'"
-      >{{ icon }}</mat-icon
-    >
+    <mat-icon class="color-animation" matPrefix [color]="iconColor(control)">{{
+      icon
+    }}</mat-icon>
+    <mat-error *ngIf="control.touched && control.errors">
+      <ng-container
+        *ngTemplateOutlet="
+          error;
+          context: {
+            attributes: attributes,
+            errors: control.errors
+          }
+        "
+      ></ng-container>
+    </mat-error>
+    <!-- <mat-error *ngIf="control.errors.required"
+      >{{ attributes.name }} is required</mat-error
+    > -->
   </mat-form-field>
 </ng-template>
 
-<!-- Select Field  -->
+<!-- Select Field Template -->
 <ng-template
   #selectField
   let-attributes="attributes"
@@ -38,15 +69,30 @@
         {{ option.label }}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="control.touched && control.errors">
+      <ng-container
+        *ngTemplateOutlet="
+          error;
+          context: {
+            attributes: attributes,
+            errors: control.errors
+          }
+        "
+      ></ng-container>
+    </mat-error>
   </mat-form-field>
 </ng-template>
 
+<!-- Containers -->
+
+<!-- Text compatible fields   -->
 <ng-container
   *ngIf="['text', 'number', 'email', 'password'].includes(getType())"
 >
   <ng-content *ngTemplateOutlet="textField; context: context"></ng-content>
 </ng-container>
 
+<!-- Select Field -->
 <ng-container *ngIf="getType() === 'select'">
   <ng-content *ngTemplateOutlet="selectField; context: context"></ng-content>
 </ng-container>

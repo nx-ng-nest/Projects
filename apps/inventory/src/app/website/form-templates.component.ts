@@ -25,4 +25,16 @@ export class FormFieldTemplateComponent implements OnInit {
   getType() {
     return this.context.attributes?.type || 'text';
   }
+
+  iconColor(control: FormControl) {
+    return control.untouched ? 'primary' : control.valid ? 'primary' : 'accent';
+  }
+
+  getErrorMsg() {
+    const err = this.context.control?.errors;
+    if (err) {
+      return err['msg'];
+    }
+    return null;
+  }
 }
