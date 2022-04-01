@@ -69,3 +69,10 @@ body {
 .color-animation {
   transition: color ease-in-out 400ms;
 }
+
+.error-texts {
+  border-left: 1px solid red;
+  padding-left: 10px;
+  margin-left: 10px;
+  line-height: 20px;
+}

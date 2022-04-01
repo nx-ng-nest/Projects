@@ -1,24 +1,31 @@
 <!-- Errors -->
 <ng-template #error let-e="errors" let-a="attributes">
-  <ng-container *ngIf="e?.required"> {{ a.name }} is required! </ng-container>
-
-  <ng-container *ngIf="e?.email">
-    {{ a.name }} must be a valid email!
-  </ng-container>
-  <ng-container *ngIf="e?.min">
-    {{ a.name }} must be more than {{ a.min }}
-  </ng-container>
-  <ng-container *ngIf="e?.max">
-    {{ a.name }} must be less than {{ a.min }}
-  </ng-container>
-  <ng-container *ngIf="e?.minlength">
-    {{ a.name }} must be longer than {{ a.minLength }}
-  </ng-container>
-  <ng-container *ngIf="e?.maxlength">
-    {{ a.name }} must be shorter than {{ a.maxLength }}
+  <ng-container [ngSwitch]="getFirstError(e)">
+    <ng-container *ngSwitchCase="'required'">
+      {{ a.name | titlecase }} is required!
+    </ng-container>
+    <ng-container *ngSwitchCase="'email'">
+      {{ a.name | titlecase }} must be a valid email!
+    </ng-container>
+    <ng-container *ngSwitchCase="'min'">
+      {{ a.name | titlecase }} must be more than {{ a.min }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'max'">
+      {{ a.name | titlecase }} must be less than {{ a.min }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'minlength'">
+      {{ a.name | titlecase }} must be longer than {{ a.minLength }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'maxlength'">
+      {{ a.name | titlecase }} must be shorter than {{ a.maxLength }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'match'">
+      {{ e.match }}
+    </ng-container>
   </ng-container>
 </ng-template>
 
+<!-- Text field template -->
 <ng-template
   #textField
   let-attributes="attributes"
@@ -36,16 +43,10 @@
       <ng-container
         *ngTemplateOutlet="
           error;
-          context: {
-            attributes: attributes,
-            errors: control.errors
-          }
+          context: { attributes: attributes, errors: control.errors }
         "
       ></ng-container>
     </mat-error>
-    <!-- <mat-error *ngIf="control.errors.required"
-      >{{ attributes.name }} is required</mat-error
-    > -->
   </mat-form-field>
 </ng-template>
 
@@ -73,10 +74,7 @@
       <ng-container
         *ngTemplateOutlet="
           error;
-          context: {
-            attributes: attributes,
-            errors: control.errors
-          }
+          context: { attributes: attributes, errors: control.errors }
         "
       ></ng-container>
     </mat-error>

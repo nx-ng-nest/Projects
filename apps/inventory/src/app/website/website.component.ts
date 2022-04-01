@@ -8,6 +8,7 @@ import {
   OnInit,
 } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   Validators,
@@ -16,6 +17,10 @@ import {
 import { NavigationService } from '@projects/ui';
 
 import { FormFieldContext } from './form-templates.component';
+
+function matchValidator(s: RegExp, msg: string) {
+  return (c: AbstractControl) => (s.test(c.value) ? null : { match: msg });
+}
 
 @Directive({ selector: '[setAttributes]' })
 export class SetAttributeDirective implements AfterViewInit, OnInit {
@@ -57,6 +62,13 @@ export class WebsiteComponent implements OnInit {
   passwordControl = new FormControl('', [
     Validators.required,
     Validators.minLength(6),
+    matchValidator(/[A-Z]{1,}/, 'Password must contain an uppercase letter!'),
+    matchValidator(/[a-z]{1,}/, 'Password must contain an lowercase letter!'),
+    matchValidator(/[0-9]{1,}/, 'Password must contain a number!'),
+    matchValidator(
+      /[!@#$%^&*()_+-=/\\]{1,}/,
+      'Password must contain a special character! (!@#$%^&*()_+-=/\\)'
+    ),
   ]);
 
   loginForm = new FormGroup({

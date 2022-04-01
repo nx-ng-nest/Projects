@@ -30,11 +30,7 @@ export class FormFieldTemplateComponent implements OnInit {
     return control.untouched ? 'primary' : control.valid ? 'primary' : 'accent';
   }
 
-  getErrorMsg() {
-    const err = this.context.control?.errors;
-    if (err) {
-      return err['msg'];
-    }
-    return null;
+  getFirstError(e: any) {
+    return Object.keys(e)[0];
   }
 }
