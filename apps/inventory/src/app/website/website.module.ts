@@ -6,22 +6,20 @@ import {
 } from '@angular/router';
 
 import {
+  FormModule,
   MaterialModule,
   NavigationModule,
 } from '@projects/ui';
 
-import { FormFieldTemplateComponent } from './form-templates.component';
-import {
-  SetAttributeDirective,
-  WebsiteComponent,
-} from './website.component';
+import { WebsiteComponent } from './website.component';
 
 const routes: Routes = [{ path: '', component: WebsiteComponent }];
 @NgModule({
-  declarations: [WebsiteComponent, SetAttributeDirective, FormFieldTemplateComponent],
+  declarations: [WebsiteComponent],
   imports: [
     CommonModule,
     MaterialModule,
+    FormModule,
     NavigationModule,
     RouterModule.forChild(routes),
   ],

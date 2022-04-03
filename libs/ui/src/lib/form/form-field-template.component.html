@@ -87,10 +87,10 @@
 <ng-container
   *ngIf="['text', 'number', 'email', 'password'].includes(getType())"
 >
-  <ng-content *ngTemplateOutlet="textField; context: context"></ng-content>
+  <ng-content *ngTemplateOutlet="textField; context: formField"></ng-content>
 </ng-container>
 
 <!-- Select Field -->
 <ng-container *ngIf="getType() === 'select'">
-  <ng-content *ngTemplateOutlet="selectField; context: context"></ng-content>
+  <ng-content *ngTemplateOutlet="selectField; context: formField"></ng-content>
 </ng-container>

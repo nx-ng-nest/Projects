@@ -1,0 +1,22 @@
+form {
+  padding: 10px;
+  background-color: white;
+}
+
+fieldset {
+  border-radius: 20px;
+  padding: 20px;
+}
+fieldset legend {
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+  color: gray;
+  letter-spacing: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+button {
+  width: 100%;
+}

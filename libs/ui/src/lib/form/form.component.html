@@ -1,1 +1,21 @@
-<p>form works!</p>
+<form [formGroup]="formGroup" ngNativeValidate>
+  <fieldset class="col gap-x pad-x" autocomple="off">
+    <legend>{{ formOptions.name }}</legend>
+    <ng-container *ngFor="let i of formOptions.formFields">
+      <form-field [formField]="i"> </form-field>
+    </ng-container>
+    <!--
+    <button
+      type="submit"
+      mat-raised-button
+      [color]="b.color"
+      (click)="submit()"
+      [disabled]="formGroup.untouched ? true : formGroup.invalid"
+      *ngFor="let b of formOptions.actionButtons"
+    >
+      {{ b.label }}
+    </button>
+    <hr /> -->
+    <ng-content></ng-content>
+  </fieldset>
+</form>

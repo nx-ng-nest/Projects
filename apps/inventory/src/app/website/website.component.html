@@ -1,37 +1,10 @@
-<!-- Navigation Link Template-->
-<ng-template #navLink let-label="label" let-href="href" let-id="id">
-  <a [id]="id" [href]="href">{{ label }}</a>
-</ng-template>
-
-<!-- Content -->
-<div class="container">
-  <nav>
-    <ng-container *ngFor="let i of navItems">
-      <ng-container *ngTemplateOutlet="navLink; context: i"></ng-container>
-    </ng-container>
-  </nav>
-
-  <!-- Login Section -->
-  <div class="content">
-    <section>
-      <form [formGroup]="loginForm" name="loginForm" ngNativeValidate>
-        <fieldset class="col gap-x pad-x" autocomple="off">
-          <legend>Login</legend>
-          <ng-container *ngFor="let i of loginFields">
-            <form-field [context]="i"> </form-field>
-          </ng-container>
-
-          <button
-            type="submit"
-            mat-raised-button
-            color="primary"
-            (click)="submit()"
-            [disabled]="loginForm.untouched ? true : loginForm.invalid"
-          >
-            Login
-          </button>
-        </fieldset>
-      </form>
-    </section>
-  </div>
-</div>
+<section class="login">
+  <projects-form [formOptions]="loginForm">
+    <a href="#signup" mat-raised-button style="width: 100%" color="accent">
+      Sign Up
+    </a>
+  </projects-form>
+</section>
+<section id="signup">
+  <projects-form [formOptions]="loginForm"></projects-form>
+</section>
