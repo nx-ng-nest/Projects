@@ -4,6 +4,13 @@ import {
   OnInit,
 } from '@angular/core';
 
+import { NGXLogger } from 'ngx-logger';
+import {
+  catchError,
+  of,
+} from 'rxjs';
+
+import { Store } from '@ngrx/store';
 import { NavigationService } from '@projects/ui';
 
 import { WebsiteForms } from './website-forms';
@@ -14,19 +21,32 @@ import { WebsiteForms } from './website-forms';
   styleUrls: ['./website.component.scss'],
 })
 export class WebsiteComponent implements OnInit {
-  navItems: { label: string; id: string; href: string }[] = [
-    { label: 'Home', id: 'home', href: '#home' },
-    { label: 'About', id: 'About', href: '#About' },
-    { label: 'Contact', id: 'Contact', href: '#Contact' },
-    { label: 'Prices', id: 'Prices', href: '#Prices' },
-  ];
-
-  loginForm = WebsiteForms.LOGIN_FORM_FIELDS;
+  loginForm = WebsiteForms.loginFormFields;
 
   constructor(
     private readonly http: HttpClient,
-    private readonly navigationService: NavigationService
+    private readonly navigationService: NavigationService,
+    private store: Store,
+    private readonly logger: NGXLogger
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store.subscribe((data) => this.logger.log(data));
+  }
+
+  login(form: Record<string, string>) {
+    this.http
+      .post('/api/auth/login', form)
+      .pipe(
+        catchError((err, caught) => {
+          return of(err.status);
+        })
+      )
+      .subscribe((result) => {
+        if (result == 401) {
+          alert('Unautorized');
+          return;
+        }
+      });
+  }
 }

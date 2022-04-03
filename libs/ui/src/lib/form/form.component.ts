@@ -7,6 +7,8 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+import { NGXLogger } from 'ngx-logger';
+
 import { FormOptions } from './form';
 
 @Component({
@@ -19,6 +21,8 @@ export class FormComponent implements OnInit {
   @Output() readonly submitted = new EventEmitter<Record<string, any>>();
   formGroup!: FormGroup;
 
+  constructor(private logger: NGXLogger) {}
+
   ngOnInit(): void {
     this.formGroup = new FormGroup(
       this.formOptions.formFields
@@ -28,6 +32,7 @@ export class FormComponent implements OnInit {
   }
 
   submit() {
+    this.logger.log(this.formGroup.value);
     this.submitted.emit(this.formGroup.value);
   }
 }

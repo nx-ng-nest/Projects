@@ -5,6 +5,8 @@ import {
   Routes,
 } from '@angular/router';
 
+import { LoggerModule } from 'ngx-logger';
+
 import {
   FormModule,
   MaterialModule,
@@ -20,6 +22,7 @@ const routes: Routes = [{ path: '', component: WebsiteComponent }];
     CommonModule,
     MaterialModule,
     FormModule,
+    LoggerModule.forChild(),
     NavigationModule,
     RouterModule.forChild(routes),
   ],

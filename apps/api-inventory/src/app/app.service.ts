@@ -70,8 +70,12 @@ export class AppService {
 
     const user = await this.userService.save({
       username: 'nxng.dev@gmail.com',
-      password: 'password',
-      permissions: [readPermission('product'), writePermission('product')],
+      password: 'MyStrongPassword!1',
+      permissions: [
+        readPermission('product'),
+        writePermission('product'),
+        readPermission('permission'),
+      ],
     });
   }
 

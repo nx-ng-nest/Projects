@@ -13,14 +13,8 @@ export interface FormField {
   selectOptions?: FormFieldSelectOption[];
 }
 
-export interface FormAction<RType = any> {
-  handler: (formValue: Record<string, any>) => RType;
-  label: string;
-  color?: 'primary' | 'accent' | 'warn';
-}
-
-export interface FormOptions<HandlerRType = any> {
+export interface FormOptions {
   name: string;
+  submitLabel: string;
   formFields: FormField[];
-  actionButtons: FormAction<HandlerRType>[];
 }

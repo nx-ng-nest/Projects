@@ -33,18 +33,12 @@ export class WebsiteForms {
   /**
    * lOGIN FORM FIELDS
    */
-  static readonly LOGIN_FORM_FIELDS: FormOptions = {
+  static readonly loginFormFields: FormOptions = {
     name: 'Login',
-    actionButtons: [
-      {
-        label: 'submit',
-        handler: (value) => console.log(value),
-        color: 'primary',
-      },
-    ],
+    submitLabel: 'Log In',
     formFields: [
       {
-        name: 'email',
+        name: 'username',
         control: FormControls.username,
         label: 'Username',
         icon: 'person',

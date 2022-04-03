@@ -1,10 +1,4 @@
 <section class="login">
-  <projects-form [formOptions]="loginForm">
-    <a href="#signup" mat-raised-button style="width: 100%" color="accent">
-      Sign Up
-    </a>
+  <projects-form [formOptions]="loginForm" (submitted)="login($event)">
   </projects-form>
-</section>
-<section id="signup">
-  <projects-form [formOptions]="loginForm"></projects-form>
 </section>

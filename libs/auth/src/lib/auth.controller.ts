@@ -75,6 +75,12 @@ export class AuthController {
     return this.authService.resetPassword(userid, resetForm.password);
   }
 
+  @UseGuards(AuthJwtGuard)
+  @Get('permissions')
+  permissions(@UserData() user: User) {
+    return user.permissions;
+  }
+
   /**
    * Forgot password
    * Request a new password through email

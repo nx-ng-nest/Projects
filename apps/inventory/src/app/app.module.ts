@@ -1,23 +1,29 @@
+import '@angular/localize/init';
+
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule, OnInit } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
+import {
+  LoggerModule,
+  NgxLoggerLevel,
+} from 'ngx-logger';
+
 import { EntityDataModule } from '@ngrx/data';
 import { EffectsModule } from '@ngrx/effects';
-import { createReducer, StoreModule } from '@ngrx/store';
-
-import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { entityConfig } from './entity-metadata';
-import '@angular/localize/init';
+import { StoreModule } from '@ngrx/store';
 import {
   MaterialModule,
   NavigationModule,
   NavigationStoreState,
 } from '@projects/ui';
+
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { entityConfig } from './entity-metadata';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +34,12 @@ import {
     HttpClientModule,
     MaterialModule,
     NavigationModule,
+
+    LoggerModule.forRoot({
+      // serverLoggingUrl: '/api/logs',
+      level: NgxLoggerLevel.DEBUG,
+      // serverLogLevel: NgxLoggerLevel.ERROR,
+    }),
     // StoreModue, EffectsModule, and EntityDataModule will be the following order
     StoreModule.forRoot<{ navigationStore?: NavigationStoreState }>(
       {},
