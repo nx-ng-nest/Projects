@@ -1,7 +1,9 @@
 import { commerce } from 'faker';
+import { Repository } from 'typeorm';
 import { v4 } from 'uuid';
 
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   readPermission,
   writePermission,
@@ -10,15 +12,17 @@ import {
   IID,
   IProduct,
 } from '@projects/interface';
-
-import { ProductService } from './resources';
-import { UserService } from './resources/user';
+import {
+  Category,
+  Product,
+  User,
+} from '@projects/models';
 
 function randomItem(items: any[]): any {
   return items[Math.floor(Math.random() * items.length - 1)];
 }
 
-function fakeProduct(category?: IID): IProduct {
+function fakeProduct(categories?: IID[]): IProduct {
   return {
     uuid: v4(),
     name: commerce.productName() + Math.floor(Math.random() * 2000),
@@ -26,16 +30,16 @@ function fakeProduct(category?: IID): IProduct {
     features: {
       [commerce.productAdjective()]: commerce.productDescription(),
     },
-    categories: [category],
+    categories,
   };
 }
 
 @Injectable()
 export class AppService {
   constructor(
-    // private readonly storeService: StoreService,
-    private readonly userService: UserService,
-    protected readonly productService: ProductService // protected readonly categoryService: CategoryService, // protected readonly productDetailService: ProductDetailService
+    @InjectRepository(Product) private productService: Repository<Product>,
+    @InjectRepository(User) private userService: Repository<User>,
+    @InjectRepository(Category) private categoryService: Repository<Category>
   ) {}
 
   async initStore() {
@@ -48,19 +52,21 @@ export class AppService {
     // const store5 = await this.storeService.save({ name: 'Killen 1' });
     // const store6 = await this.storeService.save({ name: 'Killen 2' });
 
-    // const cat1 = await this.categoryService.save({ name: 'Technology' });
-    // const cat2 = await this.categoryService.save({ name: 'Plush' });
-    // const cat3 = await this.categoryService.save({ name: 'Console' });
-    // const cat4 = await this.categoryService.save({ name: 'Accessories' });
-    // const cat5 = await this.categoryService.save({ name: 'Drones' });
+    const cat1 = await this.categoryService.save({ name: 'Technology' });
+    const cat2 = await this.categoryService.save({ name: 'Plush' });
+    const cat3 = await this.categoryService.save({ name: 'Console' });
+    const cat4 = await this.categoryService.save({ name: 'Accessories' });
+    const cat5 = await this.categoryService.save({ name: 'Drones' });
 
-    // function randCategory() {
-    //   return randomItem([cat1, cat2, cat3, cat4, cat5]);
-    // }
+    function randCategory() {
+      return randomItem([cat1, cat2, cat3, cat4, cat5]);
+    }
 
     for (let i = 0; i < 200; i++) {
-      // const cat = randCategory();
-      const product = fakeProduct();
+      const catx = randCategory();
+      const catx1 = randCategory();
+      const catx2 = randCategory();
+      const product = fakeProduct([catx, catx1, catx2]);
       try {
         await this.productService.save(product);
       } catch (err) {

@@ -35,4 +35,15 @@ export class FormComponent implements OnInit {
     this.logger.log(this.formGroup.value);
     this.submitted.emit(this.formGroup.value);
   }
+
+  reset() {
+    this.formGroup.reset();
+    this.formGroup.setErrors(null);
+    this.formGroup.clearValidators();
+    this.formGroup.markAsUntouched();
+
+    for (const c of this.formOptions.formFields) {
+      this.formGroup.controls[c.name].setErrors(null);
+    }
+  }
 }

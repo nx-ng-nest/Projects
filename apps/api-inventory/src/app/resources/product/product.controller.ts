@@ -1,3 +1,6 @@
+import { Transform } from 'class-transformer';
+import { ILike } from 'typeorm';
+
 import {
   Body,
   Controller,
@@ -9,15 +12,20 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiProperty, ApiTags } from '@nestjs/swagger';
-import { ReadPermission, Secure, WritePermission } from '@projects/auth';
+import {
+  ApiProperty,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  ReadPermission,
+  Secure,
+  WritePermission,
+} from '@projects/auth';
 import {
   CreateValidationPipe,
   Product,
   UpdateValidationPipe,
 } from '@projects/models';
-import { Transform } from 'class-transformer';
-import { ILike } from 'typeorm';
 
 import { ProductService } from './product.service';
 
@@ -50,7 +58,7 @@ export class ProductController {
 
   @ReadPermission(SINGULAR)
   @Get(PLURAL)
-  get(@Query(UpdateValidationPipe) query: ProductQueryDTO) {
+  async get(@Query(UpdateValidationPipe) query: ProductQueryDTO) {
     if (query.id) {
       return this.productService.find({ where: { id: query.id } });
     }
@@ -67,7 +75,13 @@ export class ProductController {
       });
     }
 
-    return this.productService.find();
+    const result = await this.productService.find();
+
+    return result.map((e) => ({
+      ...e,
+      categories: e.categories.map((e) => e.name).join(', '),
+      categoryIds: e.categories.map((e) => e.id),
+    }));
   }
 
   @WritePermission(SINGULAR)

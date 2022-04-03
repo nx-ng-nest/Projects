@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
+
+import { firstValueFrom } from 'rxjs';
+
 import { ProductService } from '@projects/client-service';
 import { TableAction } from '@projects/ui';
-import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'projects-products',
@@ -12,7 +17,7 @@ export class ProductsComponent implements OnInit {
   tableName!: string;
   tableViewName!: string;
 
-  displayedColumns = ['selected', 'uuid', 'name', 'description'];
+  displayedColumns = ['selected', 'uuid', 'name', 'description', 'categories'];
   tableActions: TableAction[] = [
     { label: 'Edit', icon: 'edit', row: {} as any, event: 'EDIT_PRODUCT' },
   ];
@@ -33,7 +38,7 @@ export class ProductsComponent implements OnInit {
     'categories',
   ];
 
-  searchKeys = ['id', 'uuid', 'name', 'description'];
+  searchKeys = ['id', 'uuid', 'name', 'description', 'categories'];
 
   constructor(public productService: ProductService) {}
 

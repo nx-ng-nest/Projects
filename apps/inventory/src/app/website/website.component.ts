@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   Component,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 
 import { NGXLogger } from 'ngx-logger';
@@ -11,7 +12,10 @@ import {
 } from 'rxjs';
 
 import { Store } from '@ngrx/store';
-import { NavigationService } from '@projects/ui';
+import {
+  FormComponent,
+  NavigationService,
+} from '@projects/ui';
 
 import { WebsiteForms } from './website-forms';
 
@@ -21,6 +25,8 @@ import { WebsiteForms } from './website-forms';
   styleUrls: ['./website.component.scss'],
 })
 export class WebsiteComponent implements OnInit {
+  @ViewChild(FormComponent) loginFormRef!: FormComponent;
+
   loginForm = WebsiteForms.loginFormFields;
 
   constructor(
@@ -37,16 +43,20 @@ export class WebsiteComponent implements OnInit {
   login(form: Record<string, string>) {
     this.http
       .post('/api/auth/login', form)
-      .pipe(
-        catchError((err, caught) => {
-          return of(err.status);
-        })
-      )
+      .pipe(catchError((err, caught) => of(err)))
       .subscribe((result) => {
-        if (result == 401) {
-          alert('Unautorized');
+        if (result && result.status && result.status >= 400) {
+          this.loginFormRef.reset();
           return;
         }
+
+        this.navigationService.navigate({
+          icon: '',
+          label: 'Inventory',
+          pageName: 'Inventory',
+          path: 'inventory',
+          component: null,
+        });
       });
   }
 }
