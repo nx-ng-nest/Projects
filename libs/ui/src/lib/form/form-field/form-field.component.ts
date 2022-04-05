@@ -4,12 +4,13 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { FormField } from './form';
+import { FormField } from '../form';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'form-field',
   templateUrl: './form-field-template.component.html',
+  styleUrls: ['../form.component.scss'],
 })
 export class FormFieldComponent {
   @Input() formField!: FormField;

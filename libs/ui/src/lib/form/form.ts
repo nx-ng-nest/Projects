@@ -5,8 +5,8 @@ export interface FormFieldSelectOption {
   label: string;
 }
 export interface FormField {
-  name: string;
   label: string;
+  hint?: string;
   icon: string;
   control: FormControl;
   attributes: Partial<HTMLInputElement>;
@@ -15,6 +15,7 @@ export interface FormField {
 
 export interface FormOptions {
   name: string;
-  submitLabel: string;
+  submitLabel?: string;
+  submitHandler?: (formValue: Record<string, any>) => void;
   formFields: FormField[];
 }

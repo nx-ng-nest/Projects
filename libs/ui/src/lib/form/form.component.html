@@ -5,15 +5,17 @@
       <form-field [formField]="i"> </form-field>
     </ng-container>
 
+    <ng-content select="[form]"></ng-content>
     <button
+      *ngIf="formOptions?.submitLabel"
       type="submit"
       mat-raised-button
       [color]="'primary'"
       (click)="submit()"
-      [disabled]="formGroup.untouched ? true : formGroup.invalid"
+      [disabled]="formGroup?.untouched ? true : formGroup.invalid"
     >
-      {{ formOptions.submitLabel }}
+      {{ formOptions?.submitLabel }}
     </button>
-    <ng-content></ng-content>
+    <ng-content select="[button]"></ng-content>
   </fieldset>
 </form>

@@ -1,1 +1,60 @@
-<p>create-product works!</p>
+<!-- Stepper nav -->
+<ng-template #stepNav>
+  <div class="row space-around p-2" button>
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="stepper.previous()"
+      matTooltipPosition="above"
+      matTooltip="Previous"
+    >
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="stepper.next()"
+      matTooltipPosition="above"
+      matTooltip="Next"
+    >
+      <mat-icon>arrow_forward_ios</mat-icon>
+    </button>
+  </div>
+</ng-template>
+
+<mat-stepper linear #stepper>
+  <!-- General  -->
+  <mat-step
+    #generalStep
+    [stepControl]="createProductFormGroup"
+    label="General"
+    [color]="generalStep.hasError ? 'accent' : 'primary'"
+  >
+    <projects-form
+      #general
+      [formOptions]="createProductFormOptions"
+      [formGroup]="createProductFormGroup"
+    >
+      <ng-container *ngTemplateOutlet="stepNav" button></ng-container>
+    </projects-form>
+  </mat-step>
+
+  <!-- Features  -->
+  <mat-step
+    #featureStep
+    label="Features"
+    [color]="featureStep.hasError ? 'accent' : 'primary'"
+  >
+    <button mat-mini-fab (click)="isAddFeature = true">
+      <mat-icon title="Add Feature">add</mat-icon>
+    </button>
+    <projects-form
+      [class.hidden]="!isAddFeature"
+      #features
+      [formOptions]="createProductFeaturesOptions"
+      [formGroup]="createProductFeaturesFormGroup"
+    >
+      <ng-container *ngTemplateOutlet="stepNav" button></ng-container>
+    </projects-form>
+  </mat-step>
+</mat-stepper>

@@ -1,0 +1,13 @@
+<!-- Text compatible fields   -->
+<ng-container
+  *ngIf="['text', 'number', 'email', 'password'].includes(getType())"
+>
+  <projects-form-text-field [formField]="formField"></projects-form-text-field>
+</ng-container>
+
+<!-- Select Field -->
+<ng-container *ngIf="getType() === 'select'">
+  <projects-form-select-field
+    [formField]="formField"
+  ></projects-form-select-field>
+</ng-container>

@@ -4,6 +4,7 @@ import {
   ManyToMany,
 } from 'typeorm';
 
+import { ApiProperty } from '@nestjs/swagger';
 import { IProduct } from '@projects/interface';
 
 import { Category } from '../category';
@@ -22,8 +23,11 @@ export class Product extends BaseEntity implements IProduct<Category> {
 
   @TextColumn({ unique: true }) name: string;
   @TextColumn({ maxLength: 400 }) description: string;
-  @JsonColumn({ default: '' }) features: Record<string, unknown>;
+  @JsonColumn({ default: '' }) features: Array<Record<string, string>>;
 
+  @ApiProperty({
+    default: [{ id: 1 }],
+  })
   @ManyToMany(() => Category, (c) => c.id, { nullable: true, eager: true })
   @JoinTable()
   categories: Category[];

@@ -171,7 +171,7 @@ export function JsonColumn(options?: ApiPropertyOptions & ColumnOptions) {
   return applyDecorators(
     ApiProperty({
       format: 'object',
-      default: options?.default || {},
+      default: options?.default || [],
       nullable: options?.required == false ? true : false,
       required: options?.required == false ? false : true,
     }),

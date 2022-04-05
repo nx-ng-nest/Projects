@@ -14,7 +14,7 @@ export interface IProduct<Category = ICategory> extends ICommonFields {
   /**
    * Optional features object
    */
-  features: Record<string, unknown>;
+  features: Array<Record<string, string>>;
 
   /**
    * uuid

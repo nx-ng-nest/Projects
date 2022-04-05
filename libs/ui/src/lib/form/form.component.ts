@@ -2,12 +2,12 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-
-import { NGXLogger } from 'ngx-logger';
+import {
+  FormControl,
+  FormGroup,
+} from '@angular/forms';
 
 import { FormOptions } from './form';
 
@@ -16,24 +16,39 @@ import { FormOptions } from './form';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent implements OnInit {
-  @Input() formOptions!: FormOptions;
-  @Output() readonly submitted = new EventEmitter<Record<string, any>>();
-  formGroup!: FormGroup;
+export class FormComponent {
+  @Input() formOptions: FormOptions = {
+    formFields: [
+      {
+        attributes: {},
+        control: new FormControl(''),
+        icon: 'info',
+        label: 'Form Label',
+      },
+    ],
+    submitHandler: (value) => console.log(value),
+    name: 'Form Name (formOptions.name)',
+    submitLabel: 'Submit Label (formOptions.submitLabel)',
+  };
 
-  constructor(private logger: NGXLogger) {}
+  @Output() readonly submitted = new EventEmitter<Record<string, any>>();
+  @Input() formGroup!: FormGroup;
 
   ngOnInit(): void {
-    this.formGroup = new FormGroup(
-      this.formOptions.formFields
-        .map((e) => ({ [e.name]: e.control }))
-        .reduce((p, c) => ({ ...p, ...c }))
-    );
+    if (!this.formGroup)
+      this.formGroup = new FormGroup(
+        this.formOptions?.formFields
+          .map((e) => ({ [e.attributes.name as string]: e.control }))
+          .reduce((p, c) => ({ ...p, ...c }))
+      );
   }
 
   submit() {
-    this.logger.log(this.formGroup.value);
     this.submitted.emit(this.formGroup.value);
+    if (this.formOptions?.submitHandler) {
+      this.formOptions.submitHandler(this.formGroup.value);
+    }
+    this.reset();
   }
 
   reset() {
@@ -43,7 +58,7 @@ export class FormComponent implements OnInit {
     this.formGroup.markAsUntouched();
 
     for (const c of this.formOptions.formFields) {
-      this.formGroup.controls[c.name].setErrors(null);
+      this.formGroup.controls[c.attributes.name as string].setErrors(null);
     }
   }
 }

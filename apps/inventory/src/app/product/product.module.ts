@@ -12,9 +12,10 @@ import {
 } from './product-navigation/product-navigation.component';
 import { ProductComponent } from './product.component';
 import { routes } from './product.routes';
+import { ProductToolbarComponent } from './product-toolbar/product-toolbar.component';
 
 @NgModule({
-  declarations: [ProductComponent, ProductNavigationComponent],
+  declarations: [ProductComponent, ProductNavigationComponent, ProductToolbarComponent],
   imports: [
     CommonModule,
     AppCommonModule,

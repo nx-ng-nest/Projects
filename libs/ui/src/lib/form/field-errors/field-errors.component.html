@@ -1,0 +1,31 @@
+<ng-container
+  *ngIf="control.touched && control.errors"
+  [ngSwitch]="firstErrorKey()"
+>
+  <ng-container *ngSwitchCase="'required'">
+    {{ attributes.name | titlecase }} is required!
+  </ng-container>
+  <ng-container *ngSwitchCase="'email'">
+    {{ attributes.name | titlecase }} must be a valid email!
+  </ng-container>
+  <ng-container *ngSwitchCase="'min'">
+    {{ attributes.name | titlecase }} must be more than {{ attributes.min }}
+  </ng-container>
+  <ng-container *ngSwitchCase="'max'">
+    {{ attributes.name | titlecase }} must be less than {{ attributes.min }}
+  </ng-container>
+  <ng-container *ngSwitchCase="'minlength'">
+    {{ attributes.name | titlecase }} must be longer than
+    {{ attributes.minLength }}
+  </ng-container>
+  <ng-container *ngSwitchCase="'maxlength'">
+    {{ attributes.name | titlecase }} must be shorter than
+    {{ attributes.maxLength }}
+  </ng-container>
+  <ng-container *ngSwitchCase="'match'">
+    {{ getErrorMsg('match') }}
+  </ng-container>
+  <ng-container *ngSwitchCase="'pattern'">
+    {{ getErrorMsg('pattern') }}
+  </ng-container>
+</ng-container>

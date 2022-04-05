@@ -10,7 +10,12 @@
     <mat-toolbar>Inventory</mat-toolbar>
     <mat-nav-list>
       <!-- Product Nav Item  -->
-      <projects-nav-item path="product" label="Product" [hasSub]="true">
+      <projects-nav-item
+        path="product"
+        label="Product"
+        icon="inventory"
+        [hasSub]="true"
+      >
         <!-- Product Sub Nav Items -->
         <router-outlet name="product-navitems"></router-outlet>
       </projects-nav-item>
@@ -28,7 +33,7 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>{{ pageName$ | async }}</span>
+      <router-outlet name="toolbar"></router-outlet>
     </mat-toolbar>
     <router-outlet></router-outlet>
     <footer>

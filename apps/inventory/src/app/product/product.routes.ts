@@ -3,6 +3,9 @@ import { Routes } from '@angular/router';
 import {
   ProductNavigationComponent,
 } from './product-navigation/product-navigation.component';
+import {
+  ProductToolbarComponent,
+} from './product-toolbar/product-toolbar.component';
 import { ProductComponent } from './product.component';
 
 export const routes: Routes = [
@@ -11,6 +14,7 @@ export const routes: Routes = [
     outlet: 'product-navitems',
     component: ProductNavigationComponent,
   },
+  { path: '', outlet: 'toolbar', component: ProductToolbarComponent },
   {
     path: '',
     component: ProductComponent,
