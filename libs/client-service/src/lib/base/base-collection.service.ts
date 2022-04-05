@@ -4,7 +4,10 @@ import {
   EntityCollectionServiceBase,
   EntityCollectionServiceElementsFactory,
 } from '@ngrx/data';
-import { IBaseCollectionService, ICommonFields } from '@projects/interface';
+import {
+  IBaseCollectionService,
+  ICommonFields,
+} from '@projects/interface';
 
 export class BaseCollectionService<T extends ICommonFields>
   extends EntityCollectionServiceBase<T>
@@ -51,8 +54,7 @@ export class BaseCollectionService<T extends ICommonFields>
     );
   }
 
-  // async findSelecteseledItemById(id: number) {
-  //   const items = await this.getItems();
-  //   return items.filter((e) => e.selected).find((e) => e.id == id);
-  // }
+  removeFilter() {
+    this.setFilter(null);
+  }
 }

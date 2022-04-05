@@ -1,9 +1,11 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -11,23 +13,32 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { Store } from '@ngrx/store';
-import { IBaseCollectionService } from '@projects/interface';
+import {
+  MatTable,
+  MatTableDataSource,
+} from '@angular/material/table';
+
+import { fadeInOnEnterAnimation } from 'angular-animations';
+import { NGXLogger } from 'ngx-logger';
+import { debounceTime } from 'rxjs';
 import { SubSink } from 'subsink';
-import { TableAction } from './store';
-import { slideInRightOnEnterAnimation } from 'angular-animations';
-import { mergeWith } from 'rxjs';
+
+import { IBaseCollectionService } from '@projects/interface';
+
+export interface TableAction {
+  label: string;
+  icon: string;
+  event: any;
+}
 
 @Component({
   selector: 'projects-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
-  animations: [
-    slideInRightOnEnterAnimation({ anchor: 'enter', duration: 1000 }),
-  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [fadeInOnEnterAnimation({ anchor: 'enter', duration: 1000 })],
 })
-export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TableComponent implements AfterViewInit, OnDestroy {
   subsink = new SubSink();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -37,15 +48,14 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() columns!: string[];
   @Input() displayedColumns!: string[];
   @Input() tableActions!: TableAction[];
-  selectFieldControl = new FormControl('name', []);
+  @Output() actionClick = new EventEmitter();
+
   searchFieldControl = new FormControl('', []);
   dataSource = new MatTableDataSource([]);
 
   @Input() dataService!: IBaseCollectionService<any>;
 
-  constructor(private store: Store, public dialog: MatDialog) {}
-
-  ngOnInit() {}
+  constructor(public dialog: MatDialog, private readonly logger: NGXLogger) {}
 
   ngAfterViewInit() {
     this.subsink.sink = this.dataService?.filteredEntities$.subscribe(
@@ -58,34 +68,29 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.subsink.sink = this.searchFieldControl.valueChanges
-      .pipe(mergeWith(this.selectFieldControl.valueChanges))
-      .subscribe((value) => {
-        this.dataService.setFilter((p: any) => {
-          const selectField = this.selectFieldControl.value;
-          const searchValue = this.searchFieldControl.value;
+      .pipe(debounceTime(1000))
+      .subscribe(() => {
+        if (this.searchFieldControl.value.trim().length > 0) {
+          this.dataService.setFilter((p: any) => {
+            const searchValues = this.searchFieldControl.value
+              .toLowerCase()
+              .split(',')
+              .map((v: string) => v.trim());
+            const jvalue = JSON.stringify(p).toLowerCase();
 
-          if (selectField && searchValue) {
-            return p[selectField]
-              ? p[selectField].toLowerCase().includes(searchValue.toLowerCase())
-              : true;
-          }
-          return true;
-        });
+            console.log(`Search Values: ${searchValues}`);
+            return searchValues
+              .map((sv: string) => jvalue.includes(sv))
+              .reduce((p: boolean, c: boolean) => !!(p && c));
+          });
+        } else {
+          this.dataService.removeFilter();
+        }
       });
   }
 
   ngOnDestroy(): void {
     this.subsink.unsubscribe();
-  }
-
-  setFilter(filterValue: string) {
-    if (this.selectFieldControl.value) {
-      this.dataService.setFilter((p: any) =>
-        p[this.selectFieldControl.value]
-          .toLowerCase()
-          .includes(filterValue.toLowerCase())
-      );
-    }
   }
 
   selectItem(event: MatCheckboxChange, product: any) {
@@ -101,5 +106,12 @@ export class TableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   deselectAllItems() {
     this.dataService.deselectAllItems();
+  }
+  handleAction(event: string) {
+    this.actionClick.emit(event);
+  }
+
+  testRerender() {
+    console.log('Rerendered Table Component!');
   }
 }

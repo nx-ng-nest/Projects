@@ -1,11 +1,16 @@
-import { ICommonFields } from '@projects/interface';
 import {
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BooleanColumn, TextColumn } from './columns';
+
+import { ICommonFields } from '@projects/interface';
+
+import {
+  BooleanColumn,
+  TextColumn,
+} from './columns';
 
 export class BaseEntity implements ICommonFields {
   @PrimaryGeneratedColumn() id: number;

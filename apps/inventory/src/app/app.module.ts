@@ -1,54 +1,36 @@
 import '@angular/localize/init';
 
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  RouterModule,
+  Routes,
+} from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-import {
-  LoggerModule,
-  NgxLoggerLevel,
-} from 'ngx-logger';
-
-import { EntityDataModule } from '@ngrx/data';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import {
-  MaterialModule,
-  NavigationModule,
-  NavigationStoreState,
-} from '@projects/ui';
-
 import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { entityConfig } from './entity-metadata';
+import { WelcomeComponent } from './welcome/welcome.component';
+
+const routes: Routes = [
+  { path: '', component: WelcomeComponent },
+  {
+    path: 'inventory',
+    loadChildren: () =>
+      import('./navigation/navigation.module').then((m) => m.NavigationModule),
+  },
+];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, WelcomeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MaterialModule,
-    NavigationModule,
-
-    LoggerModule.forRoot({
-      // serverLoggingUrl: '/api/logs',
-      level: NgxLoggerLevel.DEBUG,
-      // serverLogLevel: NgxLoggerLevel.ERROR,
+    RouterModule.forRoot(routes, {
+      useHash: true,
+      initialNavigation: 'enabled',
     }),
-    // StoreModue, EffectsModule, and EntityDataModule will be the following order
-    StoreModule.forRoot<{ navigationStore?: NavigationStoreState }>(
-      {},
-      {
-        initialState: JSON.parse(localStorage.getItem('store') || '{}'),
-      }
-    ),
-    EffectsModule.forRoot([]),
-    EntityDataModule.forRoot(entityConfig),
 
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,

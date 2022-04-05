@@ -8,13 +8,22 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import { Column, ColumnOptions, ILike } from 'typeorm';
+import {
+  Column,
+  ColumnOptions,
+} from 'typeorm';
+import { v4 } from 'uuid';
 
 import { applyDecorators } from '@nestjs/common';
-import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  ApiPropertyOptions,
+} from '@nestjs/swagger';
 
-import { HashTransformer, jsonStringTransformer } from './column.transformer';
-import { v4 } from 'uuid';
+import {
+  HashTransformer,
+  jsonStringTransformer,
+} from './column.transformer';
 
 function IsRequired(required: boolean | null) {
   return required == false ? IsOptional() : IsNotEmpty();
@@ -41,7 +50,7 @@ export function TextColumn(options?: ApiPropertyOptions & ColumnOptions) {
       update: options?.update == false ? false : true,
     }),
 
-    // IsRequired(options?.required),
+    IsRequired(options?.required),
     Length(options?.minLength || 1, options?.maxLength || 50)
   );
 }

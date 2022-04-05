@@ -32,4 +32,9 @@ export interface IBaseCollectionService<T>
    * @param id T id
    */
   findSelecteseledItemById(id: number): Promise<T | undefined>;
+
+  /**
+   * Remove filter
+   */
+  removeFilter(): void;
 }

@@ -1,0 +1,14 @@
+<a mat-list-item [routerLink]="[path]" routerLinkActive="router-link-active">
+  <span mat-line>
+    {{ label }}
+  </span>
+  <mat-icon mat-list-icon [color]="iconColor">{{ icon }}</mat-icon>
+  <button mat-icon-button (click)="isSubOpen = !isSubOpen" *ngIf="hasSub">
+    <mat-icon color="primary" *ngIf="!isSubOpen"> expand_more </mat-icon>
+    <mat-icon color="primary" *ngIf="isSubOpen"> expand_less </mat-icon>
+  </button>
+</a>
+
+<div class="pl30" *ngIf="isSubOpen">
+  <ng-content></ng-content>
+</div>

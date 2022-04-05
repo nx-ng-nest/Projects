@@ -62,7 +62,7 @@ export class AppService {
       return randomItem([cat1, cat2, cat3, cat4, cat5]);
     }
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 1000; i++) {
       const catx = randCategory();
       const catx1 = randCategory();
       const catx2 = randCategory();

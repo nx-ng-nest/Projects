@@ -3,9 +3,13 @@ import {
   Module,
   OnModuleInit,
 } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
-import { ThrottlerModule } from '@nestjs/throttler';
+import {
+  ThrottlerGuard,
+  ThrottlerModule,
+} from '@nestjs/throttler';
 import {
   TypeOrmModule,
   TypeOrmModuleOptions,
@@ -43,16 +47,28 @@ const dbConfig: { [key: string]: TypeOrmModuleOptions } = {
     TypeOrmModule.forFeature(ResourceEntities),
     AuthModule,
     ThrottlerModule.forRoot({
-      ttl: 10,
-      limit: 5,
+      ttl: 3,
+      limit: 1,
     }),
-    CacheModule.register({}),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 5,
+      max: 20,
+    }),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
     ...ResourceModules,
   ],
   controllers: [AppController],
-  providers: [AppService, UserService],
+  providers: [
+    AppService,
+    UserService,
+
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule implements OnModuleInit {
   constructor(private readonly appService: AppService) {}

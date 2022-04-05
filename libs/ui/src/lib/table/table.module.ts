@@ -1,17 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableComponent } from './table.component';
+import { NgModule } from '@angular/core';
+
 import { MaterialModule } from '../material';
-import { StoreModule } from '@ngrx/store';
-import { tableReducer, TableStoreEnum } from './store';
+import { TableComponent } from './table.component';
 
 @NgModule({
   declarations: [TableComponent],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    StoreModule.forFeature(TableStoreEnum.tableStoreName, tableReducer),
-  ],
+  imports: [CommonModule, MaterialModule],
   exports: [TableComponent],
 })
 export class TableModule {}

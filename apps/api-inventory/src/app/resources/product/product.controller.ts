@@ -1,8 +1,8 @@
-import { Transform } from 'class-transformer';
-import { ILike } from 'typeorm';
+import { Response } from 'express';
 
 import {
   Body,
+  CacheInterceptor,
   Controller,
   Delete,
   Get,
@@ -10,12 +10,10 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
+  Res,
+  UseInterceptors,
 } from '@nestjs/common';
-import {
-  ApiProperty,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import {
   ReadPermission,
   Secure,
@@ -31,58 +29,40 @@ import { ProductService } from './product.service';
 
 const SINGULAR = 'product';
 const PLURAL = 'products';
-
-class ProductQueryDTO {
-  @ApiProperty({ required: false })
-  take: number;
-
-  @ApiProperty({ required: false })
-  skip: number;
-
-  @ApiProperty({ required: false })
-  id?: number;
-
-  @ApiProperty({ required: false })
-  uuid: string;
-
-  @ApiProperty({ required: false })
-  @Transform(({ value }) => value && ILike(`%${value}%`))
-  q?: string;
-}
+const STREAM = 'product-stream';
+const COLUMNS = 'product-columns';
 
 @Secure()
-@ApiTags(ProductController.name)
+@ApiTags(ProductControllerRead.name)
+@UseInterceptors(CacheInterceptor)
 @Controller()
-export class ProductController {
+export class ProductControllerRead {
   constructor(private readonly productService: ProductService) {}
 
   @ReadPermission(SINGULAR)
-  @Get(PLURAL)
-  async get(@Query(UpdateValidationPipe) query: ProductQueryDTO) {
-    if (query.id) {
-      return this.productService.find({ where: { id: query.id } });
-    }
-
-    if (query.uuid) {
-      return this.productService.find({
-        where: [{ uuid: query.uuid }, { id2: query.uuid }, { id3: query.uuid }],
-      });
-    }
-
-    if (query.q) {
-      return this.productService.find({
-        where: [{ name: query.q }, { description: query.q }],
-      });
-    }
-
-    const result = await this.productService.find();
-
-    return result.map((e) => ({
-      ...e,
-      categories: e.categories.map((e) => e.name).join(', '),
-      categoryIds: e.categories.map((e) => e.id),
-    }));
+  @Get(STREAM)
+  async stream(@Res() res: Response) {
+    this.productService.stream(res);
   }
+
+  @ReadPermission(SINGULAR)
+  @Get(COLUMNS)
+  async columns() {
+    return this.productService.columns();
+  }
+
+  @ReadPermission(SINGULAR)
+  @Get(PLURAL)
+  async get() {
+    return this.productService.find();
+  }
+}
+
+@Secure()
+@ApiTags(ProductControllerWrite.name)
+@Controller()
+export class ProductControllerWrite {
+  constructor(private readonly productService: ProductService) {}
 
   @WritePermission(SINGULAR)
   @Post(SINGULAR)
