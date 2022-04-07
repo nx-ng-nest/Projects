@@ -49,7 +49,8 @@ const featureForm = {
       provide: CreateModuleTokens.FORM_OPTIONS,
       useValue: [
         {
-          name: 'Product',
+          name: 'product',
+          submitLabel: 'Save Product',
           formGroup: new FormGroup(productForm),
           formFields: [
             {

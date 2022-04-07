@@ -9,7 +9,10 @@ import {
   Routes,
 } from '@angular/router';
 
-import { FormModule } from '@projects/ui';
+import {
+  BasicTableModule,
+  FormModule,
+} from '@projects/ui';
 
 import { CreateComponent } from './create.component';
 
@@ -26,6 +29,7 @@ const routes: Routes = [{ path: '', component: CreateComponent }];
     MatStepperModule,
     MatIconModule,
     MatButtonModule,
+    BasicTableModule,
   ],
 })
 export class CreateModule {}

@@ -1,0 +1,7 @@
+.full-width-table {
+  width: 100%;
+}
+td:not(:first-child),
+th:not(:first-child) {
+  padding-left: 20px;
+}

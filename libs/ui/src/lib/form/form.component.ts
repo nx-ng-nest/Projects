@@ -6,6 +6,8 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+import { firstValueFrom } from 'rxjs';
+
 import { BaseCollectionService } from '@projects/client-service';
 
 import { FormOptions } from './form';
@@ -28,7 +30,7 @@ export class FormComponent {
   formGroup!: FormGroup;
 
   ngOnInit(): void {
-    this.formGroup = this.formOptions.formGroup; 
+    this.formGroup = this.formOptions.formGroup;
     this.formOptions?.formFields
       .map((e) => {
         if (e.attributes.unique) {
@@ -40,17 +42,17 @@ export class FormComponent {
       })
       .reduce((p, c) => ({ ...p, ...c }));
 
-
     this.formGroup.valueChanges.subscribe((d) =>
       console.log(this.formGroup.pending)
     );
   }
 
   async submit() {
-    const result = await this.resourceService.add(this.formGroup.value);
+    const result = this.resourceService.add(this.formGroup.value);
+
     this.submitted.emit({
       formName: this.formOptions.name,
-      formValue: result,
+      formValue: await firstValueFrom(result),
     });
     this.reset();
   }

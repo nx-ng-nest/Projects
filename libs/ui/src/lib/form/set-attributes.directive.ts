@@ -12,7 +12,7 @@ export class SetAttributeDirective implements AfterViewInit, OnInit {
   @Input() setAttributes!: Record<string, any>;
   constructor(public elementRef: ElementRef<HTMLInputElement>) {}
   ngOnInit(): void {
-    console.log(this.setAttributes);
+    // console.log(this.setAttributes);
   }
   ngAfterViewInit(): void {
     this.setAttributesNow();

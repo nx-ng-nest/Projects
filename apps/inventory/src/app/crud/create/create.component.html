@@ -1,14 +1,38 @@
-<mat-stepper labelPosition="bottom" #stepper linear>
-  <mat-step
-    [stepControl]="f.formGroup"
-    *ngFor="let f of formsOptions"
-    errorMessage="Not Complete"
-  >
+<mat-stepper labelPosition="bottom" #stepper [linear]="true">
+  <!-- main Form  -->
+  <mat-step #mainStep [stepControl]="mainForm.formGroup">
+    <ng-template matStepLabel>
+      {{ mainForm.name }}
+    </ng-template>
+    <projects-form
+      [formOptions]="mainForm"
+      [resourceService]="resourceService"
+      (submitted)="mainFormSubmitted($event)"
+    >
+    </projects-form>
+  </mat-step>
+
+  <!-- Sub Forms -->
+  <mat-step [stepControl]="f.formGroup" *ngFor="let f of subForms">
     <ng-template matStepLabel>
       {{ f.name }}
     </ng-template>
-
     <projects-form [formOptions]="f" [resourceService]="resourceService">
     </projects-form>
+  </mat-step>
+
+  <mat-step label="Submit">
+    <ng-container *ngFor="let f of formsOptions">
+      <h1>{{ f.name }}</h1>
+      <projects-basic-table
+        [dataSource]="[f.formGroup.value]"
+      ></projects-basic-table>
+      <br />
+      <br />
+    </ng-container>
+
+    <button mat-raised-button color="primary">
+      Save {{ formsOptions[0].name }}
+    </button>
   </mat-step>
 </mat-stepper>
