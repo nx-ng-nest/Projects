@@ -10,12 +10,12 @@ import { IProduct } from '@projects/interface';
 import { Category } from '../category';
 import {
   BaseEntity,
-  JsonColumn,
   TextColumn,
 } from '../common';
+import { Feature } from '../feature';
 
 @Entity()
-export class Product extends BaseEntity implements IProduct<Category> {
+export class Product extends BaseEntity implements IProduct<Category, Feature> {
   @TextColumn({ type: 'uuid', unique: true, required: true }) uuid: string;
   @TextColumn({ type: 'uuid', unique: true, required: false }) id1: string;
   @TextColumn({ type: 'uuid', unique: true, required: false }) id2: string;
@@ -23,12 +23,23 @@ export class Product extends BaseEntity implements IProduct<Category> {
 
   @TextColumn({ unique: true }) name: string;
   @TextColumn({ maxLength: 400 }) description: string;
-  @JsonColumn({ default: '' }) features: Array<Record<string, string>>;
+
+  @ManyToMany(() => Feature, (f) => f.id, {
+    cascade: true,
+    nullable: true,
+    eager: true,
+  })
+  @JoinTable()
+  features: Feature[];
 
   @ApiProperty({
     default: [{ id: 1 }],
   })
-  @ManyToMany(() => Category, (c) => c.id, { nullable: true, eager: true })
+  @ManyToMany(() => Category, (c) => c.id, {
+    nullable: true,
+    eager: true,
+    cascade: true,
+  })
   @JoinTable()
   categories: Category[];
 }

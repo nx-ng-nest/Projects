@@ -1,5 +1,5 @@
 <ng-container
-  *ngIf="control.touched && control.errors"
+  *ngIf="control?.touched && control?.errors"
   [ngSwitch]="firstErrorKey()"
 >
   <ng-container *ngSwitchCase="'required'">
@@ -27,5 +27,8 @@
   </ng-container>
   <ng-container *ngSwitchCase="'pattern'">
     {{ getErrorMsg('pattern') }}
+  </ng-container>
+  <ng-container *ngSwitchCase="'unique'">
+    {{ getErrorMsg('unique') }}
   </ng-container>
 </ng-container>

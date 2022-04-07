@@ -1,4 +1,10 @@
-import { firstValueFrom } from 'rxjs';
+import { AbstractControl } from '@angular/forms';
+
+import {
+  first,
+  firstValueFrom,
+  map,
+} from 'rxjs';
 
 import {
   EntityCollectionServiceBase,
@@ -56,5 +62,32 @@ export class BaseCollectionService<T extends ICommonFields>
 
   removeFilter() {
     this.setFilter(null);
+  }
+
+  validateUnique(fieldName: keyof T, control: AbstractControl) {
+    const asyncValidator = (c: AbstractControl) => {
+      return this.entities$
+        .pipe(
+          map((data) => {
+            const found = data.find(
+              (item) =>
+                (item[fieldName] as unknown as string).toLowerCase() ==
+                control.value.toLowerCase()
+            );
+
+            if (found == undefined) {
+              control.markAsPristine({ onlySelf: true });
+              return null;
+            } else {
+              const msg = { unique: `${fieldName} must be unique!` };
+              control.setErrors(msg);
+              return msg;
+            }
+          })
+        )
+        .pipe(first());
+    };
+
+    return asyncValidator;
   }
 }

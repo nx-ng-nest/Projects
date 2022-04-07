@@ -1,0 +1,4 @@
+export enum CreateModuleTokens {
+  FORM_OPTIONS = 'FORM_OPTIONS',
+  RESOURCE_SERVICE = 'RESOURCE_SERVICE',
+}

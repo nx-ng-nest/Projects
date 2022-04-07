@@ -1,0 +1,14 @@
+<mat-stepper labelPosition="bottom" #stepper linear>
+  <mat-step
+    [stepControl]="f.formGroup"
+    *ngFor="let f of formsOptions"
+    errorMessage="Not Complete"
+  >
+    <ng-template matStepLabel>
+      {{ f.name }}
+    </ng-template>
+
+    <projects-form [formOptions]="f" [resourceService]="resourceService">
+    </projects-form>
+  </mat-step>
+</mat-stepper>

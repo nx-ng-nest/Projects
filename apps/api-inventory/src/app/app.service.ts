@@ -27,9 +27,12 @@ function fakeProduct(categories?: IID[]): IProduct {
     uuid: v4(),
     name: commerce.productName() + Math.floor(Math.random() * 2000),
     description: commerce.productDescription(),
-    features: {
-      [commerce.productAdjective()]: commerce.productDescription(),
-    },
+    features: [
+      {
+        key: 'color',
+        value: 'red',
+      },
+    ],
     categories,
   };
 }

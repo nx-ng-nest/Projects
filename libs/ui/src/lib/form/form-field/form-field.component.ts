@@ -20,7 +20,11 @@ export class FormFieldComponent {
   }
 
   iconColor(control: FormControl) {
-    return control.untouched ? 'primary' : control.valid ? 'primary' : 'accent';
+    return control?.untouched
+      ? 'primary'
+      : control?.valid || control?.pending
+      ? 'primary'
+      : 'accent';
   }
 
   getFirstError(errors: Record<string, any>) {

@@ -1,13 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { RouterModule } from '@angular/router';
+
+import { firstValueFrom } from 'rxjs';
 
 import { StoreModule } from '@ngrx/store';
 import { ProductService } from '@projects/client-service';
 import { FormOptions } from '@projects/ui';
 
 import { CreateModuleTokens } from '../../crud/create/create.module.tokens';
+
+const productForm = {
+  uuid: new FormControl('', [Validators.required, Validators.minLength(10)]),
+  name: new FormControl('', [Validators.required]),
+  description: new FormControl('', [Validators.required]),
+};
+
+const featureForm = {
+  key: new FormControl('', Validators.required),
+  value: new FormControl('', Validators.required),
+};
 
 @NgModule({
   declarations: [],
@@ -33,37 +50,66 @@ import { CreateModuleTokens } from '../../crud/create/create.module.tokens';
       useValue: [
         {
           name: 'Product',
+          formGroup: new FormGroup(productForm),
           formFields: [
             {
-              validators: [Validators.required],
+              icon: 'key',
+              label: 'Barcode',
+              hint: 'Type a barcode.',
+              attributes: {
+                name: 'uuid',
+                required: true,
+                autocomplete: 'off',
+                unique: true,
+              },
+              control: productForm.uuid,
+            },
+            {
               icon: 'info',
               label: 'Product Name',
               hint: 'Type a descriptive product name.',
               attributes: {
                 name: 'name',
                 required: true,
+                autocomplete: 'off',
               },
+              control: productForm.name,
+            },
+            {
+              icon: 'description',
+              label: 'Product Description',
+              hint: 'Type a product description.',
+              attributes: {
+                name: 'description',
+                required: true,
+                autocomplete: 'off',
+              },
+              control: productForm.description,
             },
           ],
-          submitLabel: 'Create Product',
         },
 
         {
           name: 'Features',
+          formGroup: new FormGroup(featureForm),
           formFields: [
             {
-              attributes: { name: 'key', required: true },
+              attributes: { name: 'key', required: true, autocomplete: 'off' },
               label: 'Feature Name',
               icon: 'key',
               hint: 'Type a feature name like color',
-              validators: [Validators.required],
+              control: featureForm.key,
             },
             {
-              attributes: { name: 'value', required: true },
+              attributes: {
+                name: 'value',
+                required: true,
+                autocomplete: 'off',
+              },
               label: 'Feature Value',
-              icon: 'document',
+              icon: 'description',
               hint: 'Type a feature value like red',
-              validators: [Validators.required],
+              control: featureForm.value,
             },
           ],
         },
@@ -71,4 +117,8 @@ import { CreateModuleTokens } from '../../crud/create/create.module.tokens';
     },
   ],
 })
-export class ProductModule {}
+export class ProductModule {
+  constructor(productService: ProductService) {
+    firstValueFrom(productService.getAll()).then().catch(console.log);
+  }
+}

@@ -1,7 +1,9 @@
 import { ICategory } from '../category';
 import { ICommonFields } from '../common';
+import { IFeature } from '../feature';
 
-export interface IProduct<Category = ICategory> extends ICommonFields {
+export interface IProduct<Category = ICategory, Feature = IFeature>
+  extends ICommonFields {
   /**
    * Unique required name
    */
@@ -14,7 +16,7 @@ export interface IProduct<Category = ICategory> extends ICommonFields {
   /**
    * Optional features object
    */
-  features: Array<Record<string, string>>;
+  features: Partial<Feature>[];
 
   /**
    * uuid

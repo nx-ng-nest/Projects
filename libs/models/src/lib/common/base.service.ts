@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import {
   DeepPartial,
   FindManyOptions,
+  FindOneOptions,
   Repository,
 } from 'typeorm';
 import {
@@ -11,6 +12,7 @@ import {
 
 import {
   Logger,
+  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 
@@ -83,11 +85,22 @@ export abstract class BaseDataService<T> {
 
   async find(options?: FindManyOptions) {
     this.logger.debug(this.find.name + ' options: ', options);
-    try {
-      return await this.repo.find(options);
-    } catch (err) {
-      throw new UnprocessableEntityException(err.message);
+
+    const found = await this.repo.find(options);
+    if (found) {
+      return found;
     }
+    throw new NotFoundException();
+  }
+
+  async findOne(options: FindOneOptions) {
+    this.logger.debug(this.findOne.name + ' options: ', options);
+
+    const found = await this.repo.findOne(options);
+    if (found) {
+      return found;
+    }
+    throw new NotFoundException(options);
   }
 
   async save(body: DeepPartial<T>) {

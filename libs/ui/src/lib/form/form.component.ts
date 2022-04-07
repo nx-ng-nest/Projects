@@ -4,12 +4,16 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+
+import { BaseCollectionService } from '@projects/client-service';
 
 import { FormOptions } from './form';
+
+export interface FormComponentOutput<T = Record<string, any>> {
+  formName: string;
+  formValue: T;
+}
 
 @Component({
   selector: 'projects-form',
@@ -17,37 +21,37 @@ import { FormOptions } from './form';
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent {
-  @Input() formOptions: FormOptions = {
-    formFields: [
-      {
-        attributes: {},
-        control: new FormControl(''),
-        icon: 'info',
-        label: 'Form Label',
-      },
-    ],
-    submitHandler: (value) => console.log(value),
-    name: 'Form Name (formOptions.name)',
-    submitLabel: 'Submit Label (formOptions.submitLabel)',
-  };
+  @Input() formOptions!: FormOptions;
+  @Input() resourceService!: BaseCollectionService<any>;
+  @Output() readonly submitted = new EventEmitter<FormComponentOutput>();
 
-  @Output() readonly submitted = new EventEmitter<Record<string, any>>();
-  @Input() formGroup!: FormGroup;
+  formGroup!: FormGroup;
 
   ngOnInit(): void {
-    if (!this.formGroup)
-      this.formGroup = new FormGroup(
-        this.formOptions?.formFields
-          .map((e) => ({ [e.attributes.name as string]: e.control }))
-          .reduce((p, c) => ({ ...p, ...c }))
-      );
+    this.formGroup = this.formOptions.formGroup; 
+    this.formOptions?.formFields
+      .map((e) => {
+        if (e.attributes.unique) {
+          e.control.setAsyncValidators([
+            this.resourceService.validateUnique(e.attributes.name, e.control),
+          ]);
+        }
+        return { [e.attributes.name]: e.control };
+      })
+      .reduce((p, c) => ({ ...p, ...c }));
+
+
+    this.formGroup.valueChanges.subscribe((d) =>
+      console.log(this.formGroup.pending)
+    );
   }
 
-  submit() {
-    this.submitted.emit(this.formGroup.value);
-    if (this.formOptions?.submitHandler) {
-      this.formOptions.submitHandler(this.formGroup.value);
-    }
+  async submit() {
+    const result = await this.resourceService.add(this.formGroup.value);
+    this.submitted.emit({
+      formName: this.formOptions.name,
+      formValue: result,
+    });
     this.reset();
   }
 

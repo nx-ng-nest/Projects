@@ -1,6 +1,7 @@
 import {
   Category,
   ClockIn,
+  Feature,
   Message,
   Product,
   ProductDetail,
@@ -11,10 +12,11 @@ import {
 } from '@projects/models';
 
 export const ResourceEntities = [
-  Category,
   ClockIn,
   Message,
   Product,
+  Category,
+  Feature,
   ProductDetail,
   Sale,
   Store,

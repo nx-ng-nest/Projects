@@ -28,6 +28,8 @@ import {
 import { ProductService } from './product.service';
 
 const SINGULAR = 'product';
+const BYID = 'product/:id';
+const BYUUID = 'product/uuid/:uuid';
 const PLURAL = 'products';
 const STREAM = 'product-stream';
 const COLUMNS = 'product-columns';
@@ -49,6 +51,17 @@ export class ProductControllerRead {
   @Get(COLUMNS)
   async columns() {
     return this.productService.columns();
+  }
+
+  @ReadPermission(SINGULAR)
+  @Get(BYID)
+  getOneById(@Param('id') id: number) {
+    return this.productService.findOne({ where: { id } });
+  }
+  @ReadPermission(SINGULAR)
+  @Get(BYUUID)
+  getOneByUUID(@Param('uuid') uuid: number) {
+    return this.productService.findOne({ where: { uuid } });
   }
 
   @ReadPermission(SINGULAR)
