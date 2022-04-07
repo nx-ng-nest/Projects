@@ -16,6 +16,7 @@ import { NavItemComponent } from './nav-item/nav-item.component';
     MatButtonModule,
     MatIconModule,
   ],
+  providers: [],
   exports: [NavItemComponent],
 })
 export class AppCommonModule {}

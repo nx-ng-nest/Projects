@@ -13,12 +13,14 @@ import { StoreModule } from '@ngrx/store';
 import { ProductService } from '@projects/client-service';
 import { FormOptions } from '@projects/ui';
 
+import { LocalStoreService } from '../../common/localstore.service';
 import { CreateModuleTokens } from '../../crud/create/create.module.tokens';
 
 const productForm = {
   uuid: new FormControl('', [Validators.required, Validators.minLength(10)]),
   name: new FormControl('', [Validators.required]),
   description: new FormControl('', [Validators.required]),
+  categories: new FormControl('', []),
 };
 
 const featureForm = {
@@ -86,6 +88,21 @@ const featureForm = {
                 autocomplete: 'off',
               },
               control: productForm.description,
+            },
+            {
+              icon: 'category',
+              label: 'Categories',
+              hint: 'Select Categories.',
+              attributes: {
+                name: 'categories',
+                type: 'select',
+                multiple: true,
+              },
+              control: productForm.description,
+              selectOptions: LocalStoreService.categories().map((e) => ({
+                label: e.name,
+                value: e.id,
+              })),
             },
           ],
         },

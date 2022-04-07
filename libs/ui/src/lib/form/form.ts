@@ -3,10 +3,17 @@ import {
   FormGroup,
 } from '@angular/forms';
 
+import { BaseCollectionService } from '@projects/client-service';
+
 export interface FormFieldSelectOption {
   value: string;
   label: string;
 }
+
+type GetSelectOptions = <T>(
+  dataService: BaseCollectionService<T>
+) => Promise<FormFieldSelectOption[]>;
+
 export interface FormField {
   unique?: boolean;
   label: string;
