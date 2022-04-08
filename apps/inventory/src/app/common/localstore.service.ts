@@ -26,6 +26,9 @@ export class LocalStoreService {
     }
   }
 
+  static products(value?: ICategory[]): ICategory[] {
+    return this.local({ key: 'products', value: value });
+  }
   static categories(value?: ICategory[]): ICategory[] {
     return this.local({ key: 'categories', value: value });
   }

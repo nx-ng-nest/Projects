@@ -1,4 +1,7 @@
-import { EntityDataModuleConfig, EntityMetadataMap } from '@ngrx/data';
+import {
+  EntityDataModuleConfig,
+  EntityMetadataMap,
+} from '@ngrx/data';
 import { IProduct } from '@projects/interface';
 
 const entityMetadata: EntityMetadataMap = {
@@ -21,5 +24,3 @@ export const productEntityConfig: EntityDataModuleConfig = {
   entityMetadata,
   pluralNames,
 };
-
-

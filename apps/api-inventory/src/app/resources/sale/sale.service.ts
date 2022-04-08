@@ -4,12 +4,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   BaseDataService,
-  User,
+  Sale,
 } from '@projects/models';
 
 @Injectable()
-export class UserService extends BaseDataService<User> {
-  constructor(@InjectRepository(User) userRepo: Repository<User>) {
-    super(userRepo);
+export class SaleService extends BaseDataService<Sale> {
+  constructor(@InjectRepository(Sale) saleRepo: Repository<Sale>) {
+    super(saleRepo);
   }
 }

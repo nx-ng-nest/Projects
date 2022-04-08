@@ -7,8 +7,6 @@ import {
 } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { firstValueFrom } from 'rxjs';
-
 import { StoreModule } from '@ngrx/store';
 import { ProductService } from '@projects/client-service';
 import { FormOptions } from '@projects/ui';
@@ -135,8 +133,4 @@ const featureForm = {
     },
   ],
 })
-export class ProductModule {
-  constructor(productService: ProductService) {
-    firstValueFrom(productService.getAll()).then().catch(console.log);
-  }
-}
+export class ProductModule {}

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
 import { EntityCollectionServiceElementsFactory } from '@ngrx/data';
-import { IProduct } from '@projects/interface';
+import { IFeature } from '@projects/interface';
 
 import { BaseCollectionService } from '../base';
 
 @Injectable({ providedIn: 'root' })
-export class ProductService extends BaseCollectionService<IProduct> {
+export class FeatureService extends BaseCollectionService<IFeature> {
   constructor(elementFactory: EntityCollectionServiceElementsFactory) {
-    super('Product', elementFactory);
+    super('Feature', elementFactory);
   }
 }

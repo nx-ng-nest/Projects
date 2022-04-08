@@ -20,83 +20,83 @@ import {
   WritePermission,
 } from '@projects/auth';
 import {
-  Category,
   CreateValidationPipe,
+  Feature,
   UpdateValidationPipe,
 } from '@projects/models';
 
-import { CategoryService } from './category.service';
+import { FeatureService } from './feature.service';
 
-const SINGULAR = 'category';
-const BYID = 'category/:id';
-const BYUUID = 'category/uuid/:uuid';
-const PLURAL = 'categories';
-const STREAM = 'category-stream';
-const COLUMNS = 'category-columns';
+const SINGULAR = 'feature';
+const BYID = 'feature/:id';
+const BYUUID = 'feature/uuid/:uuid';
+const PLURAL = 'features';
+const STREAM = 'feature-stream';
+const COLUMNS = 'feature-columns';
 
 @Secure()
-@ApiTags(CategoryControllerRead.name)
+@ApiTags(FeatureControllerRead.name)
 @UseInterceptors(CacheInterceptor)
 @Controller()
-export class CategoryControllerRead {
-  constructor(private readonly categoryService: CategoryService) {}
+export class FeatureControllerRead {
+  constructor(private readonly featureService: FeatureService) {}
 
   @ReadPermission(SINGULAR)
   @Get(STREAM)
   async stream(@Res() res: Response) {
-    this.categoryService.stream(res);
+    this.featureService.stream(res);
   }
 
   @ReadPermission(SINGULAR)
   @Get(COLUMNS)
   async columns() {
-    return this.categoryService.columns();
+    return this.featureService.columns();
   }
 
   @ReadPermission(SINGULAR)
   @Get(BYID)
   getOneById(@Param('id') id: number) {
-    return this.categoryService.findOne({ where: { id } });
+    return this.featureService.findOne({ where: { id } });
   }
 
   @ReadPermission(SINGULAR)
   @Get(BYUUID)
   getOneByUUID(@Param('uuid') uuid: number) {
-    return this.categoryService.findOne({ where: { uuid } });
+    return this.featureService.findOne({ where: { uuid } });
   }
 
   @ReadPermission(SINGULAR)
   @Get(PLURAL)
   async get() {
-    return this.categoryService.find();
+    return this.featureService.find();
   }
 }
 
 @Secure()
-@ApiTags(CategoryControllerWrite.name)
+@ApiTags(FeatureControllerWrite.name)
 @Controller()
-export class CategoryControllerWrite {
-  constructor(private readonly categoryService: CategoryService) {}
+export class FeatureControllerWrite {
+  constructor(private readonly featureService: FeatureService) {}
 
   @WritePermission(SINGULAR)
   @Post(SINGULAR)
-  post(@Body(CreateValidationPipe) body: Category) {
-    const newCategory = this.categoryService.save(body);
-    return newCategory;
+  post(@Body(CreateValidationPipe) body: Feature) {
+    const newFeature = this.featureService.save(body);
+    return newFeature;
   }
 
   @WritePermission(SINGULAR)
   @Patch(SINGULAR + '/:id')
   patch(
     @Param('id', ParseIntPipe) id: number,
-    @Body(UpdateValidationPipe) updated: Category
+    @Body(UpdateValidationPipe) updated: Feature
   ) {
-    return this.categoryService.update(id, updated);
+    return this.featureService.update(id, updated);
   }
 
   @WritePermission(SINGULAR)
   @Delete(SINGULAR + '/:id')
   delete(@Param('id', ParseIntPipe) id: number) {
-    return this.categoryService.delete(id);
+    return this.featureService.delete(id);
   }
 }

@@ -47,8 +47,8 @@ const dbConfig: { [key: string]: TypeOrmModuleOptions } = {
     TypeOrmModule.forFeature(ResourceEntities),
     AuthModule,
     ThrottlerModule.forRoot({
-      ttl: 3,
-      limit: 1,
+      ttl: 10,
+      limit: 7,
     }),
     CacheModule.register({
       isGlobal: true,

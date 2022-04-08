@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   Inject,
   OnInit,
@@ -8,6 +9,8 @@ import {
   MatStep,
   MatStepper,
 } from '@angular/material/stepper';
+
+import { BehaviorSubject } from 'rxjs';
 
 import { BaseCollectionService } from '@projects/client-service';
 import {
@@ -22,7 +25,7 @@ import { CreateModuleTokens } from './create.module.tokens';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, AfterViewInit {
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('mainStep') mainStep!: MatStep;
 
@@ -36,6 +39,10 @@ export class CreateComponent implements OnInit {
     @Inject(CreateModuleTokens.RESOURCE_SERVICE)
     public resourceService: BaseCollectionService<any>
   ) {}
+  ngAfterViewInit(): void {
+    const  i = new BehaviorSubject(1);
+
+  }
 
   ngOnInit(): void {
     this.mainForm = this.formsOptions[0];

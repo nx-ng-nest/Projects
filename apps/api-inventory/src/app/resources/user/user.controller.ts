@@ -20,83 +20,83 @@ import {
   WritePermission,
 } from '@projects/auth';
 import {
-  Category,
   CreateValidationPipe,
+  User,
   UpdateValidationPipe,
 } from '@projects/models';
 
-import { CategoryService } from './category.service';
+import { UserService } from './user.service';
 
-const SINGULAR = 'category';
-const BYID = 'category/:id';
-const BYUUID = 'category/uuid/:uuid';
-const PLURAL = 'categories';
-const STREAM = 'category-stream';
-const COLUMNS = 'category-columns';
+const SINGULAR = 'user';
+const BYID = 'user/:id';
+const BYUUID = 'user/uuid/:uuid';
+const PLURAL = 'users';
+const STREAM = 'user-stream';
+const COLUMNS = 'user-columns';
 
 @Secure()
-@ApiTags(CategoryControllerRead.name)
+@ApiTags(UserControllerRead.name)
 @UseInterceptors(CacheInterceptor)
 @Controller()
-export class CategoryControllerRead {
-  constructor(private readonly categoryService: CategoryService) {}
+export class UserControllerRead {
+  constructor(private readonly userService: UserService) {}
 
   @ReadPermission(SINGULAR)
   @Get(STREAM)
   async stream(@Res() res: Response) {
-    this.categoryService.stream(res);
+    this.userService.stream(res);
   }
 
   @ReadPermission(SINGULAR)
   @Get(COLUMNS)
   async columns() {
-    return this.categoryService.columns();
+    return this.userService.columns();
   }
 
   @ReadPermission(SINGULAR)
   @Get(BYID)
   getOneById(@Param('id') id: number) {
-    return this.categoryService.findOne({ where: { id } });
+    return this.userService.findOne({ where: { id } });
   }
 
   @ReadPermission(SINGULAR)
   @Get(BYUUID)
   getOneByUUID(@Param('uuid') uuid: number) {
-    return this.categoryService.findOne({ where: { uuid } });
+    return this.userService.findOne({ where: { uuid } });
   }
 
   @ReadPermission(SINGULAR)
   @Get(PLURAL)
   async get() {
-    return this.categoryService.find();
+    return this.userService.find();
   }
 }
 
 @Secure()
-@ApiTags(CategoryControllerWrite.name)
+@ApiTags(UserControllerWrite.name)
 @Controller()
-export class CategoryControllerWrite {
-  constructor(private readonly categoryService: CategoryService) {}
+export class UserControllerWrite {
+  constructor(private readonly userService: UserService) {}
 
   @WritePermission(SINGULAR)
   @Post(SINGULAR)
-  post(@Body(CreateValidationPipe) body: Category) {
-    const newCategory = this.categoryService.save(body);
-    return newCategory;
+  post(@Body(CreateValidationPipe) body: User) {
+    const newUser = this.userService.save(body);
+    return newUser;
   }
 
   @WritePermission(SINGULAR)
   @Patch(SINGULAR + '/:id')
   patch(
     @Param('id', ParseIntPipe) id: number,
-    @Body(UpdateValidationPipe) updated: Category
+    @Body(UpdateValidationPipe) updated: User
   ) {
-    return this.categoryService.update(id, updated);
+    return this.userService.update(id, updated);
   }
 
   @WritePermission(SINGULAR)
   @Delete(SINGULAR + '/:id')
   delete(@Param('id', ParseIntPipe) id: number) {
-    return this.categoryService.delete(id);
+    return this.userService.delete(id);
   }
 }

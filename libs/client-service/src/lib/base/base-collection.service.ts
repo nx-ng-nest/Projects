@@ -1,6 +1,7 @@
 import { AbstractControl } from '@angular/forms';
 
 import {
+  BehaviorSubject,
   first,
   firstValueFrom,
   map,
@@ -19,6 +20,8 @@ export class BaseCollectionService<T extends ICommonFields>
   extends EntityCollectionServiceBase<T>
   implements IBaseCollectionService<T>
 {
+  selectedItems$ = new BehaviorSubject<T[]>([]);
+
   constructor(
     entityName: string,
     elementsFactory: EntityCollectionServiceElementsFactory
