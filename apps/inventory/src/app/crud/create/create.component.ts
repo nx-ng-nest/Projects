@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   Inject,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,12 +29,10 @@ import { CreateModuleTokens } from './create.module.tokens';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
-export class CreateComponent implements OnInit, AfterViewInit {
-  @ViewChild('stepper') stepper!: MatStepper;
-  @ViewChild('mainStep') mainStep!: MatStep;
+export class CreateComponent implements AfterViewInit {
+  reRender$ = new BehaviorSubject(true);
 
-  mainForm!: FormOptions;
-  subForms!: FormOptions[];
+  @ViewChild('stepper') stepper!: MatStepper;
 
   constructor(
     @Inject(CreateModuleTokens.FORM_OPTIONS) public formsOptions: FormOptions[],
@@ -44,14 +41,8 @@ export class CreateComponent implements OnInit, AfterViewInit {
     public matSnackBar: MatSnackBar,
     public matDialog: MatDialog
   ) {}
-  ngAfterViewInit(): void {
-    const i = new BehaviorSubject(1);
-  }
 
-  ngOnInit(): void {
-    this.mainForm = this.formsOptions[0];
-    this.subForms = this.formsOptions.slice(1, this.formsOptions.length);
-  }
+  ngAfterViewInit(): void {}
 
   entries(formValue: Record<string, any>) {
     return Object.entries(formValue);
@@ -59,9 +50,13 @@ export class CreateComponent implements OnInit, AfterViewInit {
 
   formSubmitResult(createdItem: FormComponentOutput, step: MatStep) {
     if (createdItem.error) {
+      console.log(createdItem.formValue);
       const status = createdItem.formValue['error']['status'];
-      const message = createdItem.formValue['error']['message'];
-      this.matDialog.open(HttpErrorComponent, { data: { status, message } });
+      const message1 = createdItem.formValue['error']['message'];
+      const message2 = createdItem.formValue['message'];
+      this.matDialog.open(HttpErrorComponent, {
+        data: { status, messages: [message1, message2] },
+      });
       return;
     } else {
       this.matSnackBar.open('Form is submitted.', '', {
@@ -74,5 +69,17 @@ export class CreateComponent implements OnInit, AfterViewInit {
       step.completed = true;
       this.stepper.next();
     }
+  }
+
+  reset() {
+    for (const e of this.formsOptions) {
+      e.formGroup.reset();
+    }
+    this.stepper.reset();
+    this.reRender$.next(false);
+
+    setTimeout(() => {
+      this.reRender$.next(true);
+    }, 2000);
   }
 }

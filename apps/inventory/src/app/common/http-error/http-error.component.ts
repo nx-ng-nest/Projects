@@ -11,6 +11,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class HttpErrorComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: { status: string | number; message: string }
+    public data: { status: string | number; messages: string[] }
   ) {}
 }

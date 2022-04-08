@@ -3,5 +3,5 @@
     Status Code
     <strong> [{{ data.status }}] </strong>
   </h1>
-  <p>{{ data.message }}</p>
+  <p *ngFor="let e of data.messages">{{ e }}</p>
 </div>

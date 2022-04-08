@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import {
@@ -34,6 +35,7 @@ const routes: Routes = [{ path: '', component: CreateComponent }];
     MatDialogModule,
     MatSnackBarModule,
     BasicTableModule,
+    MatProgressSpinner
   ],
 })
 export class CreateModule {}

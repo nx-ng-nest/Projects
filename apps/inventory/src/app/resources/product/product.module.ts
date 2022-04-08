@@ -73,6 +73,7 @@ const featureForm = {
                 name: 'name',
                 required: true,
                 autocomplete: 'off',
+                unique: true,
               },
               control: productForm.name,
             },

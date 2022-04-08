@@ -1,14 +1,28 @@
-<mat-stepper labelPosition="bottom" #stepper [linear]="true">
+<mat-stepper
+  labelPosition="bottom"
+  #stepper
+  [linear]="true"
+  *ngIf="reRender$ | async"
+>
   <!-- main Form  -->
-  <mat-step #step [stepControl]="mainForm.formGroup" errorMessage>
+  <mat-step
+    #step
+    [stepControl]="s.formGroup"
+    errorMessage
+    *ngFor="let s of formsOptions"
+  >
     <ng-template matStepLabel>
-      {{ mainForm.name }}
+      {{ s.name }}
     </ng-template>
     <projects-form
-      [formOptions]="mainForm"
+      [formOptions]="s"
       [resourceService]="resourceService"
       (submitted)="formSubmitResult($event, step)"
     >
     </projects-form>
+  </mat-step>
+
+  <mat-step label="Complete">
+    <button mat-raised-button (click)="reset()">New</button>
   </mat-step>
 </mat-stepper>
