@@ -5,6 +5,8 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   MatStep,
   MatStepper,
@@ -18,6 +20,9 @@ import {
   FormOptions,
 } from '@projects/ui';
 
+import {
+  HttpErrorComponent,
+} from '../../common/http-error/http-error.component';
 import { CreateModuleTokens } from './create.module.tokens';
 
 @Component({
@@ -29,19 +34,18 @@ export class CreateComponent implements OnInit, AfterViewInit {
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('mainStep') mainStep!: MatStep;
 
-  isMainCompleted = false;
-  mainItem!: Record<string, any>;
   mainForm!: FormOptions;
   subForms!: FormOptions[];
 
   constructor(
     @Inject(CreateModuleTokens.FORM_OPTIONS) public formsOptions: FormOptions[],
     @Inject(CreateModuleTokens.RESOURCE_SERVICE)
-    public resourceService: BaseCollectionService<any>
+    public resourceService: BaseCollectionService<any>,
+    public matSnackBar: MatSnackBar,
+    public matDialog: MatDialog
   ) {}
   ngAfterViewInit(): void {
-    const  i = new BehaviorSubject(1);
-
+    const i = new BehaviorSubject(1);
   }
 
   ngOnInit(): void {
@@ -53,12 +57,22 @@ export class CreateComponent implements OnInit, AfterViewInit {
     return Object.entries(formValue);
   }
 
-  mainFormSubmitted(createdItem: FormComponentOutput) {
-    this.mainItem = createdItem.formValue;
+  formSubmitResult(createdItem: FormComponentOutput, step: MatStep) {
+    if (createdItem.error) {
+      const status = createdItem.formValue['error']['status'];
+      const message = createdItem.formValue['error']['message'];
+      this.matDialog.open(HttpErrorComponent, { data: { status, message } });
+      return;
+    } else {
+      this.matSnackBar.open('Form is submitted.', '', {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+      });
 
-    console.log(this.mainItem);
-    this.mainStep.editable = false;
-    this.stepper.next();
-    this.isMainCompleted = true;
+      step.editable = false;
+      step.completed = true;
+      this.stepper.next();
+    }
   }
 }

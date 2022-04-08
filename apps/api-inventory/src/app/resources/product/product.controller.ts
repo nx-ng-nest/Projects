@@ -61,7 +61,7 @@ export class ProductControllerRead {
 
   @ReadPermission(SINGULAR)
   @Get(BYUUID)
-  getOneByUUID(@Param('uuid') uuid: number) {
+  getOneByUUID(@Param('uuid') uuid: string) {
     return this.productService.findOne({ where: { uuid } });
   }
 

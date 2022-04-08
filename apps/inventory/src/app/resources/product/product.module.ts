@@ -96,36 +96,11 @@ const featureForm = {
                 type: 'select',
                 multiple: true,
               },
-              control: productForm.description,
+              control: productForm.categories,
               selectOptions: LocalStoreService.categories().map((e) => ({
                 label: e.name,
                 value: e.id,
               })),
-            },
-          ],
-        },
-
-        {
-          name: 'Features',
-          formGroup: new FormGroup(featureForm),
-          formFields: [
-            {
-              attributes: { name: 'key', required: true, autocomplete: 'off' },
-              label: 'Feature Name',
-              icon: 'key',
-              hint: 'Type a feature name like color',
-              control: featureForm.key,
-            },
-            {
-              attributes: {
-                name: 'value',
-                required: true,
-                autocomplete: 'off',
-              },
-              label: 'Feature Value',
-              icon: 'description',
-              hint: 'Type a feature value like red',
-              control: featureForm.value,
             },
           ],
         },

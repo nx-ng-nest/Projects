@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   Entity,
   JoinTable,
@@ -41,5 +42,8 @@ export class Product extends BaseEntity implements IProduct<Category, Feature> {
     cascade: true,
   })
   @JoinTable()
+  @Transform(({ value }) => {
+    return (value && value?.map((e) => ({ id: e }))) || [];
+  })
   categories: Category[];
 }

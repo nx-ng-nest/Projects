@@ -6,3 +6,5 @@ export * from './feature';
 export * from './message';
 export * from './store';
 export * from './productDetail';
+export * from './task';
+export * from './user';

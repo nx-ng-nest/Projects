@@ -100,7 +100,7 @@ export abstract class BaseDataService<T> {
     if (found) {
       return found;
     }
-    throw new NotFoundException(options);
+    throw new NotFoundException();
   }
 
   async save(body: DeepPartial<T>) {

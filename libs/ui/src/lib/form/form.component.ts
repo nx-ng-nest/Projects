@@ -13,6 +13,7 @@ import { BaseCollectionService } from '@projects/client-service';
 import { FormOptions } from './form';
 
 export interface FormComponentOutput<T = Record<string, any>> {
+  error?: boolean;
   formName: string;
   formValue: T;
 }
@@ -48,13 +49,22 @@ export class FormComponent {
   }
 
   async submit() {
-    const result = this.resourceService.add(this.formGroup.value);
-
-    this.submitted.emit({
-      formName: this.formOptions.name,
-      formValue: await firstValueFrom(result),
-    });
-    this.reset();
+    try {
+      const result = await firstValueFrom(
+        this.resourceService.add(this.formGroup.value)
+      );
+      this.submitted.emit({
+        formName: this.formOptions.name,
+        formValue: result,
+      });
+      this.reset();
+    } catch (err: any) {
+      this.submitted.emit({
+        error: true,
+        formName: this.formOptions.name,
+        formValue: err,
+      });
+    }
   }
 
   reset() {

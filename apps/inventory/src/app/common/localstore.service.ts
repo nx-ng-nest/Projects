@@ -1,8 +1,11 @@
 import {
   ICategory,
   IFeature,
+  IMessage,
+  IProductDetail,
   ISale,
   IStore,
+  ITask,
   IUser,
 } from '@projects/interface';
 
@@ -46,5 +49,15 @@ export class LocalStoreService {
 
   static sales(value?: ISale[]): ISale[] {
     return this.local({ key: 'sales', value });
+  }
+
+  static messages(value?: IMessage[]) {
+    return this.local({ key: 'messages', value });
+  }
+  static tasks(value?: ITask[]) {
+    return this.local({ key: 'tasks', value });
+  }
+  static productDetails(value?: IProductDetail[]) {
+    return this.local({ key: 'productdetails', value });
   }
 }

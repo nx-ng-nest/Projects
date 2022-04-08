@@ -1,6 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
 
-export const CreateValidationPipe = new ValidationPipe();
+export const CreateValidationPipe = new ValidationPipe({
+  transform: true,
+});
 
 export const UpdateValidationPipe = new ValidationPipe({
   skipMissingProperties: true,

@@ -2,7 +2,9 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import {
   RouterModule,
@@ -29,6 +31,8 @@ const routes: Routes = [{ path: '', component: CreateComponent }];
     MatStepperModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
+    MatSnackBarModule,
     BasicTableModule,
   ],
 })
