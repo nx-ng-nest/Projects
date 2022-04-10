@@ -1,0 +1,14 @@
+.spinning {
+  color: red !important;
+  animation: spinit 2000ms infinite;
+}
+
+@keyframes spinit {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

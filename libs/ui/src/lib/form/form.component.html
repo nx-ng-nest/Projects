@@ -3,7 +3,6 @@
     <form-field [formField]="i"> </form-field>
   </ng-container>
 
-  <ng-content select="[form]"></ng-content>
   <button
     *ngIf="formOptions?.submitLabel"
     type="submit"
@@ -11,8 +10,8 @@
     [color]="'primary'"
     (click)="submit()"
     [disabled]="formGroup?.untouched ? true : formGroup.invalid"
+    matTooltip="Submit Form"
   >
     {{ formOptions?.submitLabel }}
   </button>
-  <ng-content select="[button]"></ng-content>
 </form>

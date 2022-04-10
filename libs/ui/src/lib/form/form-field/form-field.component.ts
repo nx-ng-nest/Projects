@@ -13,10 +13,21 @@ import { FormField } from '../form';
   styleUrls: ['../form.component.scss'],
 })
 export class FormFieldComponent {
+  private readonly textFields = ['text', 'number', 'email', 'password'];
+  private readonly selectFields = ['select'];
+
   @Input() formField!: FormField;
 
   getType() {
     return this.formField.attributes?.type || 'text';
+  }
+
+  isTextField() {
+    return this.textFields.includes(this.getType());
+  }
+
+  isSelectField() {
+    return this.selectFields.includes(this.getType());
   }
 
   iconColor(control: FormControl) {

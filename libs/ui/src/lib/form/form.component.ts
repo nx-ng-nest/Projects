@@ -42,10 +42,6 @@ export class FormComponent {
         return { [e.attributes.name]: e.control };
       })
       .reduce((p, c) => ({ ...p, ...c }));
-
-    this.formGroup.valueChanges.subscribe((d) =>
-      console.log(this.formGroup.pending)
-    );
   }
 
   async submit() {

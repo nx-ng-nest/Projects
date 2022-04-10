@@ -1,0 +1,18 @@
+<ng-container *ngIf="status$ | async as status">
+  <mat-spinner
+    *ngIf="status === 'PENDING'"
+    [diameter]="20"
+    [color]="control.valid ? 'primary' : 'accent'"
+    mode="indeterminate"
+  ></mat-spinner>
+  <button
+    mat-icon-button
+    *ngIf="status === 'INVALID'"
+    color="accent"
+    (click)="clearControl()"
+  >
+    <mat-icon> close </mat-icon>
+  </button>
+
+  <mat-icon *ngIf="status === 'VALID'" color="primary"> done </mat-icon>
+</ng-container>

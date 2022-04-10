@@ -4,8 +4,6 @@ import {
   Inject,
   ViewChild,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   MatStep,
   MatStepper,
@@ -19,9 +17,6 @@ import {
   FormOptions,
 } from '@projects/ui';
 
-import {
-  HttpErrorComponent,
-} from '../../common/http-error/http-error.component';
 import { CreateModuleTokens } from './create.module.tokens';
 
 @Component({
@@ -37,9 +32,7 @@ export class CreateComponent implements AfterViewInit {
   constructor(
     @Inject(CreateModuleTokens.FORM_OPTIONS) public formsOptions: FormOptions[],
     @Inject(CreateModuleTokens.RESOURCE_SERVICE)
-    public resourceService: BaseCollectionService<any>,
-    public matSnackBar: MatSnackBar,
-    public matDialog: MatDialog
+    public resourceService: BaseCollectionService<any>
   ) {}
 
   ngAfterViewInit(): void {}
@@ -54,17 +47,9 @@ export class CreateComponent implements AfterViewInit {
       const status = createdItem.formValue['error']['status'];
       const message1 = createdItem.formValue['error']['message'];
       const message2 = createdItem.formValue['message'];
-      this.matDialog.open(HttpErrorComponent, {
-        data: { status, messages: [message1, message2] },
-      });
+
       return;
     } else {
-      this.matSnackBar.open('Form is submitted.', '', {
-        duration: 3000,
-        horizontalPosition: 'right',
-        verticalPosition: 'bottom',
-      });
-
       step.editable = false;
       step.completed = true;
       this.stepper.next();

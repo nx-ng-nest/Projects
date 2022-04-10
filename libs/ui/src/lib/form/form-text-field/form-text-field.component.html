@@ -12,6 +12,9 @@
     <input [formControl]="control" matInput [setAttributes]="attributes" />
     <mat-icon matPrefix [color]="iconColor(control)">{{ icon }}</mat-icon>
     <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+
+    <projects-field-status [control]="control" matSuffix></projects-field-status>
+
     <mat-error>
       <projects-field-errors
         [control]="control"
