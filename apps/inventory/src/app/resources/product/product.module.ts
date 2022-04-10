@@ -11,6 +11,7 @@ import {
 import { CrudComponent } from '../../crud/crud.component';
 import { CrudModule } from '../../crud/crud.module';
 import { initFormOptions } from './product-form-options';
+import { ProductGuard } from './product.guard';
 
 @NgModule({
   declarations: [],
@@ -20,6 +21,7 @@ import { initFormOptions } from './product-form-options';
     CrudModule.register({
       dataService: ProductService,
       initFormOptions: initFormOptions,
+      userCanActivate: ProductGuard,
     }),
     RouterModule.forChild([
       {
@@ -28,6 +30,6 @@ import { initFormOptions } from './product-form-options';
       },
     ]),
   ],
-  providers: [ProductService, CategoryService],
+  providers: [ProductService, CategoryService, ProductGuard],
 })
 export class ProductModule {}

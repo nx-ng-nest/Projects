@@ -4,7 +4,10 @@ import {
 } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import {
+  Observable,
+  of,
+} from 'rxjs';
 import {
   map,
   shareReplay,
@@ -16,6 +19,7 @@ import {
   styleUrls: ['./navigation.component.css'],
 })
 export class NavigationComponent {
+  pageName$ = of('');
   public readonly isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(

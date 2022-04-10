@@ -35,7 +35,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     RouterModule.forRoot(routes, {
       useHash: true,
-      initialNavigation: 'enabled',
+      initialNavigation: 'enabledBlocking',
     }),
 
     HttpClientModule,

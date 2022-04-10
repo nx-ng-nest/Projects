@@ -1,3 +1,5 @@
+import { CanActivate } from '@angular/router';
+
 import { ClassConstructor } from 'class-transformer';
 
 import { BaseCollectionService } from '@projects/client-service';
@@ -7,4 +9,6 @@ import { FormOptions } from '@projects/ui';
 export interface CrudModuleOptions<T extends ICommonFields = any> {
   dataService: ClassConstructor<BaseCollectionService<T>>;
   initFormOptions: (dataService: BaseCollectionService<T>) => FormOptions;
+  userCanActivate: ClassConstructor<CanActivate>;
+
 }

@@ -1,12 +1,27 @@
-<projects-nav-item path="create" label="Create" icon="add"></projects-nav-item>
+<projects-nav-item
+  path="create"
+  label="Create"
+  icon="add"
+  *ngIf="user?.canWrite() | async"
+></projects-nav-item>
+
 <projects-nav-item
   path="view"
   label="View"
   icon="view_list"
+  *ngIf="user?.canRead() | async"
 ></projects-nav-item>
-<projects-nav-item path="update" label="Update" icon="edit"></projects-nav-item>
+
+<projects-nav-item
+  path="update"
+  label="Update"
+  icon="edit"
+  *ngIf="user?.canUpdate() | async"
+></projects-nav-item>
+
 <projects-nav-item
   path="delete"
   label="Delete"
   icon="delete"
+  *ngIf="user?.canDelete() | async"
 ></projects-nav-item>

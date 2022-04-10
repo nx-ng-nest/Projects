@@ -1,18 +1,18 @@
 import {
   Component,
-  OnInit,
+  Inject,
+  Optional,
 } from '@angular/core';
+
+import { UserCanActivate } from '../user-can-activate.guard';
 
 @Component({
   selector: 'projects-crud-nav',
   templateUrl: './crud-nav.component.html',
-  styleUrls: ['./crud-nav.component.scss']
+  styleUrls: ['./crud-nav.component.scss'],
 })
-export class CrudNavComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class CrudNavComponent {
+  constructor(
+    @Optional() @Inject(UserCanActivate) public user?: UserCanActivate
+  ) {}
 }

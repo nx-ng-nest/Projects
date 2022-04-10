@@ -33,7 +33,7 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <router-outlet name="toolbar"></router-outlet>
+      <span>{{ pageName$ | async }}</span>
     </mat-toolbar>
     <router-outlet></router-outlet>
     <footer>

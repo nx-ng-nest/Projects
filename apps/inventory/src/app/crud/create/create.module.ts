@@ -1,9 +1,6 @@
-import { CdkStepperModule } from '@angular/cdk/stepper';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import {
   RouterModule,
   Routes,
@@ -20,12 +17,8 @@ const routes: Routes = [{ path: '', component: CreateComponent }];
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    CdkStepperModule,
-
+    MatToolbarModule,
     FormModule,
-    MatStepperModule,
-    MatIconModule,
-    MatButtonModule,
   ],
 })
 export class CreateModule {}
