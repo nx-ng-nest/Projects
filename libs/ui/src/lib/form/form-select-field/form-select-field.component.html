@@ -15,11 +15,23 @@
       [setAttributes]="attributes"
       [multiple]="attributes.multiple"
     >
-      <mat-option *ngFor="let option of selectOptions" [value]="option.value">
+      <mat-option
+        *ngFor="let option of selectOptions | async"
+        [value]="option.value"
+      >
         {{ option.label }}
       </mat-option>
     </mat-select>
+
+    <mat-icon matPrefix [color]="iconColor(control)">{{ icon }}</mat-icon>
+
     <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+
+    <projects-field-status
+      [control]="control"
+      matSuffix
+    ></projects-field-status>
+
     <mat-error *ngIf="control.touched && control.errors">
       <projects-field-errors
         [control]="control"

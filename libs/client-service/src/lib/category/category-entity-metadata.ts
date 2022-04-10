@@ -19,8 +19,10 @@ const entityMetadata: EntityMetadataMap = {
   },
 };
 
+export const CATEGORY_PLURAL_NAME: Readonly<string> = 'Categories';
+
 const pluralNames = {
-  Category: 'Categories',
+  Category: CATEGORY_PLURAL_NAME,
 };
 
 export const categoryEntityConfig: EntityDataModuleConfig = {

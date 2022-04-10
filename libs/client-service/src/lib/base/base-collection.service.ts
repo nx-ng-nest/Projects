@@ -24,7 +24,8 @@ export class BaseCollectionService<T extends ICommonFields>
 
   constructor(
     entityName: string,
-    elementsFactory: EntityCollectionServiceElementsFactory
+    elementsFactory: EntityCollectionServiceElementsFactory,
+    protected subServices?: { [key: string]: BaseCollectionService<any> }
   ) {
     super(entityName, elementsFactory);
   }
@@ -92,5 +93,14 @@ export class BaseCollectionService<T extends ICommonFields>
     };
 
     return asyncValidator;
+  }
+
+  subService<S extends ICommonFields>(
+    subServicePluralName: string
+  ): BaseCollectionService<S> {
+    if (this.subServices) {
+      return this.subServices[subServicePluralName];
+    }
+    throw new Error('Sub service does not exist!');
   }
 }

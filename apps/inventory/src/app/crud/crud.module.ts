@@ -1,10 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import {
+  ModuleWithProviders,
+  NgModule,
+} from '@angular/core';
 import {
   RouterModule,
   Routes,
 } from '@angular/router';
 
+import { CrudModuleOptions } from './crud-module-options';
+import { CrudModuleTokens } from './crud-tokens.enum';
 import { CrudComponent } from './crud.component';
 
 const routes: Routes = [
@@ -45,4 +50,20 @@ const routes: Routes = [
   declarations: [CrudComponent],
   imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class CrudModule {}
+export class CrudModule {
+  static register(options: CrudModuleOptions): ModuleWithProviders<CrudModule> {
+    return {
+      ngModule: CrudModule,
+      providers: [
+        {
+          provide: CrudModuleTokens.CRUD_DATA_SERVICE,
+          useClass: options.dataService,
+        },
+        {
+          provide: CrudModuleTokens.CRUD_INIT_FORM_OPTIONS,
+          useValue: options.initFormOptions,
+        },
+      ],
+    };
+  }
+}

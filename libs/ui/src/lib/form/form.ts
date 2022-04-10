@@ -3,16 +3,12 @@ import {
   FormGroup,
 } from '@angular/forms';
 
-import { BaseCollectionService } from '@projects/client-service';
+import { Observable } from 'rxjs';
 
 export interface FormFieldSelectOption {
-  value: string;
-  label: string;
+  value: string | number | boolean | undefined;
+  label: string | undefined;
 }
-
-type GetSelectOptions = <T>(
-  dataService: BaseCollectionService<T>
-) => Promise<FormFieldSelectOption[]>;
 
 export interface FormField {
   unique?: boolean;
@@ -22,9 +18,9 @@ export interface FormField {
   control: FormControl;
   default?: any;
   attributes: Partial<Omit<HTMLInputElement, 'name'>> & { name: string } & {
-    unique: boolean;
+    unique?: boolean;
   };
-  selectOptions?: FormFieldSelectOption[];
+  selectOptions?: Observable<FormFieldSelectOption[]> | undefined;
 }
 
 export interface FormOptions {

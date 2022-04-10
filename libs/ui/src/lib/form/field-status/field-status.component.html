@@ -16,3 +16,9 @@
 
   <mat-icon *ngIf="status === 'VALID'" color="primary"> done </mat-icon>
 </ng-container>
+
+<ng-container *ngIf="!!!(status$ | async)">
+  <mat-icon [color]="control.invalid && control.touched ? 'accent' : 'primary'">
+    edit</mat-icon
+  >
+</ng-container>

@@ -46,6 +46,14 @@ import { SetAttributeDirective } from './set-attributes.directive';
     MatSelectModule,
     MatTooltipModule,
   ],
-  exports: [FormComponent],
+  exports: [
+    FormComponent,
+    FormFieldComponent,
+    SetAttributeDirective,
+    FieldErrorsComponent,
+    FieldStatusComponent,
+    FormTextFieldComponent,
+    FormSelectFieldComponent,
+  ],
 })
 export class FormModule {}

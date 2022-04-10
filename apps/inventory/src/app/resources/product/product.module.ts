@@ -1,112 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { StoreModule } from '@ngrx/store';
-import { ProductService } from '@projects/client-service';
-import { FormOptions } from '@projects/ui';
+import {
+  CategoryService,
+  ProductService,
+} from '@projects/client-service';
 
-import { LocalStoreService } from '../../common/localstore.service';
-import { CreateModuleTokens } from '../../crud/create/create.module.tokens';
-
-const productForm = {
-  uuid: new FormControl('', [Validators.required, Validators.minLength(10)]),
-  name: new FormControl('', [Validators.required]),
-  description: new FormControl('', [Validators.required]),
-  categories: new FormControl('', []),
-};
-
-const featureForm = {
-  key: new FormControl('', Validators.required),
-  value: new FormControl('', Validators.required),
-};
+import { CrudComponent } from '../../crud/crud.component';
+import { CrudModule } from '../../crud/crud.module';
+import { initFormOptions } from './product-form-options';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     StoreModule.forFeature('product', {}),
+    CrudModule.register({
+      dataService: ProductService,
+      initFormOptions: initFormOptions,
+    }),
     RouterModule.forChild([
       {
         path: '',
-        loadChildren: () =>
-          import('../../crud/crud.module').then((m) => m.CrudModule),
+        component: CrudComponent,
       },
     ]),
   ],
-  providers: [
-    ProductService,
-    {
-      provide: CreateModuleTokens.RESOURCE_SERVICE,
-      useClass: ProductService,
-    },
-    {
-      provide: CreateModuleTokens.FORM_OPTIONS,
-      useValue: [
-        {
-          name: 'product',
-          submitLabel: 'Save Product',
-          formGroup: new FormGroup(productForm),
-          formFields: [
-            {
-              icon: 'key',
-              label: 'Barcode',
-              hint: 'Type a barcode.',
-              attributes: {
-                name: 'uuid',
-                required: true,
-                autocomplete: 'off',
-                unique: true,
-              },
-              control: productForm.uuid,
-            },
-            {
-              icon: 'info',
-              label: 'Product Name',
-              hint: 'Type a descriptive product name.',
-              attributes: {
-                name: 'name',
-                required: true,
-                autocomplete: 'off',
-                unique: true,
-              },
-              control: productForm.name,
-            },
-            {
-              icon: 'description',
-              label: 'Product Description',
-              hint: 'Type a product description.',
-              attributes: {
-                name: 'description',
-                required: true,
-                autocomplete: 'off',
-              },
-              control: productForm.description,
-            },
-            {
-              icon: 'category',
-              label: 'Categories',
-              hint: 'Select Categories.',
-              attributes: {
-                name: 'categories',
-                type: 'select',
-                multiple: true,
-              },
-              control: productForm.categories,
-              selectOptions: LocalStoreService.categories().map((e) => ({
-                label: e.name,
-                value: e.id,
-              })),
-            },
-          ],
-        },
-      ] as FormOptions[],
-    },
-  ],
+  providers: [ProductService, CategoryService],
 })
 export class ProductModule {}
