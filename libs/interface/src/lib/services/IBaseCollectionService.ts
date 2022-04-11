@@ -1,7 +1,13 @@
+import { BehaviorSubject } from 'rxjs';
+
 import { EntityCollectionServiceBase } from '@ngrx/data';
 
 export interface IBaseCollectionService<T>
   extends EntityCollectionServiceBase<T> {
+  /**
+   * Obserable selected items
+   */
+  selectedItems$: BehaviorSubject<T[]>;
   /**
    * Set the selected property item true.
    * @param id T id
@@ -21,7 +27,7 @@ export interface IBaseCollectionService<T>
   /**
    * Set the selected property of filtered items true
    */
-  selectAllItems(): void;
+  selectAllItems(ids?:(number | undefined)[]): void;
   /**
    * Set the items' selected property false
    */
@@ -31,7 +37,7 @@ export interface IBaseCollectionService<T>
    * Find selected item by id
    * @param id T id
    */
-  findSelecteseledItemById(id: number): Promise<T | undefined>;
+  findSelectedItemsById(id: number): Promise<T | undefined>;
 
   /**
    * Remove filter

@@ -7,6 +7,7 @@ import {
   CategoryService,
   ProductService,
 } from '@projects/client-service';
+import { TableModuleTokens } from '@projects/ui';
 
 import { CrudComponent } from '../../crud/crud.component';
 import { CrudModule } from '../../crud/crud.module';
@@ -20,8 +21,39 @@ import { ProductGuard } from './product.guard';
     StoreModule.forFeature('product', {}),
     CrudModule.register({
       dataService: ProductService,
-      initFormOptions: initFormOptions,
-      userCanActivate: ProductGuard,
+      formOptions: initFormOptions,
+      guard: ProductGuard,
+      tableOptions: {
+        columns: [
+          'selected',
+          'id',
+          'uuid',
+          'name',
+          'description',
+          'id1',
+          'id2',
+          'id3',
+          'createdAt',
+          'updatedAt',
+          'deletedAt',
+          'active',
+        ],
+        displayedColumns: ['selected', 'uuid', 'name', 'description', 'active'],
+        searchableColumns: [
+          'selected',
+          'id',
+          'name',
+          'description',
+          'id1',
+          'id2',
+          'id3',
+          'createdAt',
+          'updatedAt',
+          'deletedAt',
+          'active',
+        ],
+        tableActions: [],
+      },
     }),
     RouterModule.forChild([
       {
@@ -30,6 +62,14 @@ import { ProductGuard } from './product.guard';
       },
     ]),
   ],
-  providers: [ProductService, CategoryService, ProductGuard],
+  providers: [
+    ProductService,
+    CategoryService,
+    ProductGuard,
+    {
+      provide: TableModuleTokens.TABLE_MODULE_DATA_SERVICE,
+      useClass: ProductService,
+    },
+  ],
 })
 export class ProductModule {}

@@ -29,16 +29,18 @@ export class BaseCollectionService<T extends ICommonFields>
   ) {
     super(entityName, elementsFactory);
   }
+
   getFilteredEntities(): Promise<T[]> {
     return firstValueFrom(this.filteredEntities$);
   }
-  async findSelecteseledItemById(id: number): Promise<T | undefined> {
+
+  async findSelectedItemsById(id: number): Promise<T | undefined> {
     const items = await this.getItems();
     return items.filter((e) => e.selected).find((e) => e.id == id);
   }
 
   selectItem(id: number) {
-    this.updateOneInCache({ id, selcted: true } as any);
+    this.updateOneInCache({ id, selected: true } as any);
   }
 
   deselectItem(id: number) {
@@ -49,12 +51,17 @@ export class BaseCollectionService<T extends ICommonFields>
     return await firstValueFrom(this.filteredEntities$);
   }
 
-  async selectAllItems() {
-    const items = await this.getItems();
-
-    this.updateManyInCache(
-      (items as any).map((e: T) => ({ id: e.id, selected: true }))
-    );
+  async selectAllItems(ids?: (number | undefined)[]) {
+    if (ids) {
+      this.updateManyInCache(
+        ids.map((id) => ({ id, selected: true } as Partial<T>))
+      );
+    } else {
+      const items = await this.getItems();
+      this.updateManyInCache(
+        (items as any).map((e: T) => ({ id: e.id, selected: true }))
+      );
+    }
   }
 
   async deselectAllItems() {

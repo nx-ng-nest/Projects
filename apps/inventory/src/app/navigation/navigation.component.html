@@ -35,7 +35,9 @@
       </button>
       <span>{{ pageName$ | async }}</span>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <div class="content-container">
+      <router-outlet></router-outlet>
+    </div>
     <footer>
       <a [routerLink]="['/']" routerLinkActive="router-link-active"
         >Home Page</a

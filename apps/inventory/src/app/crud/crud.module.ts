@@ -63,15 +63,19 @@ export class CrudModule {
       providers: [
         {
           provide: UserCanActivate,
-          useClass: options.userCanActivate,
+          useClass: options.guard,
         },
         {
-          provide: CrudModuleTokens.CRUD_DATA_SERVICE,
+          provide: CrudModuleTokens.DATA_SERVICE,
           useClass: options.dataService,
         },
         {
-          provide: CrudModuleTokens.CRUD_INIT_FORM_OPTIONS,
-          useValue: options.initFormOptions,
+          provide: CrudModuleTokens.FORM_OPTIONS,
+          useValue: options.formOptions,
+        },
+        {
+          provide: CrudModuleTokens.TABLE_OPTIONS,
+          useValue: options.tableOptions,
         },
       ],
     };

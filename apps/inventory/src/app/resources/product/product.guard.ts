@@ -25,11 +25,11 @@ export class ProductGuard implements UserCanActivate {
   }
 
   canDelete(): Observable<boolean> {
-    return of(false)
+    return of(true)
   }
 
   canUpdate(): Observable<boolean> {
-    return of(false)
+    return of(true)
   }
 
   canActivate(
@@ -40,11 +40,11 @@ export class ProductGuard implements UserCanActivate {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    this.snack.open('You are NOT autorized for this operation!', '', {
-      duration: 2000,
-      verticalPosition: 'top',
-      horizontalPosition: 'center',
-    });
-    return false;
+    // this.snack.open('You are NOT autorized for this operation!', '', {
+    //   duration: 2000,
+    //   verticalPosition: 'top',
+    //   horizontalPosition: 'center',
+    // });
+    return true;
   }
 }

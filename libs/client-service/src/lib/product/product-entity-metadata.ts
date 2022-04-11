@@ -8,7 +8,7 @@ const entityMetadata: EntityMetadataMap = {
   Product: {
     filterFn: (products: IProduct[], fnFunction: (e: IProduct) => boolean) => {
       if (fnFunction) {
-        return products?.filter(fnFunction);
+        return products?.filter(fnFunction) ;
       } else {
         return products;
       }

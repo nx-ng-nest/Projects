@@ -24,11 +24,11 @@ export class CreateComponent implements OnInit {
   formOptions!: FormOptions;
 
   constructor(
-    @Inject(CrudModuleTokens.CRUD_INIT_FORM_OPTIONS)
+    @Inject(CrudModuleTokens.FORM_OPTIONS)
     public readonly initFormOptions: (
       dataService: BaseCollectionService<any>
     ) => FormOptions,
-    @Inject(CrudModuleTokens.CRUD_DATA_SERVICE)
+    @Inject(CrudModuleTokens.DATA_SERVICE)
     public readonly resourceService: BaseCollectionService<any>
   ) {}
 
