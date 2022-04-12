@@ -14,6 +14,21 @@ import { CrudModule } from '../../crud/crud.module';
 import { initFormOptions } from './product-form-options';
 import { ProductGuard } from './product.guard';
 
+const productColumns = [
+  'selected',
+  'id',
+  'uuid',
+  'name',
+  'description',
+  'id1',
+  'id2',
+  'id3',
+  'createdAt',
+  'updatedAt',
+  'deletedAt',
+  'active',
+];
+
 @NgModule({
   declarations: [],
   imports: [
@@ -24,34 +39,9 @@ import { ProductGuard } from './product.guard';
       formOptions: initFormOptions,
       guard: ProductGuard,
       tableOptions: {
-        columns: [
-          'selected',
-          'id',
-          'uuid',
-          'name',
-          'description',
-          'id1',
-          'id2',
-          'id3',
-          'createdAt',
-          'updatedAt',
-          'deletedAt',
-          'active',
-        ],
+        columns: productColumns,
         displayedColumns: ['selected', 'uuid', 'name', 'description', 'active'],
-        searchableColumns: [
-          'selected',
-          'id',
-          'name',
-          'description',
-          'id1',
-          'id2',
-          'id3',
-          'createdAt',
-          'updatedAt',
-          'deletedAt',
-          'active',
-        ],
+        searchableColumns: productColumns,
         tableActions: [],
       },
     }),

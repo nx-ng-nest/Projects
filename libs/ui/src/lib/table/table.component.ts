@@ -13,6 +13,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSelect } from '@angular/material/select';
 import { MatSort } from '@angular/material/sort';
 import {
   MatTable,
@@ -23,6 +24,7 @@ import { fadeInOnEnterAnimation } from 'angular-animations';
 import {
   BehaviorSubject,
   debounceTime,
+  merge,
 } from 'rxjs';
 import { SubSink } from 'subsink';
 
@@ -63,7 +65,7 @@ export class TableComponent<T extends ICommonFields>
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<T>;
-
+  @ViewChild(MatSelect) selectSearchKeyRef!: MatSelect;
   @Input() tableOptions!: TableOptions;
 
   @Output() actionClick = new EventEmitter();
@@ -76,7 +78,9 @@ export class TableComponent<T extends ICommonFields>
     item: any;
   } | null>(null);
 
-  selectPage$ = new BehaviorSubject<boolean>(false);
+  selectPage$ = new BehaviorSubject<number>(-1);
+  selectSearchKeyInput$ = new BehaviorSubject<number>(-1);
+  selectSearchKeyControl = new FormControl(['id']);
 
   constructor(
     @Inject(TableModuleTokens.TABLE_MODULE_DATA_SERVICE)
@@ -90,18 +94,17 @@ export class TableComponent<T extends ICommonFields>
       this.initHandler(data)
     );
 
-    this.subsink.sink = this.searchFieldControl.valueChanges
+    this.subsink.sink = merge(
+      this.searchFieldControl.valueChanges,
+      this.selectSearchKeyControl.valueChanges
+    )
       .pipe(debounceTime(1000))
       .subscribe(() =>
         this.searchHandler(this.dataService, this.searchFieldControl)
       );
 
-    this.subsink.sink = this.selectItem$.subscribe((e) => {
-      this.selectItemHandler(e);
-    });
-
-    this.subsink.sink = this.selectPage$.subscribe((e) => {
-      this.selectPageHandler(this.dataSource, this.dataService, this.paginator);
+    this.selectSearchKeyInput$.pipe(debounceTime(3000)).subscribe((_) => {
+      this.selectSearchKeyRef.close();
     });
   }
 
@@ -118,6 +121,7 @@ export class TableComponent<T extends ICommonFields>
 
   selectItem(event: MatCheckboxChange, item: any) {
     this.selectItem$.next({ event, item });
+    this.selectItemHandler({ event, item });
   }
   selectItemHandler(options: { event: MatCheckboxChange; item: any } | null) {
     if (options)
@@ -129,7 +133,8 @@ export class TableComponent<T extends ICommonFields>
   }
 
   selectPage() {
-    this.selectPage$.next(true);
+    this.selectPage$.next(Math.random());
+    this.selectPageHandler(this.dataSource, this.dataService, this.paginator);
   }
 
   private selectPageHandler(
@@ -141,9 +146,7 @@ export class TableComponent<T extends ICommonFields>
 
     const start = pageIndex * pageSize;
     const end = pageIndex * pageSize + pageSize;
-    const idsToBeSelected = source.data
-      .slice(start, end)
-      .map((e) => e.id);
+    const idsToBeSelected = source.data.slice(start, end).map((e) => e.id);
 
     service.selectAllItems(idsToBeSelected);
   }
@@ -166,18 +169,32 @@ export class TableComponent<T extends ICommonFields>
 
   searchHandler(service: IBaseCollectionService<T>, control: FormControl) {
     const searchText: string = control.value.trim().toLowerCase();
-    const advanceSearchText = searchText.split(',').map((e) => e.trim());
+    const searchKeys = (this.selectSearchKeyControl.value as (keyof T)[]) || [
+      'id',
+    ];
+
+    console.log(searchText, searchKeys);
 
     if (searchText.length > 0) {
-      service.setFilter((item: T) => {
-        const jvalue = JSON.stringify(item).toLowerCase();
+      this.dataService.setFilter((item: T) => {
+        if (!searchKeys) {
+          searchKeys;
+        }
+        return searchKeys
+          .map((e: keyof T) => {
+            const fieldValue = item[e] + '';
+            const lowFieldValue = fieldValue.toLowerCase().trim();
 
-        return advanceSearchText
-          .map((sv: string) => jvalue.includes(sv))
-          .reduce((p: boolean, c: boolean) => !!(p && c));
+            return lowFieldValue.includes(searchText);
+          })
+          ?.reduce((p: boolean, c: boolean) => p || c);
       });
     } else {
       service.removeFilter();
     }
+  }
+
+  handleSelectInput() {
+    this.selectSearchKeyInput$.next(Math.random());
   }
 }
