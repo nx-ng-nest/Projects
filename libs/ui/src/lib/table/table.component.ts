@@ -1,4 +1,8 @@
 import {
+  CdkDragDrop,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
+import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
@@ -12,6 +16,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { MatSort } from '@angular/material/sort';
@@ -55,8 +60,7 @@ export enum TableModuleTokens {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [fadeInOnEnterAnimation({ anchor: 'enter', duration: 1000 })],
-
+  animations: [fadeInOnEnterAnimation({ anchor: 'enter', duration: 200 })],
 })
 export class TableComponent<T extends ICommonFields>
   implements AfterViewInit, OnDestroy, OnInit
@@ -67,6 +71,8 @@ export class TableComponent<T extends ICommonFields>
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<T>;
   @ViewChild(MatSelect) selectSearchKeyRef!: MatSelect;
+  @ViewChild(MatMenuTrigger) menuTriger!: MatMenuTrigger;
+
   @Input() tableOptions!: TableOptions;
 
   @Output() actionClick = new EventEmitter();
@@ -82,6 +88,7 @@ export class TableComponent<T extends ICommonFields>
   selectPage$ = new BehaviorSubject<number>(-1);
   selectSearchKeyInput$ = new BehaviorSubject<number>(-1);
   selectSearchKeyControl = new FormControl(['id']);
+  actionMenuOpened$ = new BehaviorSubject<any>('');
 
   constructor(
     @Inject(TableModuleTokens.TABLE_MODULE_DATA_SERVICE)
@@ -106,6 +113,10 @@ export class TableComponent<T extends ICommonFields>
 
     this.selectSearchKeyInput$.pipe(debounceTime(3000)).subscribe((_) => {
       this.selectSearchKeyRef.close();
+    });
+
+    this.actionMenuOpened$.pipe(debounceTime(3000)).subscribe((_) => {
+      this.menuTriger.closeMenu();
     });
   }
 
@@ -165,7 +176,7 @@ export class TableComponent<T extends ICommonFields>
   }
 
   sortSelectedItems() {
-    this.sort.sort({ id: 'selected', start: 'asc', disableClear: true });
+    this.sort.sort({ id: 'selected', start: 'asc', disableClear: false });
   }
 
   searchHandler(service: IBaseCollectionService<T>, control: FormControl) {
@@ -196,6 +207,35 @@ export class TableComponent<T extends ICommonFields>
   }
 
   handleSelectInput() {
-    this.selectSearchKeyInput$.next(Math.random());
+    this.selectSearchKeyInput$.next(1);
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    const data = this.dataSource.data;
+    const { x, y } = event.distance;
+    const isLeft = x < 0 && Math.abs(x) > Math.abs(y);
+    const isRight = x > 0 && Math.abs(x) > Math.abs(y);
+
+    const isUp = y < 0 && Math.abs(y) > Math.abs(x);
+    const isDown = y > 0 && Math.abs(y) > Math.abs(x);
+
+    console.table({
+      x,
+      y,
+      isLeft,
+      isRight,
+      isUp,
+      isDown,
+    });
+
+    if (Math.abs(x) < 20 && Math.abs(y) < 20) {
+      return;
+    }
+    moveItemInArray(data, event.previousIndex, event.currentIndex);
+    this.dataSource.data = data;
+  }
+
+  openActionMenu() {
+    this.actionMenuOpened$.next('scheduling for close!');
   }
 }

@@ -17,6 +17,7 @@ export interface CrudModuleOptions<T extends ICommonFields = any> {
   formOptions: (dataService: BaseCollectionService<T>) => FormOptions;
   guard: ClassConstructor<CanActivate>;
   tableOptions: TableOptions;
+  toolbarOptions?: CrudToolbarOptions;
   createToolbarOptions?: CrudToolbarOptions;
   updateToolbarOptions?: CrudToolbarOptions;
   deleteToolbarOptions?: CrudToolbarOptions;

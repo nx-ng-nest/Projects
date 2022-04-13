@@ -4,10 +4,17 @@
   let-columns="columns"
   let-displayedColumns="displayedColumns"
 >
-  <table [@enter] mat-table matSort [dataSource]="dataSource">
+  <table
+    [@enter]
+    mat-table
+    matSort
+    [dataSource]="dataSource"
+    (cdkDropListDropped)="drop($event)"
+    cdkDropList
+  >
     <ng-container matColumnDef="selected" [sticky]="true">
       <th mat-header-cell *matHeaderCellDef class="selected-column">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
+        <button mat-icon-button #menuTrigger  [matMenuTriggerFor]="menu"  (click)="openActionMenu()">
           <mat-icon>more_vert</mat-icon>
         </button>
 
@@ -69,13 +76,17 @@
 
     <!-- Rows -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+
     <tr
       mat-row
       *matRowDef="let row; columns: displayedColumns"
       [@enter]
       [class.selected]="row.selected"
       class="value-row"
-    ></tr>
+      cdkDrag
+    >
+      <img *cdkDragPreview src="/assets/svg/item-placeholder.svg" />
+    </tr>
   </table>
   <mat-paginator
     #paginator
@@ -97,6 +108,7 @@
       id="selectSearchKeyRef"
       multiple="true"
       [formControl]="selectSearchKeyControl"
+      (click)="handleSelectInput()"
       (valueChange)="handleSelectInput()"
     >
       <mat-option

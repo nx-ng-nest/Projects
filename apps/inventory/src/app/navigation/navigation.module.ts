@@ -1,4 +1,5 @@
 import { LayoutModule } from '@angular/cdk/layout';
+import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -18,6 +19,7 @@ import { NavigationComponent } from './navigation.component';
   declarations: [NavigationComponent],
   imports: [
     CommonModule,
+    PlatformModule,
     HttpClientModule,
     NavigationRoutingModule,
     AppCommonModule,

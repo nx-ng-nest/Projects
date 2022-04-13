@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
@@ -35,6 +36,7 @@ import { TableComponent } from './table.component';
     MatCheckboxModule,
     MatToolbarModule,
     MatSelectModule,
+    DragDropModule
   ],
   exports: [TableComponent],
 })

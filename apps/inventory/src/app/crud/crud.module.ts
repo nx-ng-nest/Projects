@@ -13,11 +13,13 @@ import { CrudModuleOptions } from './crud-module-options';
 import { CrudModuleTokens } from './crud-tokens.enum';
 import { CrudComponent } from './crud.component';
 import { UserCanActivate } from './user-can-activate.guard';
+import { addNavItemsOptionsToModule } from './utils';
 
 const routes: Routes = [
   {
     path: '',
     component: CrudComponent,
+    redirectTo:'view'
   },
   {
     path: 'view',
@@ -44,12 +46,7 @@ const routes: Routes = [
     canActivate: [UserCanActivate],
   },
 
-  {
-    path: '',
-    loadChildren: () =>
-      import('./crud-nav/crud-nav.module').then((m) => m.CrudNavModule),
-    outlet: 'crud-navitems',
-  },
+  addNavItemsOptionsToModule(),
 ];
 
 @NgModule({
@@ -82,6 +79,10 @@ export class CrudModule {
           useValue: options.resourceName,
         },
 
+        {
+          provide: CrudModuleTokens.TOOLBAR_OPTIONS,
+          useValue: options.toolbarOptions,
+        },
         {
           provide: CrudModuleTokens.CREATE_TOOLBAR_OPTIONS,
           useValue: options.createToolbarOptions,

@@ -36,6 +36,11 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       useHash: true,
       initialNavigation: 'enabledBlocking',
+      onSameUrlNavigation: 'reload',
+      // canceledNavigationResolution:'replace'
+      // paramsInheritanceStrategy:'always'
+      urlUpdateStrategy:'eager'
+
     }),
 
     HttpClientModule,

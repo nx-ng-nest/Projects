@@ -1,17 +1,4 @@
-<a
-  mat-list-item
-  [routerLink]="[path]"
-  routerLinkActive="router-link-active"
-  (click)="activateNav()"
->
-  <span mat-line> {{ label }} </span>
-  <mat-icon mat-list-icon [color]="iconColor">{{ icon }}</mat-icon>
-  <ng-container *ngIf="hasSub && activated">
-    <mat-icon color="primary" *ngIf="!isSubOpen"> expand_more </mat-icon>
-    <mat-icon color="primary" *ngIf="isSubOpen"> expand_less </mat-icon>
-  </ng-container>
+<a mat-list-item [routerLink]="[path]" routerLinkActive="router-link-active">
+  <span mat-line *ngIf="label"> {{ label }} </span>
+  <mat-icon mat-list-icon [color]="iconColor" *ngIf="icon">{{ icon }}</mat-icon>
 </a>
-
-<div class="pl30" *ngIf="isSubOpen">
-  <ng-content></ng-content>
-</div>

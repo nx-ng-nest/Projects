@@ -5,5 +5,6 @@ export interface CrudToolbarItem {
 }
 
 export interface CrudToolbarOptions {
+  pageName: string;
   toolbarItems: CrudToolbarItem[];
 }

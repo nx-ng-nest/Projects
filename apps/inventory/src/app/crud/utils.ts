@@ -15,6 +15,15 @@ export function addToolbarOptionsToModule(): Route {
   };
 }
 
+export function addNavItemsOptionsToModule(): Route {
+  return {
+    path: '',
+    loadChildren: () =>
+      import('./crud-nav/crud-nav.module').then((m) => m.CrudNavModule),
+    outlet: 'crud-navitems',
+  };
+}
+
 export function provideToolbarOptionsToModule(dep: CrudModuleTokens): Provider {
   return {
     deps: [dep],

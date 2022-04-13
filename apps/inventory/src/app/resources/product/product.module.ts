@@ -45,17 +45,30 @@ const productColumns = [
         searchableColumns: productColumns,
         tableActions: [],
       },
+      toolbarOptions: {
+        pageName: 'Product',
+        toolbarItems: [
+          { path: '', label: 'Item 1', icon: 'add' },
+          { path: '', label: 'Item 1', icon: 'edit' },
+          { path: '', label: 'Item 1', icon: 'delete' },
+          { path: '', label: 'Item 1', icon: 'view_list' },
+        ],
+      },
 
       createToolbarOptions: {
+        pageName: 'Create Product',
         toolbarItems: [{ path: '', label: 'Item 1', icon: 'add' }],
       },
       updateToolbarOptions: {
+        pageName: 'Update Product',
         toolbarItems: [{ path: '', label: 'Item 1', icon: 'edit' }],
       },
       deleteToolbarOptions: {
-        toolbarItems: [{ path: '', label: 'Item 1', icon: 'trash' }],
+        pageName: 'Delete Product',
+        toolbarItems: [{ path: '', label: 'Item 1', icon: 'delete' }],
       },
       viewToolbarOptions: {
+        pageName: 'View Product',
         toolbarItems: [{ path: '', label: 'Item 1', icon: 'view_list' }],
       },
     }),

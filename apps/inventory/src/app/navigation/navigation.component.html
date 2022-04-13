@@ -10,14 +10,7 @@
     <mat-toolbar>Inventory</mat-toolbar>
     <mat-nav-list>
       <!-- Product Nav Item  -->
-      <projects-nav-item
-        path="product"
-        label="Product"
-        icon="inventory"
-        [hasSub]="true"
-      >
-      <!-- Extended navItems -->
-        <router-outlet name="crud-navitems"></router-outlet>
+      <projects-nav-item path="product" label="Product" icon="inventory">
       </projects-nav-item>
     </mat-nav-list>
   </mat-sidenav>
@@ -46,6 +39,7 @@
       <a [routerLink]="['/']" routerLinkActive="router-link-active"
         >Home Page</a
       >
+      <small>Platform :{{ platformName }}</small>
     </footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

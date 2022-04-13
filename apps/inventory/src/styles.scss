@@ -76,10 +76,6 @@ body {
   margin: 20px;
 }
 
-* {
-  transition: color ease-in-out 400ms;
-}
-
 form {
   width: 100%;
   padding-left: 20px;
@@ -94,8 +90,26 @@ form mat-form-field {
   width: 100%;
 }
 
-button {
-  margin: auto;
-  margin-top: 10px;
-  margin-bottom: 10px;
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #d6d6d6;
+  border-radius: 20px !important;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 20px !important;
+
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

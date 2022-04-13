@@ -14,7 +14,6 @@ import { CrudToolbarComponent } from './crud-toolbar.component';
     MatTooltipModule,
     MatButtonModule,
     MatIconModule,
-
     RouterModule.forChild([{ path: '', component: CrudToolbarComponent }]),
   ],
 })

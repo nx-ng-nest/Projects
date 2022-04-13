@@ -15,21 +15,8 @@ export interface NavItem {
   styleUrls: ['./nav-item.component.scss'],
 })
 export class NavItemComponent implements NavItem {
-  activated = false;
-  isSubOpen = true;
-
-  @Input() path = '';
-  @Input() label = '';
-  @Input() icon = 'info';
+  @Input() path!: string;
+  @Input() label!: string;
+  @Input() icon!: string;
   @Input() iconColor = 'primary';
-  @Input() hasSub = false;
-
-  activateNav() {
-    this.activated = true;
-    if (this.isSubOpen) {
-      this.isSubOpen = false;
-    } else {
-      this.isSubOpen = true;
-    }
-  }
 }
