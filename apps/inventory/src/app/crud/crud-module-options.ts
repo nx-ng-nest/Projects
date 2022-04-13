@@ -9,9 +9,16 @@ import {
   TableOptions,
 } from '@projects/ui';
 
+import { CrudToolbarOptions } from './crud-toolbar/crud-toolbar-options';
+
 export interface CrudModuleOptions<T extends ICommonFields = any> {
+  resourceName: string;
   dataService: ClassConstructor<BaseCollectionService<T>>;
   formOptions: (dataService: BaseCollectionService<T>) => FormOptions;
   guard: ClassConstructor<CanActivate>;
   tableOptions: TableOptions;
+  createToolbarOptions?: CrudToolbarOptions;
+  updateToolbarOptions?: CrudToolbarOptions;
+  deleteToolbarOptions?: CrudToolbarOptions;
+  viewToolbarOptions?: CrudToolbarOptions;
 }

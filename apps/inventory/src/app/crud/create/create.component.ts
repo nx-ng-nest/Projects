@@ -24,6 +24,7 @@ export class CreateComponent implements OnInit {
   formOptions!: FormOptions;
 
   constructor(
+    @Inject(CrudModuleTokens.RESOURCE_NAME) public resourceName: string,
     @Inject(CrudModuleTokens.FORM_OPTIONS)
     public readonly initFormOptions: (
       dataService: BaseCollectionService<any>

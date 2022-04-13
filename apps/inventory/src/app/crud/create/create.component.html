@@ -1,6 +1,11 @@
-<projects-form
-  [formOptions]="formOptions"
-  [resourceService]="resourceService"
-  (submitted)="formSubmitResult($event)"
->
-</projects-form>
+<mat-card>
+  <mat-card-content>
+    <projects-form
+      [formOptions]="formOptions"
+      [resourceService]="resourceService"
+      (submitted)="formSubmitResult($event)"
+    >
+    </projects-form>
+  </mat-card-content>
+  <mat-card-footer></mat-card-footer>
+</mat-card>

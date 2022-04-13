@@ -56,6 +56,7 @@ export enum TableModuleTokens {
   styleUrls: ['./table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [fadeInOnEnterAnimation({ anchor: 'enter', duration: 1000 })],
+
 })
 export class TableComponent<T extends ICommonFields>
   implements AfterViewInit, OnDestroy, OnInit

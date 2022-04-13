@@ -35,6 +35,7 @@ const productColumns = [
     CommonModule,
     StoreModule.forFeature('product', {}),
     CrudModule.register({
+      resourceName: 'Product',
       dataService: ProductService,
       formOptions: initFormOptions,
       guard: ProductGuard,
@@ -43,6 +44,19 @@ const productColumns = [
         displayedColumns: ['selected', 'uuid', 'name', 'description', 'active'],
         searchableColumns: productColumns,
         tableActions: [],
+      },
+
+      createToolbarOptions: {
+        toolbarItems: [{ path: '', label: 'Item 1', icon: 'add' }],
+      },
+      updateToolbarOptions: {
+        toolbarItems: [{ path: '', label: 'Item 1', icon: 'edit' }],
+      },
+      deleteToolbarOptions: {
+        toolbarItems: [{ path: '', label: 'Item 1', icon: 'trash' }],
+      },
+      viewToolbarOptions: {
+        toolbarItems: [{ path: '', label: 'Item 1', icon: 'view_list' }],
       },
     }),
     RouterModule.forChild([

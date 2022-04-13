@@ -3,6 +3,10 @@ import {
   Breakpoints,
 } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 
 import {
   Observable,
@@ -27,5 +31,9 @@ export class NavigationComponent {
       shareReplay()
     );
 
-  constructor(private readonly breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private readonly breakpointObserver: BreakpointObserver,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
 }

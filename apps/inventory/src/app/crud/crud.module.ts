@@ -77,6 +77,27 @@ export class CrudModule {
           provide: CrudModuleTokens.TABLE_OPTIONS,
           useValue: options.tableOptions,
         },
+        {
+          provide: CrudModuleTokens.RESOURCE_NAME,
+          useValue: options.resourceName,
+        },
+
+        {
+          provide: CrudModuleTokens.CREATE_TOOLBAR_OPTIONS,
+          useValue: options.createToolbarOptions,
+        },
+        {
+          provide: CrudModuleTokens.UPDATE_TOOLBAR_OPTIONS,
+          useValue: options.updateToolbarOptions,
+        },
+        {
+          provide: CrudModuleTokens.DELETE_TOOLBAR_OPTIONS,
+          useValue: options.deleteToolbarOptions,
+        },
+        {
+          provide: CrudModuleTokens.VIEW_TOOLBAR_OPTIONS,
+          useValue: options.viewToolbarOptions,
+        },
       ],
     };
   }

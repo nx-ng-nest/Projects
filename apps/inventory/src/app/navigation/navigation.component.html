@@ -16,7 +16,7 @@
         icon="inventory"
         [hasSub]="true"
       >
-        <!-- Product Sub Nav Items -->
+      <!-- Extended navItems -->
         <router-outlet name="crud-navitems"></router-outlet>
       </projects-nav-item>
     </mat-nav-list>
@@ -33,7 +33,11 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>{{ pageName$ | async }}</span>
+
+      <!-- Crud Tollbar (extended toolbar items) -->
+      <div style="width: 100%">
+        <router-outlet name="crud-toolbar"></router-outlet>
+      </div>
     </mat-toolbar>
     <div class="content-container">
       <router-outlet></router-outlet>
