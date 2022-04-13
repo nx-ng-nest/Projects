@@ -4,7 +4,7 @@
   let-columns="columns"
   let-displayedColumns="displayedColumns"
 >
-  <table [@enter] mat-table matSort  [dataSource]="dataSource">
+  <table [@enter] mat-table matSort [dataSource]="dataSource">
     <ng-container matColumnDef="selected" [sticky]="true">
       <th mat-header-cell *matHeaderCellDef class="selected-column">
         <button
@@ -17,6 +17,16 @@
         </button>
 
         <mat-menu #menu="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let a of tableActions"
+            [routerLink]="[a.path]"
+            routerLinkActive="router-link-active"
+          >
+            <mat-icon>{{ a.icon }}</mat-icon>
+            <span>{{ a.label }}</span>
+          </button>
+          <hr />
           <button mat-menu-item (click)="selectPage()">
             <mat-icon>select_all</mat-icon>
             <span>Select Page</span>
@@ -29,17 +39,9 @@
           <hr />
           <button mat-menu-item (click)="sortSelectedItems()">
             <mat-icon>sort</mat-icon>
-            <span>Sort Selected items</span>
+            <span>Sort By Checked</span>
           </button>
           <hr />
-          <button
-            mat-menu-item
-            *ngFor="let a of tableActions"
-            (click)="handleAction(a.event)"
-          >
-            <mat-icon>{{ a.icon }}</mat-icon>
-            <span>{{ a.label }}</span>
-          </button>
         </mat-menu>
       </th>
 

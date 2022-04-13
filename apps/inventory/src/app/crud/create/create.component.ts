@@ -5,12 +5,11 @@ import {
 } from '@angular/core';
 
 import { slideInRightOnEnterAnimation } from 'angular-animations';
+import { firstValueFrom } from 'rxjs';
 
+import { MergeStrategy } from '@ngrx/data';
 import { BaseCollectionService } from '@projects/client-service';
-import {
-  FormComponentOutput,
-  FormOptions,
-} from '@projects/ui';
+import { FormOptions } from '@projects/ui';
 
 import { CrudModuleTokens } from '../crud-tokens.enum';
 
@@ -41,12 +40,14 @@ export class CreateComponent implements OnInit {
     return Object.entries(formValue);
   }
 
-  formSubmitResult(createdItem: FormComponentOutput) {
-    console.log(createdItem.formValue);
-    const status = createdItem.formValue['error']['status'];
-    const message1 = createdItem.formValue['error']['message'];
-    const message2 = createdItem.formValue['message'];
-
+  async formSubmitResult(formValue: Record<string, any>) {
+    console.log(formValue);
+    const result = await firstValueFrom(
+      this.resourceService.add(formValue, {
+        mergeStrategy: MergeStrategy.OverwriteChanges,
+      })
+    );
+    console.log(result);
     return;
   }
 }

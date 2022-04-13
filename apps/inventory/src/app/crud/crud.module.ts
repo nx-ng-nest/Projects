@@ -13,13 +13,12 @@ import { CrudModuleOptions } from './crud-module-options';
 import { CrudModuleTokens } from './crud-tokens.enum';
 import { CrudComponent } from './crud.component';
 import { UserCanActivate } from './user-can-activate.guard';
-import { addNavItemsOptionsToModule } from './utils';
 
 const routes: Routes = [
   {
     path: '',
     component: CrudComponent,
-    redirectTo:'view'
+    redirectTo: 'view',
   },
   {
     path: 'view',
@@ -45,8 +44,6 @@ const routes: Routes = [
       import('./delete/delete.module').then((m) => m.DeleteModule),
     canActivate: [UserCanActivate],
   },
-
-  addNavItemsOptionsToModule(),
 ];
 
 @NgModule({

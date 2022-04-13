@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -6,27 +7,19 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { firstValueFrom } from 'rxjs';
-
 import { BaseCollectionService } from '@projects/client-service';
 
 import { FormOptions } from './form';
-
-export interface FormComponentOutput<T = Record<string, any>> {
-  error?: boolean;
-  formName: string;
-  formValue: T;
-}
 
 @Component({
   selector: 'projects-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
-export class FormComponent {
+export class FormComponent implements AfterViewInit {
   @Input() formOptions!: FormOptions;
   @Input() resourceService!: BaseCollectionService<any>;
-  @Output() readonly submitted = new EventEmitter<FormComponentOutput>();
+  @Output() readonly submitted = new EventEmitter<Record<string, any>>();
 
   formGroup!: FormGroup;
 
@@ -36,7 +29,7 @@ export class FormComponent {
       .map((e) => {
         if (e.attributes.unique) {
           e.control.setAsyncValidators([
-            this.resourceService.validateUnique(e.attributes.name, e.control),
+            this.resourceService.isFieldUnique(e.attributes.name, e.control),
           ]);
         }
         return { [e.attributes.name]: e.control };
@@ -44,23 +37,13 @@ export class FormComponent {
       .reduce((p, c) => ({ ...p, ...c }));
   }
 
+  ngAfterViewInit(): void {
+    (
+      document.getElementsByClassName('mat-form-input')[0] as HTMLInputElement
+    ).focus();
+  }
   async submit() {
-    try {
-      const result = await firstValueFrom(
-        this.resourceService.add(this.formGroup.value)
-      );
-      this.submitted.emit({
-        formName: this.formOptions.name,
-        formValue: result,
-      });
-      this.reset();
-    } catch (err: any) {
-      this.submitted.emit({
-        error: true,
-        formName: this.formOptions.name,
-        formValue: err,
-      });
-    }
+    this.submitted.emit(this.formGroup.value);
   }
 
   reset() {

@@ -43,7 +43,13 @@ const productColumns = [
         columns: productColumns,
         displayedColumns: ['selected', 'uuid', 'name', 'description', 'active'],
         searchableColumns: productColumns,
-        tableActions: [],
+        tableActions: [
+          {
+            label: 'Create Product',
+            icon: 'add',
+            path: '../create',
+          },
+        ],
       },
       toolbarOptions: {
         pageName: 'Product',

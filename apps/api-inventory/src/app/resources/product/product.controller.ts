@@ -1,6 +1,8 @@
 import { Response } from 'express';
+import { FindManyOptions } from 'typeorm';
 
 import {
+  BadRequestException,
   Body,
   CacheInterceptor,
   Controller,
@@ -10,10 +12,14 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Res,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   ReadPermission,
   Secure,
@@ -29,11 +35,25 @@ import { ProductService } from './product.service';
 
 const SINGULAR = 'product';
 const BYID = 'product/:id';
-const BYUUID = 'product/uuid/:uuid';
 const PLURAL = 'products';
-const STREAM = 'product-stream';
-const COLUMNS = 'product-columns';
 
+class CheckOneOptions<T> {
+  @ApiProperty({ required: false })
+  uniqueKey: string;
+  @ApiProperty({ required: false })
+  uniqueValue: string;
+}
+
+class FindAllQueryOptions<T> {
+  @ApiProperty({ required: false })
+  isStream: boolean;
+
+  @ApiProperty({ required: false })
+  pageIndex: number;
+
+  @ApiProperty({ required: false })
+  pageSize: number;
+}
 @Secure()
 @ApiTags(ProductControllerRead.name)
 @UseInterceptors(CacheInterceptor)
@@ -42,33 +62,48 @@ export class ProductControllerRead {
   constructor(private readonly productService: ProductService) {}
 
   @ReadPermission(SINGULAR)
-  @Get(STREAM)
-  async stream(@Res() res: Response) {
-    this.productService.stream(res);
-  }
-
-  @ReadPermission(SINGULAR)
-  @Get(COLUMNS)
-  async columns() {
-    return this.productService.columns();
-  }
-
-  @ReadPermission(SINGULAR)
   @Get(BYID)
-  getOneById(@Param('id') id: number) {
-    return this.productService.findOne({ where: { id } });
+  findOneById(@Param('id') id: string) {
+    return this.productService.findOne({
+      where: [{ id }, { uuid: id }, { id1: id }, { id2: id }, { id3: id }],
+    });
   }
 
   @ReadPermission(SINGULAR)
-  @Get(BYUUID)
-  getOneByUUID(@Param('uuid') uuid: string) {
-    return this.productService.findOne({ where: { uuid } });
+  @Get(SINGULAR)
+  checkOne(@Query() options: CheckOneOptions<Product>) {
+    if (options.uniqueKey) {
+      if (options.uniqueValue) {
+        return this.productService.isUnique({
+          [options.uniqueKey]: options.uniqueValue,
+        });
+      }
+      throw new BadRequestException(
+        'uniqueKey must be used with uniqueValue parameter!'
+      );
+    }
+    throw new BadRequestException(
+      'The route does not allow request with no query options!'
+    );
   }
 
   @ReadPermission(SINGULAR)
   @Get(PLURAL)
-  async get() {
-    return this.productService.find();
+  async findAll(
+    @Query() options: FindAllQueryOptions<Product>,
+    @Res() res: Response
+  ) {
+    const take = options.pageSize;
+    const skip = options.pageIndex * take;
+
+    const queryOptions: FindManyOptions = take && skip ? { take, skip } : {};
+    
+    if (options.isStream) {
+      return this.productService.stream(res, queryOptions);
+    }
+
+    const result = await this.productService.find(queryOptions);
+    res.send(result);
   }
 }
 

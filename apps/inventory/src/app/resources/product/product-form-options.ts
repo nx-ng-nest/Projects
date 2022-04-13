@@ -1,4 +1,5 @@
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   Validators,
@@ -16,16 +17,30 @@ import {
   FormOptions,
 } from '@projects/ui';
 
-const controls = {
-  uuid: new FormControl('', [Validators.required, Validators.minLength(10)]),
-  name: new FormControl('', [Validators.required]),
-  description: new FormControl('', [Validators.required]),
-  categories: new FormControl('', []),
+const initControls = (cs: ProductService) => {
+  return {
+    uuid: new FormControl(
+      '',
+      [Validators.required, Validators.minLength(10)],
+      [
+        async (control: AbstractControl) => {
+          return cs.isFieldUnique('uuid', control.value);
+        },
+      ]
+    ),
+    name: new FormControl('', [Validators.required], [
+      async (control: AbstractControl) => {
+        return cs.isFieldUnique('name', control.value);
+      },
+    ]),
+    description: new FormControl('', [Validators.required]),
+    categories: new FormControl('', []),
+  };
 };
 
-const formGroup = new FormGroup(controls);
-
 export const initFormOptions = (cs: ProductService): FormOptions => {
+  const controls = initControls(cs);
+  const formGroup = new FormGroup(controls);
   return {
     name: 'product',
     submitLabel: 'Save Product',

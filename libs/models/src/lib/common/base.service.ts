@@ -50,9 +50,9 @@ export abstract class BaseDataService<T> {
     return c;
   }
 
-  async stream(res: Response) {
+  async stream(res: Response, queryOptions?: FindManyOptions<T>) {
     const isDone = new BehaviorSubject<boolean>(false);
-    const result = await this.repo.find();
+    const result = await this.repo.find(queryOptions);
 
     isDone.subscribe((r) => {
       if (r == true) {
@@ -83,7 +83,7 @@ export abstract class BaseDataService<T> {
     }
   }
 
-  async find(options?: FindManyOptions) {
+  async find(options?: FindManyOptions<T>) {
     this.logger.debug(this.find.name + ' options: ', options);
 
     const found = await this.repo.find(options);
@@ -93,7 +93,7 @@ export abstract class BaseDataService<T> {
     throw new NotFoundException();
   }
 
-  async findOne(options: FindOneOptions) {
+  async findOne(options: FindOneOptions<T>) {
     this.logger.debug(this.findOne.name + ' options: ', options);
 
     const found = await this.repo.findOne(options);

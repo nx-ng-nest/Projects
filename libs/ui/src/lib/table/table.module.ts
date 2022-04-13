@@ -18,6 +18,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 
 import { TableComponent } from './table.component';
 
@@ -25,6 +26,7 @@ import { TableComponent } from './table.component';
   declarations: [TableComponent],
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     MatTableModule,
@@ -39,8 +41,8 @@ import { TableComponent } from './table.component';
     MatToolbarModule,
     MatSelectModule,
     DragDropModule,
-    ClipboardModule, 
-    MatSnackBarModule
+    ClipboardModule,
+    MatSnackBarModule,
   ],
   exports: [TableComponent],
 })

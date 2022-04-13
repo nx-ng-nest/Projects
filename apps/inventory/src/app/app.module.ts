@@ -33,17 +33,12 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     RouterModule.forRoot(routes, {
       useHash: true,
       initialNavigation: 'enabledBlocking',
-      onSameUrlNavigation: 'reload',
-      // canceledNavigationResolution:'replace'
-      // paramsInheritanceStrategy:'always'
-      urlUpdateStrategy:'eager'
-
     }),
 
-    HttpClientModule,
     StoreModule.forRoot({}, {}),
     EffectsModule.forRoot(),
     EntityDataModule.forRoot(entityConfig),

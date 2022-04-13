@@ -42,7 +42,8 @@ import {
 export interface TableAction {
   label: string;
   icon: string;
-  event: any;
+  event?: any;
+  path?: string;
 }
 
 export interface TableOptions {

@@ -81,7 +81,7 @@ export class BaseCollectionService<T extends ICommonFields>
     this.setFilter(null);
   }
 
-  validateUnique(fieldName: keyof T, control: AbstractControl) {
+  isFieldUnique(fieldName: keyof T, control: AbstractControl) {
     const asyncValidator = (c: AbstractControl) => {
       return this.entities$
         .pipe(
@@ -89,15 +89,13 @@ export class BaseCollectionService<T extends ICommonFields>
             const found = data.find(
               (item) =>
                 (item[fieldName] as unknown as string).toLowerCase() ==
-                control.value.toLowerCase()
+                c.value.toLowerCase()
             );
 
             if (found == undefined) {
-              control.markAsPristine({ onlySelf: true });
               return null;
             } else {
               const msg = { unique: `${fieldName} must be unique!` };
-              control.setErrors(msg);
               return msg;
             }
           })
