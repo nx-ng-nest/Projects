@@ -20,4 +20,5 @@
   width: 100%;
   height: max-content;
   overflow-x: auto;
+  padding: 10px;
 }

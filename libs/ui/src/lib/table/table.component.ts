@@ -19,6 +19,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import {
   MatTable,
@@ -92,7 +93,8 @@ export class TableComponent<T extends ICommonFields>
 
   constructor(
     @Inject(TableModuleTokens.TABLE_MODULE_DATA_SERVICE)
-    public dataService: IBaseCollectionService<T>
+    public dataService: IBaseCollectionService<T>,
+    public snack: MatSnackBar
   ) {}
 
   ngOnInit(): void {}
@@ -104,12 +106,16 @@ export class TableComponent<T extends ICommonFields>
 
     this.subsink.sink = merge(
       this.searchFieldControl.valueChanges,
-      this.selectSearchKeyControl.valueChanges
+      this.selectSearchKeyControl.valueChanges,
+      this.selectItem$
     )
       .pipe(debounceTime(1000))
-      .subscribe(() =>
-        this.searchHandler(this.dataService, this.searchFieldControl)
-      );
+      .subscribe(() => {
+        this.searchHandler(this.dataService, this.searchFieldControl);
+        this.dataService
+          .getFilteredEntities()
+          .then((data) => console.log(data.filter((e) => e.selected)));
+      });
 
     this.selectSearchKeyInput$.pipe(debounceTime(3000)).subscribe((_) => {
       this.selectSearchKeyRef.close();
@@ -145,7 +151,7 @@ export class TableComponent<T extends ICommonFields>
   }
 
   selectPage() {
-    this.selectPage$.next(Math.random());
+    this.selectPage$.next(9999);
     this.selectPageHandler(this.dataSource, this.dataService, this.paginator);
   }
 
