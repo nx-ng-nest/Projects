@@ -77,7 +77,10 @@ export class TableComponent<T extends ICommonFields>
 
   @Input() tableOptions!: TableOptions;
 
-  @Output() actionClick = new EventEmitter();
+  @Output() clickEvents = new EventEmitter<{
+    event: string;
+    item?: Record<string, any>;
+  }>();
 
   searchFieldControl = new FormControl('', []);
   dataSource = new MatTableDataSource<T>([]);
@@ -198,7 +201,9 @@ export class TableComponent<T extends ICommonFields>
   }
 
   handleAction(event: string) {
-    this.actionClick.emit(event);
+    this.clickEvents.emit({
+      event,
+    });
   }
 
   testRerender() {
@@ -267,5 +272,12 @@ export class TableComponent<T extends ICommonFields>
 
   openActionMenu() {
     this.actionMenuOpened$.next(987234);
+  }
+
+  emitDBClick(item: Record<string, any>) {
+    this.clickEvents.emit({
+      event: 'dblclick',
+      item: item,
+    });
   }
 }

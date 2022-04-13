@@ -3,6 +3,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { slideInRightOnEnterAnimation } from 'angular-animations';
 import { firstValueFrom } from 'rxjs';
@@ -29,7 +30,8 @@ export class CreateComponent implements OnInit {
       dataService: BaseCollectionService<any>
     ) => FormOptions,
     @Inject(CrudModuleTokens.DATA_SERVICE)
-    public readonly resourceService: BaseCollectionService<any>
+    public readonly resourceService: BaseCollectionService<any>,
+    public router: Router
   ) {}
 
   ngOnInit(): void {
@@ -41,13 +43,10 @@ export class CreateComponent implements OnInit {
   }
 
   async formSubmitResult(formValue: Record<string, any>) {
-    console.log(formValue);
-    const result = await firstValueFrom(
+    await firstValueFrom(
       this.resourceService.add(formValue, {
         mergeStrategy: MergeStrategy.OverwriteChanges,
       })
     );
-    console.log(result);
-    return;
   }
 }

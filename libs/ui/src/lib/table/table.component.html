@@ -81,6 +81,7 @@
       [@enter]
       [class.selected]="row.selected"
       class="value-row"
+      (dblclick)="emitDBClick(row)"
     ></tr>
   </table>
   <mat-paginator
