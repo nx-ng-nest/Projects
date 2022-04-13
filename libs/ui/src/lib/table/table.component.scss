@@ -3,14 +3,16 @@
   padding-right: 0px;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   gap: 10px;
 }
 .search-select {
+  min-width: 0px;
+  width: 150px;
   flex-grow: 1;
 }
 .search-input {
-  flex-grow: 8;
+  min-width: 0px;
+  flex-grow: 6;
 }
 
 td {
@@ -51,13 +53,15 @@ th {
 }
 
 table {
+  position: relative;
   min-width: 100%;
+
   user-select: none;
 }
 
 .table-container {
   width: 100%;
-  max-height: 59vh;
+  max-height: 75vh;
   overflow: auto;
 }
 

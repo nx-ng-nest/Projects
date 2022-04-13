@@ -89,8 +89,8 @@ export class TableComponent<T extends ICommonFields>
   selectPage$ = new BehaviorSubject<number>(-1);
   selectSearchKeyInput$ = new BehaviorSubject<number>(-1);
   selectSearchKeyControl = new FormControl(['id']);
-  actionMenuOpened$ = new BehaviorSubject<any>('');
-
+  actionMenuOpened$ = new BehaviorSubject<number>(-1);
+  deselectAllItems$ = new BehaviorSubject<number>(-1);
   constructor(
     @Inject(TableModuleTokens.TABLE_MODULE_DATA_SERVICE)
     public dataService: IBaseCollectionService<T>,
@@ -170,7 +170,30 @@ export class TableComponent<T extends ICommonFields>
   }
 
   deselectAllItems() {
+    this.deselectAllItems$.next(234);
+    this.deselectAllItemsHandler(
+      this.dataSource,
+      this.dataService,
+      this.paginator
+    );
+  }
+
+  deselectAllItemsHandler(
+    source: MatTableDataSource<T>,
+    service: IBaseCollectionService<T>,
+    paginator: MatPaginator
+  ) {
     this.dataService.deselectAllItems();
+    const { pageIndex, pageSize } = paginator;
+    const start = pageIndex * pageSize;
+    const end = pageIndex * pageSize + pageSize;
+    const idsToBeSelected = source.data.slice(start, end).map((e) => e.id);
+    const filteredItems = source.filteredData.map((e) => e.id);
+    if (filteredItems.length > idsToBeSelected.length) {
+      service.deselectAllItems(filteredItems);
+    } else {
+      service.selectAllItems(idsToBeSelected);
+    }
   }
 
   handleAction(event: string) {
@@ -182,7 +205,7 @@ export class TableComponent<T extends ICommonFields>
   }
 
   sortSelectedItems() {
-    this.sort.sort({ id: 'selected', start: 'asc', disableClear: false });
+    this.sort.sort({ id: 'selected', start: 'desc', disableClear: false });
   }
 
   searchHandler(service: IBaseCollectionService<T>, control: FormControl) {
@@ -242,6 +265,6 @@ export class TableComponent<T extends ICommonFields>
   }
 
   openActionMenu() {
-    this.actionMenuOpened$.next('scheduling for close!');
+    this.actionMenuOpened$.next(987234);
   }
 }

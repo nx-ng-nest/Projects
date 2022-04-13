@@ -64,11 +64,17 @@ export class BaseCollectionService<T extends ICommonFields>
     }
   }
 
-  async deselectAllItems() {
-    const items = await this.getItems();
-    this.updateManyInCache(
-      (items as any).map((e: T) => ({ id: e.id, selected: false }))
-    );
+  async deselectAllItems(ids?: (number | undefined)[]) {
+    if (ids) {
+      this.updateManyInCache(
+        ids.map((id) => ({ id, selected: false } as Partial<T>))
+      );
+    } else {
+      const items = await this.getItems();
+      this.updateManyInCache(
+        (items as any).map((e: T) => ({ id: e.id, selected: false }))
+      );
+    }
   }
 
   removeFilter() {

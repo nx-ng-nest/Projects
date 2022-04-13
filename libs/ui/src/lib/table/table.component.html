@@ -4,7 +4,7 @@
   let-columns="columns"
   let-displayedColumns="displayedColumns"
 >
-  <table [@enter] mat-table matSort [dataSource]="dataSource">
+  <table [@enter] mat-table matSort  [dataSource]="dataSource">
     <ng-container matColumnDef="selected" [sticky]="true">
       <th mat-header-cell *matHeaderCellDef class="selected-column">
         <button
@@ -22,10 +22,6 @@
             <span>Select Page</span>
           </button>
 
-          <button mat-menu-item (click)="deselectAllItems()">
-            <mat-icon>deselect</mat-icon>
-            <span>Deselect Page</span>
-          </button>
           <button mat-menu-item (click)="deselectAllItems()">
             <mat-icon>deselect</mat-icon>
             <span>Deselect All</span>
@@ -113,8 +109,6 @@
         >{{ o | titlecase }}</mat-option
       >
     </mat-select>
-
-    <mat-hint> Select the fields for better search </mat-hint>
   </mat-form-field>
   <mat-form-field appearance="outline" class="search-input">
     <mat-label>Search</mat-label>

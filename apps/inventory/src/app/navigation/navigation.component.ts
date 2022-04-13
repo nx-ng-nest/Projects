@@ -21,11 +21,16 @@ import {
   styleUrls: ['./navigation.component.css'],
 })
 export class NavigationComponent {
-  platformName = Object.entries(this.platform).find(([key, value]) => value === true)?.[0];
+  platformName = Object.entries(this.platform).find(
+    ([key, value]) => value === true
+  )?.[0];
   public readonly isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
+    .observe([Breakpoints.Handset, Breakpoints.Tablet])
     .pipe(
-      map((result) => result.matches),
+      map((result) => {
+        console.log(result.matches);
+        return result.matches;
+      }),
       shareReplay()
     );
 

@@ -27,11 +27,12 @@ export interface IBaseCollectionService<T>
   /**
    * Set the selected property of filtered items true
    */
-  selectAllItems(ids?:(number | undefined)[]): void;
+  selectAllItems(ids?: (number | undefined)[]): void;
+
   /**
    * Set the items' selected property false
    */
-  deselectAllItems(): void;
+  deselectAllItems(ids?: (number | undefined)[]): void;
 
   /**
    * Find selected item by id
