@@ -1,0 +1,78 @@
+{
+  "root": "apps/inventory-electron",
+  "sourceRoot": "apps/inventory-electron/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "nx-electron:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/inventory-electron",
+        "main": "apps/inventory-electron/src/main.ts",
+        "tsConfig": "apps/inventory-electron/tsconfig.app.json",
+        "assets": [
+          "apps/inventory-electron/src/assets"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/inventory-electron/src/environments/environment.ts",
+              "with": "apps/inventory-electron/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "nx-electron:execute",
+      "options": {
+        "buildTarget": "inventory-electron:build"
+      }
+    },
+    "package": {
+      "executor": "nx-electron:package",
+      "options": {
+        "name": "inventory-electron",
+        "frontendProject": "inventory",
+        "outputPath": "dist/packages",
+        "prepackageOnly": true
+      }
+    },
+    "make": {
+      "executor": "nx-electron:make",
+      "options": {
+        "name": "inventory-electron",
+        "frontendProject": "inventory",
+        "outputPath": "dist/executables"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/inventory-electron/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/apps/inventory-electron"
+      ],
+      "options": {
+        "jestConfig": "apps/inventory-electron/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

@@ -1,8 +1,27 @@
 <div class="container">
+
+  <button (click)="printPage()">Print Page</button>
   <h1>Welcome To Inventory Management System</h1>
+
+  <ul>
+    <h1>Modules</h1>
+    <li *ngFor="let m of modules">{{ m }}</li>
+  </ul>
+
+  <hr/>
+  <ul>
+    <h1>Printers {{ printers }}</h1>
+    <li *ngFor="let p of printers">{{ p }}</li>
+  </ul>
 
   <img class="signin" src="/assets/svg/signin.svg" />
   <a [routerLink]="['/inventory']" routerLinkActive="router-link-active"
     >Go To App</a
   >
+
+  <br />
+  <strong>Platform</strong><span>: {{ platform }}</span> <strong>Version</strong
+  ><span>: {{ version }}</span>
+
+  <br />
 </div>

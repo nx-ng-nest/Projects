@@ -8,6 +8,7 @@
     "interface": "libs/interface",
     "inventory": "apps/inventory",
     "inventory-e2e": "apps/inventory-e2e",
+    "inventory-electron": "apps/inventory-electron",
     "models": "libs/models",
     "ui": "libs/ui"
   }

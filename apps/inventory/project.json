@@ -14,7 +14,9 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/inventory",
         "index": "apps/inventory/src/index.html",
@@ -27,7 +29,9 @@
           "apps/inventory/src/assets",
           "apps/inventory/src/manifest.webmanifest"
         ],
-        "styles": ["apps/inventory/src/styles.scss"],
+        "styles": [
+          "apps/inventory/src/styles.scss"
+        ],
         "scripts": [],
         "serviceWorker": true,
         "ngswConfigPath": "apps/inventory/ngsw-config.json"
@@ -66,7 +70,9 @@
         "tr": {
           "aot": true,
           "outputPath": "dist/apps/inventory",
-          "localize": ["tr"],
+          "localize": [
+            "tr"
+          ],
           "i18nMissingTranslation": "error"
         }
       },
@@ -113,7 +119,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/inventory"],
+      "outputs": [
+        "coverage/apps/inventory"
+      ],
       "options": {
         "jestConfig": "apps/inventory/jest.config.js",
         "passWithNoTests": true
