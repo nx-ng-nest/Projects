@@ -3,6 +3,8 @@ import {
   OnInit,
 } from '@angular/core';
 
+import { PrinterInfo } from 'electron';
+
 @Component({
   selector: 'projects-welcome',
   templateUrl: './welcome.component.html',
@@ -14,7 +16,7 @@ export class WelcomeComponent implements OnInit {
   version!: string;
   platform!: string;
 
-  printers!: string[];
+  printers!: PrinterInfo[];
 
   constructor() {}
 
@@ -27,7 +29,7 @@ export class WelcomeComponent implements OnInit {
     this.printers = Object.values(await this.electron.printers());
   }
 
-   printPage() {
-     this.electron.printPage();
+  printPage() {
+    this.electron.printPage();
   }
 }

@@ -43,7 +43,7 @@ export class CreateComponent implements OnInit {
   }
 
   async formSubmitResult(formValue: Record<string, any>) {
-    await firstValueFrom(
+    const response = await firstValueFrom(
       this.resourceService.add(formValue, {
         mergeStrategy: MergeStrategy.OverwriteChanges,
       })

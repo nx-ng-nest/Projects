@@ -8,7 +8,10 @@ import {
 import { TableModule } from '@projects/ui';
 
 import { CrudModuleTokens } from '../crud-tokens.enum';
-import { provideToolbarOptionsToModule } from '../utils';
+import {
+  addToolbarOptionsToModule,
+  provideToolbarOptionsToModule,
+} from '../utils';
 import { ViewAllComponent } from './view-all/view-all.component';
 import { ViewByIdComponent } from './view-by-id/view-by-id.component';
 import { ViewComponent } from './view.component';
@@ -17,7 +20,6 @@ const routes: Routes = [
   {
     path: '',
     component: ViewComponent,
-
     children: [
       {
         path: '',
@@ -26,6 +28,7 @@ const routes: Routes = [
       { path: 'one/:id', component: ViewByIdComponent },
     ],
   },
+  addToolbarOptionsToModule(),
 ];
 
 @NgModule({

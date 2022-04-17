@@ -35,7 +35,7 @@ ipcMain.handle(
   }
 );
 
-ipcMain.handle('get-printers', async (event: IpcMainInvokeEvent, args: any) => {
+ipcMain.handle('get-printers', async (event: IpcMainInvokeEvent) => {
   console.log(`Fetching printers... `);
   const printers = await webContents.getFocusedWebContents().getPrintersAsync();
   return printers;

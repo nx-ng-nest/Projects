@@ -3,10 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { StoreModule } from '@ngrx/store';
-import {
-  CategoryService,
-  ProductService,
-} from '@projects/client-service';
+import { ProductService } from '@projects/client-service';
 import { TableModuleTokens } from '@projects/ui';
 
 import { CrudComponent } from '../../crud/crud.component';
@@ -87,7 +84,6 @@ const productColumns = [
   ],
   providers: [
     ProductService,
-    CategoryService,
     ProductGuard,
     {
       provide: TableModuleTokens.TABLE_MODULE_DATA_SERVICE,
